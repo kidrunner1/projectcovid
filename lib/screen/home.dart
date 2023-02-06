@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton(
                       onPressed: (() {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
@@ -33,14 +33,14 @@ class HomeScreen extends StatelessWidget {
                         }));
                       }),
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 202, 145, 164)),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)))),
-                      icon: const Icon(Icons.add), //icons_add_buttons
+                      //icons_add_buttons
                       // ignore: prefer_const_constructors
-                      label: Text(
+                      child: Text(
                         "สร้างบัญชีผู้ใช้",
                         style: const TextStyle(fontSize: 24),
                       )),
@@ -49,21 +49,23 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton(
                       onPressed: (() {
                         Navigator.pushReplacement(context, MaterialPageRoute(
                           builder: (context) {
-                            return LoginScreen();
+                            return const LoginScreen();
                           },
                         ));
                       }),
                       style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 202, 145, 164)),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)))),
-                      icon: const Icon(Icons.login),
+
                       // ignore: prefer_const_constructors
-                      label: Text(
+                      child: Text(
                         "เข้าสู้ระบบ",
                         style: const TextStyle(fontSize: 24),
                       )),

@@ -21,7 +21,10 @@ class StartScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(children: [
             Image.asset("assets/images/unnamed.png"),
-            Text("ระบบจัดการสถานะการณ์ COVID-19"),
+            const Text(
+              "ระบบจัดการสถานะการณ์ COVID-19",
+              style: TextStyle(fontSize: 24),
+            ),
             const SizedBox(
               width: double.infinity,
               child: Padding(
@@ -37,10 +40,15 @@ class StartScreen extends StatelessWidget {
                 ));
               },
               style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    Color.fromARGB(255, 202, 145, 164)),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30))),
               ),
-              child: const Text('Get Start'),
+              child: const Text(
+                'Get Start',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ]),
         ),
