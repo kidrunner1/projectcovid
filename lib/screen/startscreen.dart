@@ -12,45 +12,44 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("StartScreen"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
+      body: Center(
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(children: [
-            Image.asset("assets/images/unnamed.png"),
-            const Text(
-              "ระบบจัดการสถานะการณ์ COVID-19",
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(children: [
+              Image.asset("assets/images/unnamed.png"),
+              const Text(
+                "ระบบจัดการสถานะการณ์ COVID-19",
+                style: TextStyle(fontSize: 24),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
-                ));
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 202, 145, 164)),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30))),
+              const SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
               ),
-              child: const Text(
-                'Get Start',
-                style: TextStyle(fontSize: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const HomeScreen();
+                    },
+                  ));
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Color.fromARGB(255, 202, 145, 164)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30))),
+                ),
+                child: const Text(
+                  'Get Start',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );
