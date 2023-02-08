@@ -40,9 +40,12 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
   fluttertoast: ^8.1.2
-  animated_bottom_navigation_bar: ^1.1.0+1
   google_fonts: ^3.0.1
+  flutter_launcher_icons: ^0.11.0
   
+flutter_icons:
+  android: true
+  image_path: "assets/images/icons/logo.jpg"
 
 dev_dependencies:
   flutter_test:

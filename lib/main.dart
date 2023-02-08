@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/home.dart';
 import 'package:tracker_covid_v1/screen/startscreen.dart';
+import 'package:tracker_covid_v1/screen/welcome.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StartScreen(key: key),
+      home: StartScreen(),
     );
   }
 }

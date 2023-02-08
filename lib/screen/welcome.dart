@@ -16,36 +16,43 @@ class WelcomeScreen extends StatelessWidget {
   String _email = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Center(
-            child: Center(
+    return Container(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Welcome"),
+        ),
+        body: Center(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    FirebaseAuth_auth.currentUser!.email!,
+              child: Center(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  child: Column(
+                    children: [
+                      Text(
+                        FirebaseAuth_auth.currentUser!.email!,
+                      ),
+                      ElevatedButton.icon(
+                          onPressed: () async {
+                            await _auth.signOut().then((value) {
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: ((context) {
+                                return const HomeScreen();
+                              })));
+                            });
+                          },
+                          icon: const Icon(Icons.logout),
+                          label: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("ออกจากระบบ")))
+                    ],
                   ),
-                  ElevatedButton.icon(
-                      onPressed: () async {
-                        await _auth.signOut().then((value) {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: ((context) {
-                            return const HomeScreen();
-                          })));
-                        });
-                      },
-                      icon: const Icon(Icons.logout),
-                      label: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("ออกจากระบบ")))
-                ],
+                ),
               ),
             ),
-          ),
-        )),
+          )),
+        ),
       ),
     );
   }
