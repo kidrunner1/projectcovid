@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tracker_covid_v1/screen/home.dart';
+import 'package:tracker_covid_v1/screen/welcome.dart';
+
+import 'map.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -31,9 +34,9 @@ class StartScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
+                  Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
-                      return const HomeScreen();
+                      return HomeScreen();
                     },
                   ));
                 },

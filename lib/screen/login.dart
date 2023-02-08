@@ -56,8 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             validator: MultiValidator([
                               EmailValidator(
-                                  errorText: "รูปแบบอีเมลไม่ถูกต้อง"),
-                              RequiredValidator(errorText: "กรุณากรอก-อีเมล")
+                                errorText: "รูปแบบอีเมลไม่ถูกต้อง",
+                              ),
+                              RequiredValidator(errorText: "กรุณากรอก-อีเมล"),
                             ]),
                             keyboardType: TextInputType.emailAddress,
                             onSaved: (email) {
