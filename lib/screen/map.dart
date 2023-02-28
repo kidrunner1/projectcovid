@@ -32,7 +32,7 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: (AppBar(
-        title: Text('Maps'),
+        title: const Text('Maps'),
       )),
       body: GoogleMap(
         mapType: MapType.hybrid,

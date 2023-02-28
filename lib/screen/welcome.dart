@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tracker_covid_v1/screen/home.dart';
 import 'package:tracker_covid_v1/screen/login.dart';
 import 'package:tracker_covid_v1/screen/map.dart';
@@ -18,7 +19,6 @@ final FirebaseAuth_auth = FirebaseAuth.instance;
 
 // ignore: must_be_immutable
 class WelcomeScreen extends StatelessWidget {
-  int Index = 0;
   // ignore: non_constant_identifier_names
   String _email = '';
   WelcomeScreen({super.key});
@@ -31,10 +31,10 @@ class WelcomeScreen extends StatelessWidget {
           IconButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return MapSample();
+                  return const MapSample();
                 }));
               },
-              icon: Icon(Icons.settings))
+              icon: const Icon(Icons.near_me))
         ],
       ),
       body: Center(
@@ -61,7 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                       icon: const Icon(Icons.logout),
                       label: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text("ออกจากระบบ"))),
+                          child: Text("ออกจากระบบ")))
                 ],
               ),
             ),
