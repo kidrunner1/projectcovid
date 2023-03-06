@@ -33,8 +33,8 @@ class HomeScreen extends StatelessWidget {
                         }));
                       }),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 202, 145, 164)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.brown),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)))),
@@ -58,8 +58,8 @@ class HomeScreen extends StatelessWidget {
                         ));
                       }),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 202, 145, 164)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.brown),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)))),

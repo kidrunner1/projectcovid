@@ -27,6 +27,8 @@ class MapSampleState extends State<MapSample> {
       target: LatLng(17.273585, 104.132765),
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
+  static const LatLng sourceLocation = LatLng(17.290889, 104.112527);
+  static const LatLng destination = LatLng(17.273585, 104.132765);
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,19 @@ class MapSampleState extends State<MapSample> {
         title: const Text('Maps'),
       )),
       body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
+        mapType: MapType.terrain,
+        initialCameraPosition: const CameraPosition(
+          target: sourceLocation,
+        ),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+        },
+        markers: {
+          const Marker(markerId: MarkerId('source'), position: sourceLocation),
+          const Marker(
+            markerId: MarkerId('destination'),
+            position: destination,
+          )
         },
       ),
       floatingActionButton: FloatingActionButton.extended(

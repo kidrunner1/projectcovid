@@ -5,10 +5,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:tracker_covid_v1/screen/test.dart';
+import 'package:tracker_covid_v1/screen/homsreeen.dart';
 import 'package:tracker_covid_v1/screen/welcome.dart';
 
 import '../model/profile.dart';
+import '../widget/drawer.dart';
 import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -102,7 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Navigator.pushReplacement(context,
                                             MaterialPageRoute(
                                           builder: (context) {
-                                            return NavigationDrawer();
+                                            return MyHomePage(
+                                              title: '',
+                                            );
                                           },
                                         ));
                                       });

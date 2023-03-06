@@ -26,47 +26,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MapSample();
-                }));
-              },
-              icon: const Icon(Icons.near_me))
-        ],
-      ),
-      body: Center(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            // ignore: avoid_unnecessary_containers
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    FirebaseAuth_auth.currentUser!.email!,
-                  ),
-                  ElevatedButton.icon(
-                      onPressed: () async {
-                        await _auth.signOut().then((value) {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: ((context) {
-                            return const LoginScreen();
-                          })));
-                        });
-                      },
-                      icon: const Icon(Icons.logout),
-                      label: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("ออกจากระบบ")))
-                ],
-              ),
-            ),
-          ),
-        ),
+        title: Text('ยินดีต้อนรับ'),
       ),
     );
   }
