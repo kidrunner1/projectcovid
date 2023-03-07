@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                title: Text("Error"),
+                title: const Text("Error"),
               ),
               body: Center(child: Text("${snapshot.error}")),
             );
@@ -50,10 +52,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Image.asset("assest/images/"),
-                          const Text("อีเมล",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 0, 0, 0))),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("อีเมล",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                          ),
                           TextFormField(
                             validator: MultiValidator([
                               EmailValidator(
@@ -61,43 +66,65 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               RequiredValidator(errorText: "กรุณากรอก-อีเมล")
                             ]),
                             keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20))),
                             onSaved: (email) {
                               profile.email = email!;
                             },
                           ),
                           const SizedBox(height: 15),
-                          const Text("รหัสผ่าน",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 0, 0, 0))),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("รหัสผ่าน",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                          ),
                           TextFormField(
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20))),
                             onSaved: (password) {
                               profile.password = password!;
                             }, // ปิดรหัสผ่าน
                           ),
                           const SizedBox(height: 15),
-                          const Text("ชื่อ",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 0, 0, 0))),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("ชื่อ",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                          ),
                           TextFormField(
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20))),
                             onSaved: (name) {
                               profile.name = name!;
                             },
                           ),
                           const SizedBox(height: 15),
-                          const Text("นามสกุล",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 0, 0, 0))),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("นามสกุล",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                          ),
                           TextFormField(
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-นามสกุล"),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
                             onSaved: (lastname) {
                               profile.lastname = lastname!;
                             },
@@ -106,9 +133,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              child: const Text("ลงทะเบียน",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white)),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("ลงทะเบียน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white)),
+                              ),
                               onPressed: () async {
                                 if (fromKey.currentState!.validate()) {
                                   fromKey.currentState!.save();
@@ -130,6 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       }));
                                     });
                                   } on FirebaseAuthException catch (e) {
+                                    // ignore: avoid_print
                                     print(e.code);
                                     var message;
                                     if (e.code == 'email-already-in-use') {
@@ -146,6 +177,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   }
                                 }
                               },
+                              style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(8.0),
+                                  shape: const StadiumBorder()),
                             ),
                           )
                         ],
@@ -154,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-              backgroundColor: Colors.white, // สี backgroun
+              backgroundColor: Colors.grey.shade300, // สี backgroun
             );
           }
           // ignore: prefer_const_constructors

@@ -15,8 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'flutter demo',
       theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
+          primarySwatch: Colors.brown, backgroundColor: Colors.grey.shade300),
       home: const StartScreen(),
     );
   }

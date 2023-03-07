@@ -21,7 +21,10 @@ class StartScreen extends StatelessWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
-              Image.asset("assets/images/unnamed.png"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset("assets/images/unnamed.png"),
+              ),
               const Text(
                 "ระบบจัดการสถานะการณ์ COVID-19",
                 style: TextStyle(fontSize: 24),
@@ -32,29 +35,35 @@ class StartScreen extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                 ),
               ),
-              ElevatedButton(
+              ElevatedButton.icon(
+                icon: const Icon(
+                  CupertinoIcons.arrow_right,
+                  size: 30,
+                ),
                 onPressed: () {
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
-                      return HomeScreen();
+                      return const HomeScreen();
                     },
                   ));
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      Color.fromARGB(255, 202, 145, 164)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30))),
-                ),
-                child: const Text(
-                  'Get Start',
-                  style: TextStyle(fontSize: 20),
-                ),
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(20.0),
+                    backgroundColor: Colors.brown,
+                    fixedSize: const Size(500, 80),
+                    textStyle: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.bold),
+                    elevation: 15,
+                    shadowColor: Colors.brown,
+                    side: const BorderSide(color: Colors.black, width: 2),
+                    shape: const StadiumBorder()),
+                label: const Text('เริ่มแอปพลิเคชั่น'),
               ),
             ]),
           ),
         ),
       ),
+      backgroundColor: Colors.grey.shade300,
     );
   }
 }

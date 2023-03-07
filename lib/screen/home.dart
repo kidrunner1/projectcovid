@@ -27,22 +27,23 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                       onPressed: (() {
-                        Navigator.pushReplacement(context,
+                        Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return const RegisterScreen();
                         }));
                       }),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.brown),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        side: const BorderSide(color: Colors.black, width: 2),
+                      ),
                       //icons_add_buttons
                       // ignore: prefer_const_constructors
-                      child: Text(
-                        "สร้างบัญชีผู้ใช้",
-                        style: const TextStyle(fontSize: 24),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text(
+                          "สร้างบัญชีผู้ใช้",
+                          style: TextStyle(fontSize: 24),
+                        ),
                       )),
                 )),
             SizedBox(
@@ -51,23 +52,22 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                       onPressed: (() {
-                        Navigator.pushReplacement(context, MaterialPageRoute(
+                        Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
                             return const LoginScreen();
                           },
                         ));
                       }),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.brown),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)))),
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        side: const BorderSide(color: Colors.black, width: 2),
+                      ),
 
                       // ignore: prefer_const_constructors
-                      child: Text(
-                        "เข้าสู้ระบบ",
-                        style: const TextStyle(fontSize: 24),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text("เข้าสู้ระบบ",
+                            style: TextStyle(fontSize: 24)),
                       )),
                 ))
           ]),

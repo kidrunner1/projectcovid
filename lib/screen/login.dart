@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                title: Text("Error"),
+                title: const Text("Error"),
               ),
               body: Center(child: Text("${snapshot.error}")),
             );
@@ -55,41 +55,53 @@ class _LoginScreenState extends State<LoginScreen> {
                             //Image.asset("assest/images/"),
                             const Text("อีเมล",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 0, 0, 0))),
-                            TextFormField(
-                              validator: MultiValidator([
-                                EmailValidator(
-                                  errorText: "รูปแบบอีเมลไม่ถูกต้อง",
-                                ),
-                                RequiredValidator(errorText: "กรุณากรอก-อีเมล"),
-                              ]),
-                              keyboardType: TextInputType.emailAddress,
-                              onSaved: (email) {
-                                profile.email = email!;
-                              },
+                                    fontSize: 20, color: Colors.black)),
+
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                validator: MultiValidator([
+                                  EmailValidator(
+                                    errorText: "รูปแบบอีเมลไม่ถูกต้อง",
+                                  ),
+                                  RequiredValidator(
+                                      errorText: "กรุณากรอก-อีเมล"),
+                                ]),
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                onSaved: (email) {
+                                  profile.email = email!;
+                                },
+                              ),
                             ),
                             const SizedBox(height: 15),
                             const Text("รหัสผ่าน",
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Color.fromARGB(255, 0, 0, 0))),
-                            TextFormField(
-                              validator: RequiredValidator(
-                                  errorText: "กรุณากรอก-รหัสผ่าน"),
-                              obscureText: true,
-                              onSaved: (password) {
-                                profile.password = password!;
-                              }, // ปิดรหัสผ่าน
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                validator: RequiredValidator(
+                                    errorText: "กรุณากรอก-รหัสผ่าน"),
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                onSaved: (password) {
+                                  profile.password = password!;
+                                }, // ปิดรหัสผ่าน
+                              ),
                             ),
 
                             const SizedBox(height: 15),
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                child: const Text("ลงชื่อเข้าใช้",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white)),
                                 onPressed: () async {
                                   if (fromKey.currentState!.validate()) {
                                     fromKey.currentState!.save();
@@ -103,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Navigator.pushReplacement(context,
                                             MaterialPageRoute(
                                           builder: (context) {
-                                            return MyHomePage(
+                                            return const MyHomePage(
                                               title: '',
                                             );
                                           },
@@ -116,6 +128,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   }
                                 },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  side: const BorderSide(
+                                      color: Colors.black, width: 2),
+                                ),
+                                child: const Text(
+                                  "ลงชื่อเข้าใช้",
+                                ),
                               ),
                             )
                           ],
@@ -125,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              backgroundColor: Colors.white, // สี backgroun
+              backgroundColor: Colors.grey.shade300, // สี backgroun
             );
           }
           // ignore: prefer_const_constructors
