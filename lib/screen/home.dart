@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                       // ignore: prefer_const_constructors
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: const Text("เข้าสู้ระบบ",
+                        child: const Text("เข้าสู่ระบบ",
                             style: TextStyle(fontSize: 24)),
                       )),
                 ))

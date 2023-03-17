@@ -133,12 +133,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("ลงทะเบียน",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white)),
-                              ),
                               onPressed: () async {
                                 if (fromKey.currentState!.validate()) {
                                   fromKey.currentState!.save();
@@ -180,6 +174,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(8.0),
                                   shape: const StadiumBorder()),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("ลงทะเบียน",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white)),
+                              ),
                             ),
                           )
                         ],

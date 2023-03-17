@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final List<Widget> _children = [
-    const NewsScreen(),
+    const NewsScreens(),
     const ChatScreen(),
     const SettingScreen(),
   ];
