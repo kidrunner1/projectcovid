@@ -22,7 +22,8 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final fromKey = GlobalKey<FormState>();
-  Profile profile = Profile(email: '', password: '', name: '', lastname: '');
+  Profile profile =
+      Profile(email: '', password: '', name: '', lastname: '', number: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
