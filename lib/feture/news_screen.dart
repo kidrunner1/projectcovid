@@ -63,13 +63,11 @@ class _NewsScreensState extends State<NewsScreens> {
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                viewportFraction: 0.9,
+                viewportFraction: 1,
               ),
             ),
           ),
-          Row(
-            children: [],
-          )
+          
         ]),
       ),
     );

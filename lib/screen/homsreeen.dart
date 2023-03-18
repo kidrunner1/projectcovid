@@ -6,6 +6,7 @@ import 'package:tracker_covid_v1/screen/home.dart';
 import 'package:tracker_covid_v1/screen/map.dart';
 import 'package:tracker_covid_v1/screen/welcome.dart';
 
+import '../feture/call.dart';
 import '../feture/chat.dart';
 import '../feture/news_screen.dart';
 import '../widget/drawer.dart';
@@ -60,7 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CallBackScreens()));
+              },
+              icon: const Icon(Icons.add_call))
+        ],
+      ),
       drawer: const NavigationDrawer(),
     );
   }
