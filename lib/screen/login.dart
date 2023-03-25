@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       key: fromKey,
                       child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             //Image.asset("assest/images/"),
                             const Text("อีเมล",

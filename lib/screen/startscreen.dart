@@ -65,5 +65,7 @@ class StartScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.grey.shade300,
     );
+    
   }
+  
 }
