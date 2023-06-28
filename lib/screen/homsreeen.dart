@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:tracker_covid_v1/feture/data.dart';
+
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/home.dart';
 import 'package:tracker_covid_v1/screen/map.dart';
@@ -9,6 +11,7 @@ import 'package:tracker_covid_v1/screen/welcome.dart';
 import '../feture/call.dart';
 import '../feture/chat.dart';
 import '../feture/news_screen.dart';
+import '../feture/data.dart';
 import '../widget/drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -32,6 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const NewsScreens(),
     const ChatScreen(),
     const SettingScreen(),
+    const PersonScreen()
+    
   ];
   @override
   Widget build(BuildContext context) {
@@ -41,15 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
         children: _children,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.brown, selectedItemColor: Colors.grey.shade800,
-        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.pink.shade100,
+        selectedItemColor: Colors.pink.shade200,
+        unselectedItemColor: Colors.pink,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         // ignore: prefer_const_literals_to_create_immutables
         items: [
           const BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper_outlined),
-            label: 'ข่าวสาร',
+            icon: Icon(Icons.home),
+            label: 'หน้าหลัก',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.chat),
@@ -59,16 +65,22 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.settings),
             label: 'ตั่่งค่า',
           ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'ข้อมูลส่วนตัว',
+          )
         ],
       ),
       appBar: AppBar(
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CallBackScreens()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CallBackScreens()));
               },
-              icon: const Icon(Icons.add_call))
+              icon: const Icon(Icons.settings))
         ],
       ),
       drawer: const NavigationDrawer(),

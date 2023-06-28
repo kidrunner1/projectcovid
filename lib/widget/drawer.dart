@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker_covid_v1/feture/data.dart';
+import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/login.dart';
 import 'package:tracker_covid_v1/screen/map.dart';
 import 'package:tracker_covid_v1/screen/welcome.dart';
@@ -53,26 +55,26 @@ Widget buildMenuItems(BuildContext context) => Container(
         runSpacing: 16,
         children: [
           ListTile(
-            leading: const Icon(Icons.map_outlined),
-            title: const Text('แผนที่'),
+            leading: const Icon(Icons.person),
+            title: const Text('ข้อมูลส่วนตัว'),
             onTap: (() {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MapSample(),
+                builder: (context) => PersonScreen(),
               ));
             }),
           ),
           ListTile(
             leading: const Icon(Icons.home_filled),
-            title: const Text('หน้าหลัก'),
+            title: const Text('การตั้งค่า'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => WelcomeScreen(),
+                builder: (context) => SettingScreen(),
               ));
             },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
+            title: const Text('ออกจากระบบ'),
             onTap: () async {
               await _auth.signOut().then((value) {
                 Navigator.pushReplacement(context,

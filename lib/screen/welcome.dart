@@ -9,7 +9,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:tracker_covid_v1/screen/home.dart';
 import 'package:tracker_covid_v1/screen/login.dart';
 import 'package:tracker_covid_v1/screen/map.dart';
-import 'package:tracker_covid_v1/theme/colors.dart';
+
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseAuth_auth = FirebaseAuth.instance;

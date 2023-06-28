@@ -36,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   form_field_validator: ^1.1.0
-  firebase_core: ^2.4.1
+  firebase_core: ^2.14.0
   firebase_auth: ^4.2.5
   fluttertoast: ^8.1.2
   google_fonts: ^3.0.1
@@ -50,11 +50,13 @@ dependencies:
   flutter_easyloading: ^3.0.5
   
   
+  
+  
 
   
 flutter_icons:
   android: true
-  image_path: "assets/images/icons/logo.jpg"
+  image_path: "assets/images/icons/page2.jpg"
 
 dev_dependencies:
   flutter_test:

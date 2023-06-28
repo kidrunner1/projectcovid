@@ -23,7 +23,7 @@ class StartScreen extends StatelessWidget {
             child: Column(children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset("assets/images/unnamed.png"),
+                child: Image.asset("assets/images/page.png"),
               ),
               const Text(
                 "ระบบจัดการสถานะการณ์ COVID-19",
@@ -41,7 +41,7 @@ class StartScreen extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
+                  Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
                       return const HomeScreen();
                     },
@@ -49,13 +49,12 @@ class StartScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20.0),
-                    backgroundColor: Colors.brown,
+                    backgroundColor: Colors.pinkAccent,
                     fixedSize: const Size(500, 80),
                     textStyle: const TextStyle(
                         fontSize: 25, fontWeight: FontWeight.bold),
                     elevation: 15,
-                    shadowColor: Colors.brown,
-                    side: const BorderSide(color: Colors.black, width: 2),
+                    shadowColor: Colors.pink,
                     shape: const StadiumBorder()),
                 label: const Text('เริ่มแอปพลิเคชั่น'),
               ),
@@ -63,9 +62,7 @@ class StartScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
     );
-    
   }
-  
 }

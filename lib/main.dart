@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'flutter demo',
       theme: ThemeData(
-          primarySwatch: Colors.brown, backgroundColor: Colors.grey.shade300),
+          primarySwatch: Colors.pink, backgroundColor: Colors.grey.shade300),
       home: const StartScreen(),
     );
   }

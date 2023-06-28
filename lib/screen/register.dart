@@ -55,10 +55,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           //Image.asset("assest/images/"),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("อีเมล",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 0, 0, 0))),
                           ),
                           TextFormField(
                             validator: MultiValidator([
@@ -68,6 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ]),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
+                                hintText: 'อีเมล',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (email) {
@@ -77,16 +74,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("รหัสผ่าน",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 0, 0, 0))),
                           ),
                           TextFormField(
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
                             decoration: InputDecoration(
+                                hintText: 'รหัสผ่าน',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (password) {
@@ -96,15 +90,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("ชื่อ",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 0, 0, 0))),
                           ),
                           TextFormField(
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
+                                hintText: 'ชื่อ',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (name) {
@@ -114,23 +105,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("นามสกุล",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 0, 0, 0))),
                           ),
                           TextFormField(
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-นามสกุล"),
                             decoration: InputDecoration(
+                                hintText: 'นามสกุล',
                                 border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            )),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
                             onSaved: (lastname) {
                               profile.lastname = lastname!;
                             },
                           ),
-                          const SizedBox(height: 15),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          TextFormField(
+                            validator: RequiredValidator(
+                                errorText: "กรุณากรอก-เบอร์โทร"),
+                            decoration: InputDecoration(
+                                hintText: 'เบอร์โทร',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            onSaved: (number) {
+                              profile.lastname = number!;
+                            },
+                          ),
+
+                          const SizedBox(height: 15),Padding(padding: EdgeInsets.all(8.0)),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(

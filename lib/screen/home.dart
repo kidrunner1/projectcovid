@@ -20,11 +20,19 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
         child: SingleChildScrollView(
           child: Column(children: [
-            Image.asset("assets/images/unnamed.png"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset("assets/images/page.png"),
+            ),
+            const Text(
+              'แอปพลิเคชันติดตามและ ประเมินผู้ที่มีความเสี่ยงโควิด-19',
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
             SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.10),
                   child: ElevatedButton(
                       onPressed: (() {
                         Navigator.push(context,
@@ -34,7 +42,6 @@ class HomeScreen extends StatelessWidget {
                       }),
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
-                        side: const BorderSide(color: Colors.black, width: 2),
                       ),
                       //icons_add_buttons
                       // ignore: prefer_const_constructors
@@ -60,7 +67,6 @@ class HomeScreen extends StatelessWidget {
                       }),
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
-                        side: const BorderSide(color: Colors.black, width: 2),
                       ),
 
                       // ignore: prefer_const_constructors
