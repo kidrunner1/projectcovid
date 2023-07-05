@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -41,7 +41,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           } //ตรวจสอบ Error firebase
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              appBar: AppBar(title: const Text("สร้างบัญชีผู้ใช้")),
+              appBar: AppBar(
+                title: const Text("ส ร้ า ง บั ญ ชี ผู้ ใ ช้"),
+                backgroundColor: Colors.pink.shade200,
+              ),
               // ignore: avoid_unnecessary_containers
               body: Container(
                 child: Padding(
@@ -52,7 +55,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //Image.asset("assest/images/"),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
@@ -64,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ]),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                                hintText: 'อีเมล',
+                                hintText: 'อี เ ม ล',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (email) {
@@ -80,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
                             decoration: InputDecoration(
-                                hintText: 'รหัสผ่าน',
+                                hintText: 'ร หั ส ผ่ า น',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (password) {
@@ -95,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
-                                hintText: 'ชื่อ',
+                                hintText: 'ชื่ อ',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20))),
                             onSaved: (name) {
@@ -110,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-นามสกุล"),
                             decoration: InputDecoration(
-                                hintText: 'นามสกุล',
+                                hintText: 'น า ม ส กุ ล',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 )),
@@ -128,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-เบอร์โทร"),
                             decoration: InputDecoration(
-                                hintText: 'เบอร์โทร',
+                                hintText: 'เ บ อ ร์ โ ท ร',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 )),
@@ -136,8 +138,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               profile.lastname = number!;
                             },
                           ),
-
-                          const SizedBox(height: 15),Padding(padding: EdgeInsets.all(8.0)),
+                          const SizedBox(height: 15),
+                          Padding(padding: EdgeInsets.all(8.0)),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -181,10 +183,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(8.0),
-                                  shape: const StadiumBorder()),
+                                  shape: const StadiumBorder(),
+                                  backgroundColor: Colors.pink.shade200),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Text("ลงทะเบียน",
+                                child: Text("ล ง ท ะ เ บี ย น",
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.white)),
                               ),

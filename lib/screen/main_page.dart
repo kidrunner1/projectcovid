@@ -1,17 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:tracker_covid_v1/feture/data.dart';
+
+import 'package:tracker_covid_v1/feture/profile_page.dart';
 
 import 'package:tracker_covid_v1/feture/setting.dart';
-import 'package:tracker_covid_v1/screen/home.dart';
-import 'package:tracker_covid_v1/screen/map.dart';
-import 'package:tracker_covid_v1/screen/welcome.dart';
 
-import '../feture/call.dart';
 import '../feture/chat.dart';
 import '../feture/news_screen.dart';
-import '../feture/data.dart';
 import '../widget/drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -35,8 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const NewsScreens(),
     const ChatScreen(),
     const SettingScreen(),
-    const PersonScreen()
-    
+    const ProfilePage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -46,9 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
         children: _children,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.pink.shade100,
-        selectedItemColor: Colors.pink.shade200,
-        unselectedItemColor: Colors.pink,
+        backgroundColor: Colors.pink.shade200,
+        selectedItemColor: Colors.deepPurpleAccent,
+        unselectedItemColor: Colors.deepPurpleAccent.shade200,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         // ignore: prefer_const_literals_to_create_immutables
@@ -72,17 +65,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       appBar: AppBar(
+        backgroundColor: Colors.pink.shade200,
         actions: [
           IconButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CallBackScreens()));
+                        builder: (context) => const SettingScreen()));
               },
               icon: const Icon(Icons.settings))
         ],
       ),
+      // ignore: prefer_const_constructors
       drawer: const NavigationDrawer(),
     );
   }

@@ -1,12 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker_covid_v1/feture/data.dart';
+import 'package:tracker_covid_v1/feture/profile_page.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/login.dart';
-import 'package:tracker_covid_v1/screen/map.dart';
-import 'package:tracker_covid_v1/screen/welcome.dart';
-
-import '../screen/home.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseAuth_auth = FirebaseAuth.instance;
@@ -17,6 +13,7 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,23 +27,18 @@ class NavigationDrawer extends StatelessWidget {
 }
 
 Widget builderHeader(BuildContext context) => Container(
-      color: Colors.brown.shade700,
       padding: EdgeInsets.only(
         top: 24 + MediaQuery.of(context).padding.top,
         bottom: 24,
       ),
-      child: Column(
-        children: const [
-          CircleAvatar(
-            radius: 52,
-            backgroundImage: NetworkImage(
-                'https://images.pexels.com/photos/5905356/pexels-photo-5905356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-          ),
-          SizedBox(height: 12),
-          Text('Name', style: TextStyle(fontSize: 28, color: Colors.white)),
-          Text('Lastname', style: TextStyle(fontSize: 28, color: Colors.white))
-        ],
-      ),
+      child: const Column(children: [
+        DrawerHeader(
+            child: Icon(
+          Icons.person,
+          color: Colors.black,
+          size: 60,
+        ))
+      ]),
     );
 
 Widget buildMenuItems(BuildContext context) => Container(
@@ -55,17 +47,29 @@ Widget buildMenuItems(BuildContext context) => Container(
         runSpacing: 16,
         children: [
           ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('ข้อมูลส่วนตัว'),
+            leading: const Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'ข้ อ มู ล ส่ ว น ตั ว',
+              style: TextStyle(color: Colors.black),
+            ),
             onTap: (() {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PersonScreen(),
+                builder: (context) => ProfilePage(),
               ));
             }),
           ),
           ListTile(
-            leading: const Icon(Icons.home_filled),
-            title: const Text('การตั้งค่า'),
+            leading: const Icon(
+              Icons.home_filled,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'ก า ร ตั้ ง ค่ า',
+              style: TextStyle(color: Colors.black),
+            ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => SettingScreen(),
@@ -73,8 +77,14 @@ Widget buildMenuItems(BuildContext context) => Container(
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('ออกจากระบบ'),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'อ อ ก จ า ก ร ะ บ บ',
+              style: TextStyle(color: Colors.black),
+            ),
             onTap: () async {
               await _auth.signOut().then((value) {
                 Navigator.pushReplacement(context,

@@ -1,19 +1,18 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:tracker_covid_v1/screen/home.dart';
-import 'package:tracker_covid_v1/screen/welcome.dart';
 
-import 'map.dart';
+import 'home.dart';
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
 
   @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -35,28 +34,27 @@ class StartScreen extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                 ),
               ),
-              ElevatedButton.icon(
-                icon: const Icon(
-                  CupertinoIcons.arrow_right,
-                  size: 30,
-                ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return const HomeScreen();
-                    },
-                  ));
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(20.0),
-                    backgroundColor: Colors.pinkAccent,
-                    fixedSize: const Size(500, 80),
-                    textStyle: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.bold),
-                    elevation: 15,
-                    shadowColor: Colors.pink,
-                    shape: const StadiumBorder()),
-                label: const Text('เริ่มแอปพลิเคชั่น'),
+              Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(32),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(fontSize: 30),
+                          backgroundColor: Colors.pink.shade200,
+                          minimumSize: const Size.fromHeight(72),
+                          shape: const StadiumBorder()),
+                      child: const Text('เริ่มแอปพลิเคชั่น'),
+                      onPressed: () async {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const HomeScreen();
+                        }));
+                      },
+                    ),
+                  )
+                ],
               ),
             ]),
           ),

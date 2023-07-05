@@ -1,17 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
+
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:tracker_covid_v1/screen/homsreeen.dart';
-import 'package:tracker_covid_v1/screen/welcome.dart';
+import 'package:tracker_covid_v1/screen/reset_page.dart';
+import 'package:tracker_covid_v1/screen/main_page.dart';
 
 import '../model/profile.dart';
-import '../widget/drawer.dart';
-import 'forgot.dart';
-import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,7 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
           } //ตรวจสอบ Error firebase
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              appBar: AppBar(title: const Text("เข้าสู่ระบบ")),
+              appBar: AppBar(
+                title: const Text("เข้าสู่ระบบ"),
+                backgroundColor: Colors.pink.shade200,
+              ),
 
               // ignore: avoid_unnecessary_containers
               body: Center(
@@ -53,21 +53,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          const Padding(
+                            padding: EdgeInsets.all(10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
+                                Text(
                                   'เข้าสู่ระบบ',
                                   style: TextStyle(fontSize: 50),
                                 ),
                               ],
                             ),
                           ),
+                          // Email TextField
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            // Email TextField
                             child: TextFormField(
                               validator: MultiValidator([
                                 EmailValidator(
@@ -102,27 +102,32 @@ class _LoginScreenState extends State<LoginScreen> {
                               }, // ปิดรหัสผ่าน
                             ),
                           ),
+
+                          //Password Reset
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                GestureDetector(onDoubleTap: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return ForgotPasswordPage();
-                                  }));
-                                }),
-                                const Text(
-                                  'ลืมรหัสผ่าน',
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return const ResetPassword();
+                                    }));
+                                  },
+                                  child: const Text(
+                                    'ลื ม ร หั ส ผ่ า น ?',
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          // Login button
+
+                          //Login button
                           const SizedBox(height: 15),
                           SizedBox(
                             width: double.infinity,
@@ -154,8 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(),
-                              ),
+                                  shape: const StadiumBorder(),
+                                  backgroundColor: Colors.pink.shade200),
                               child: const Text(
                                 "ลงชื่อเข้าใช้",
                                 style: TextStyle(fontSize: 24),
