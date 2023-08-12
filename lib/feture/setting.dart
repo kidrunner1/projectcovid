@@ -13,8 +13,9 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: const [
+        backgroundColor: Colors.grey.shade300,
+        body: ListView(children: const [
+          SizedBox(height: 50),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -24,8 +25,19 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ],
           ),
-        ],
-      ),
-    );
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.10),
+                    ))
+              ],
+            ),
+          )
+        ]));
   }
 }

@@ -32,57 +32,61 @@ class HomeScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 24),
                   textAlign: TextAlign.center,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.10),
-                          child: ElevatedButton(
-                              onPressed: (() {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const RegisterScreen();
-                                }));
-                              }),
-                              style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  backgroundColor: Colors.pink.shade200),
-                              //icons_add_buttons
-                              // ignore: prefer_const_constructors
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: const Text(
-                                  "สร้างบัญชีผู้ใช้",
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                              )),
-                        )),
-                    SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                              onPressed: (() {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LoginScreen();
-                                  },
-                                ));
-                              }),
-                              style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  backgroundColor: Colors.pink.shade200),
 
-                              // ignore: prefer_const_constructors
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: const Text("เข้าสู่ระบบ",
-                                    style: TextStyle(fontSize: 24)),
-                              )),
-                        ))
-                  ],
+                // Register ID
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.10),
+                            child: ElevatedButton(
+                                onPressed: (() {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const RegisterScreen();
+                                  }));
+                                }),
+                                style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    backgroundColor: Colors.pink.shade200),
+                                //icons_add_buttons
+                                // ignore: prefer_const_constructors
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    "สร้างบัญชีผู้ใช้",
+                                    style: TextStyle(fontSize: 24),
+                                  ),
+                                )),
+                          )),
+                      // หน้าเข้าสู้ระบบ
+                      SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                onPressed: (() {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                                }),
+                                style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    backgroundColor: Colors.pink.shade200),
+
+                                // ignore: prefer_const_constructors
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text("เข้าสู่ระบบ",
+                                      style: TextStyle(fontSize: 24)),
+                                )),
+                          ))
+                    ],
+                  ),
                 ),
               ]),
         ),

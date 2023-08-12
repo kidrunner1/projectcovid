@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -10,8 +6,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:tracker_covid_v1/model/profile.dart';
-import 'package:tracker_covid_v1/screen/home.dart';
+
+import 'package:tracker_covid_v1/screen/login.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -21,10 +17,31 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
+
   final fromKey = GlobalKey<FormState>();
-  Profile profile =
-      Profile(email: '', password: '', name: '', lastname: '', number: '');
+
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() ==
+        _confirmpasswordController.text.trim()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmpasswordController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +58,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           } //ตรวจสอบ Error firebase
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              appBar: AppBar(
-                title: const Text("ส ร้ า ง บั ญ ชี ผู้ ใ ช้"),
-                backgroundColor: Colors.pink.shade200,
-              ),
               // ignore: avoid_unnecessary_containers
               body: Container(
                 child: Padding(
@@ -57,8 +70,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'ลงทะเบียนเลย',
+                                    style: TextStyle(fontSize: 40),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
+                            controller: _emailController,
                             validator: MultiValidator([
                               EmailValidator(
                                   errorText: "รูปแบบอีเมลไม่ถูกต้อง"),
@@ -68,26 +95,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 hintText: 'อี เ ม ล',
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onSaved: (email) {
-                              profile.email = email!;
-                            },
+                                    borderRadius: BorderRadius.circular(12))),
                           ),
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
+                            controller: _passwordController,
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
                             decoration: InputDecoration(
                                 hintText: 'ร หั ส ผ่ า น',
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onSaved: (password) {
-                              profile.password = password!;
-                            }, // ปิดรหัสผ่าน
+                                    borderRadius: BorderRadius.circular(12))),
+                            // ปิดรหัสผ่าน
+                          ),
+                          const SizedBox(height: 15),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          TextFormField(
+                            controller: _confirmpasswordController,
+                            validator: RequiredValidator(
+                                errorText: "กรุณากรอก-รหัสผ่าน"),
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                hintText: 'ยื น ยั น ร หั ส ผ่ า น',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12))),
+                            // ปิดรหัสผ่าน
                           ),
                           const SizedBox(height: 15),
                           const Padding(
@@ -99,12 +137,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 hintText: 'ชื่ อ',
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onSaved: (name) {
-                              profile.name = name!;
-                            },
+                                    borderRadius: BorderRadius.circular(12))),
                           ),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 10),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
@@ -114,11 +149,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 hintText: 'น า ม ส กุ ล',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(12),
                                 )),
-                            onSaved: (lastname) {
-                              profile.lastname = lastname!;
-                            },
                           ),
                           const SizedBox(
                             height: 15,
@@ -132,25 +164,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 hintText: 'เ บ อ ร์ โ ท ร',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(12),
                                 )),
-                            onSaved: (number) {
-                              profile.lastname = number!;
-                            },
                           ),
+
+                          // สมัครสมาชิค
                           const SizedBox(height: 15),
-                          Padding(padding: EdgeInsets.all(8.0)),
+                          const Padding(padding: EdgeInsets.all(8.0)),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                if (fromKey.currentState!.validate()) {
-                                  fromKey.currentState!.save();
+                                if (passwordConfirmed()) {
                                   try {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
-                                      email: profile.email,
-                                      password: profile.password,
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text.trim(),
                                     )
                                         .then((value) {
                                       fromKey.currentState!.reset();
@@ -160,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       // ignore: use_build_context_synchronously
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context) {
-                                        return const HomeScreen();
+                                        return const LoginScreen();
                                       }));
                                     });
                                   } on FirebaseAuthException catch (e) {
@@ -184,15 +214,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(8.0),
                                   shape: const StadiumBorder(),
-                                  backgroundColor: Colors.pink.shade200),
+                                  backgroundColor: Colors.red.shade300),
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text("ล ง ท ะ เ บี ย น",
                                     style: TextStyle(
-                                        fontSize: 20, color: Colors.white)),
+                                        fontSize: 24, color: Colors.white)),
                               ),
                             ),
-                          )
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'กลับหน้า  เข้าสู่ระบบ  ',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const LoginScreen();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        'กดตรงนี้ ',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

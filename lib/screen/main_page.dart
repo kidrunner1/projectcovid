@@ -40,8 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.pink.shade200,
-        selectedItemColor: Colors.deepPurpleAccent,
-        unselectedItemColor: Colors.deepPurpleAccent.shade200,
+        selectedItemColor: Colors.pinkAccent,
+        unselectedItemColor: Colors.pink.shade200,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         // ignore: prefer_const_literals_to_create_immutables
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                         builder: (context) => const SettingScreen()));
               },
-              icon: const Icon(Icons.settings))
+              icon: const Icon(Icons.notifications))
         ],
       ),
       // ignore: prefer_const_constructors

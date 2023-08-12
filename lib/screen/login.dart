@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
@@ -18,10 +19,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final fromKey = GlobalKey<FormState>();
-  Profile profile =
-      Profile(email: '', password: '', name: '', lastname: '', number: '');
+  Profile profile = Profile(
+      email: '', password: '', name: '', lastname: '', number: '', id: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim());
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
           } //ตรวจสอบ Error firebase
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              appBar: AppBar(
-                title: const Text("เข้าสู่ระบบ"),
-                backgroundColor: Colors.pink.shade200,
-              ),
-
-              // ignore: avoid_unnecessary_containers
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(30.0),
@@ -65,7 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          // Email TextField
+
+                          // อีเมล TextField
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
@@ -79,14 +90,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                   hintText: 'อีเมล',
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20))),
+                                      borderRadius: BorderRadius.circular(12))),
                               onSaved: (email) {
                                 profile.email = email!;
                               },
                             ),
                           ),
-                          // Password textfield
-                          const SizedBox(height: 20),
+
+                          // รหัสผ่าน textfield
+                          const SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
@@ -96,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                   hintText: 'รหัสผ่าน',
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20))),
+                                      borderRadius: BorderRadius.circular(12))),
                               onSaved: (password) {
                                 profile.password = password!;
                               }, // ปิดรหัสผ่าน
@@ -109,62 +121,103 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const ResetPassword();
-                                    }));
-                                  },
-                                  child: const Text(
-                                    'ลื ม ร หั ส ผ่ า น ?',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                const Text('ลืมรหัสผ่าน ?  '),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const ResetPassword();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        'กดตรงนี้ ',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
 
                           //Login button
-                          const SizedBox(height: 15),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (fromKey.currentState!.validate()) {
-                                  fromKey.currentState!.save();
-                                  try {
-                                    await FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(
-                                            email: profile.email,
-                                            password: profile.password)
-                                        .then((value) {
-                                      fromKey.currentState!.reset();
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(
-                                        builder: (context) {
-                                          return const MyHomePage(
-                                            title: '',
-                                          );
-                                        },
-                                      ));
-                                    });
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                        msg: e.message!,
-                                        gravity: ToastGravity.CENTER);
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (fromKey.currentState!.validate()) {
+                                    fromKey.currentState!.save();
+                                    try {
+                                      await FirebaseAuth.instance
+                                          .signInWithEmailAndPassword(
+                                              email: profile.email,
+                                              password: profile.password)
+                                          .then((value) {
+                                        fromKey.currentState!.reset();
+                                        Navigator.pushReplacement(context,
+                                            MaterialPageRoute(
+                                          builder: (context) {
+                                            return const MyHomePage(
+                                              title: '',
+                                            );
+                                          },
+                                        ));
+                                      });
+                                    } on FirebaseAuthException catch (e) {
+                                      Fluttertoast.showToast(
+                                          msg: e.message!,
+                                          gravity: ToastGravity.CENTER);
+                                    }
                                   }
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  backgroundColor: Colors.pink.shade200),
-                              child: const Text(
-                                "ลงชื่อเข้าใช้",
-                                style: TextStyle(fontSize: 24),
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    backgroundColor: Colors.red.shade300),
+                                child: const Text(
+                                  "ลงชื่อเข้าใช้",
+                                  style: TextStyle(fontSize: 20),
+                                ),
                               ),
+                            ),
+                          ),
+
+                          // ลงทะเบียน
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('ยังไม่มีบัญชีใช่ไหม?   '),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const RegisterScreen();
+                                        }));
+                                      },
+                                      child: const Text(
+                                        'ลงทะเบียน',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                           // Admin page

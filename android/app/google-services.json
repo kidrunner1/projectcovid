@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "361500910371",
+    "firebase_url": "https://trackercovid-b2538-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "trackercovid-b2538",
     "storage_bucket": "trackercovid-b2538.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:361500910371:android:868ba88503e79edcbce296",
+        "mobilesdk_app_id": "1:361500910371:android:a5fb4e53e6cad329bce296",
         "android_client_info": {
           "package_name": "com.example.tracker_covid_v1"
         }
