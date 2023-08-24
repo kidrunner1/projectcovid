@@ -42,7 +42,7 @@ class _StartScreenState extends State<StartScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 30),
-                          backgroundColor: Colors.pink.shade200,
+                          backgroundColor: Colors.red.shade300,
                           minimumSize: const Size.fromHeight(72),
                           shape: const StadiumBorder()),
                       child: const Text('เริ่มแอปพลิเคชั่น'),

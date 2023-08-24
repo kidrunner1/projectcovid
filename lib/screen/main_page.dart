@@ -39,9 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
         children: _children,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.pink.shade200,
-        selectedItemColor: Colors.pinkAccent,
-        unselectedItemColor: Colors.pink.shade200,
+        backgroundColor: Colors.red.shade300,
+        selectedItemColor: Colors.red.shade300,
+        unselectedItemColor: Colors.red.shade300,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         // ignore: prefer_const_literals_to_create_immutables
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade200,
+        backgroundColor: Colors.red.shade300,
         actions: [
           IconButton(
               onPressed: () {

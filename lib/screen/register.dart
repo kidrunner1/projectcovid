@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -10,21 +11,50 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:tracker_covid_v1/screen/login.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({
+    super.key,
+  });
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection('users');
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
+  final _firtNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _phonenumberController = TextEditingController();
 
   final fromKey = GlobalKey<FormState>();
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+//add user details
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmpasswordController.dispose();
+    _firtNameController.dispose();
+    _lastNameController.dispose();
+    _phonenumberController.dispose();
+    super.dispose();
+  }
 
+  Future addUserDetails(String firstName, String lastName, String email,
+      String phonenumber) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name': firstName,
+      'last name': lastName,
+      'email': email,
+      'phone number': phonenumber,
+    });
+  }
+
+//password Confirm
   bool passwordConfirmed() {
     if (_passwordController.text.trim() ==
         _confirmpasswordController.text.trim()) {
@@ -32,15 +62,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else {
       return false;
     }
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmpasswordController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -84,6 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
+                          // email text
                           TextFormField(
                             controller: _emailController,
                             validator: MultiValidator([
@@ -94,9 +116,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 hintText: 'อี เ ม ล',
+                                filled: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                           ),
+
+                          //password textfield
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
@@ -108,6 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: true,
                             decoration: InputDecoration(
                                 hintText: 'ร หั ส ผ่ า น',
+                                filled: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             // ปิดรหัสผ่าน
@@ -123,35 +149,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: true,
                             decoration: InputDecoration(
                                 hintText: 'ยื น ยั น ร หั ส ผ่ า น',
+                                filled: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             // ปิดรหัสผ่าน
                           ),
+
+                          // firstname textfield
                           const SizedBox(height: 15),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
+                            controller: _firtNameController,
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
                                 hintText: 'ชื่ อ',
+                                filled: true,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                           ),
+
+                          // lastname textfield
                           const SizedBox(height: 10),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
+                            controller: _lastNameController,
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-นามสกุล"),
                             decoration: InputDecoration(
                                 hintText: 'น า ม ส กุ ล',
+                                filled: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 )),
                           ),
+
+                          // phone textfield
                           const SizedBox(
                             height: 15,
                           ),
@@ -159,10 +196,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
+                            controller: _phonenumberController,
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-เบอร์โทร"),
                             decoration: InputDecoration(
                                 hintText: 'เ บ อ ร์ โ ท ร',
+                                filled: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 )),
@@ -177,6 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onPressed: () async {
                                 if (passwordConfirmed()) {
                                   try {
+                                    // authenticate user
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                       email: _emailController.text.trim(),
@@ -187,7 +227,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       Fluttertoast.showToast(
                                           msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
                                           gravity: ToastGravity.TOP);
-                                      // ignore: use_build_context_synchronously
+                                      //add user details
+                                      addUserDetails(
+                                          _emailController.text.trim(),
+                                          _firtNameController.text.trim(),
+                                          _lastNameController.text.trim(),
+                                          _phonenumberController.text.trim());
+
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context) {
                                         return const LoginScreen();
@@ -232,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  'กลับหน้า  เข้าสู่ระบบ  ',
+                                  'กลับหน้าเข้าสู่ระบบ  ',
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 Row(
@@ -268,9 +314,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               backgroundColor: Colors.grey.shade300, // สี backgroun
             );
           }
-          // ignore: prefer_const_constructors
-          return Scaffold(
-            body: const Center(child: CircularProgressIndicator()),
+
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
           );
         });
   }

@@ -7,8 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
-
-import '../screen/syringe_page.dart';
+import 'package:tracker_covid_v1/screen/track_covid.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({super.key});
@@ -130,7 +129,7 @@ class _NewsScreensState extends State<NewsScreens> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const SettingScreen();
+                        return CovidTrackerScreen();
                       }));
                     },
                     child: Container(
@@ -162,7 +161,7 @@ class _NewsScreensState extends State<NewsScreens> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const SyringePage();
+                        return SettingScreen();
                       }));
                     },
                     child: Container(

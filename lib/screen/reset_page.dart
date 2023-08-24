@@ -22,11 +22,13 @@ class _ResetPasswordState extends State<ResetPassword> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
+      // ignore: use_build_context_synchronously
       showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              content: Text('Password reset link send! Check your email! '),
+            return const AlertDialog(
+              content: Text(
+                  'ระบบได้ทำการส่ง ลิ้งไปยัง อีเมลของคุณเพื่อเปลี่ยนรหัสผ่าน โปรดเช็คอีเมลของคุณ '),
             );
           });
     } on FirebaseException catch (e) {
@@ -45,7 +47,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple.shade200,
+        backgroundColor: Colors.red.shade300,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +55,8 @@ class _ResetPasswordState extends State<ResetPassword> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
-              'Enter your Email and we send your password',
+              'ใส่รหัสผ่านของคุณ เพื่อ ทำการเปลี่ยนรหัสผ่าน',
+              style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ),
@@ -71,7 +74,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.deepPurple),
                       borderRadius: BorderRadius.circular(12)),
-                  hintText: 'Email',
+                  hintText: 'กรอกอีเมลตรงนี้',
                   fillColor: Colors.grey.shade200,
                   filled: true),
             ),
@@ -80,9 +83,10 @@ class _ResetPasswordState extends State<ResetPassword> {
             height: 20,
           ),
           MaterialButton(
+            shape: const StadiumBorder(),
             onPressed: passwordReset,
-            color: Colors.deepPurple.shade200,
-            child: const Text('reset password'),
+            color: Colors.red.shade300,
+            child: const Text('เปลี่ยนรหัสผ่าน'),
           )
         ],
       ),
