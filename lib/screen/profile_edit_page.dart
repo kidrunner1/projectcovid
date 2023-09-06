@@ -12,6 +12,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red.shade300,
         title: Text('ข้อมูลส่วนตัว'),
       ),
     );

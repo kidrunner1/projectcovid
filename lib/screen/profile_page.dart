@@ -15,7 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.pink.shade50,
       body: ListView(children: [
         const SizedBox(height: 50),
         const Column(
@@ -40,13 +40,15 @@ class _ProfilePageState extends State<ProfilePage> {
         Text(
           currentUser!.email!,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey.shade600),
+          style: const TextStyle(color: Colors.black),
         ),
 
         // user detail
 
         // username
-
+        const SizedBox(
+          height: 10,
+        ),
         Column(
           children: [
             ElevatedButton(
@@ -57,6 +59,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ));
               },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.green.shade300,
+                shape: StadiumBorder(),
+              ),
               child: const Text('แ ก้ ไข ข้ อ มู ล '),
             ),
           ],

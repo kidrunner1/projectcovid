@@ -75,7 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-
+                          SizedBox(
+                            height: 30,
+                          ),
                           // อีเมล TextField
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -145,52 +147,59 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-
+                          const SizedBox(
+                            height: 30,
+                          ),
                           //Login button
                           const SizedBox(height: 10),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if (fromKey.currentState!.validate()) {
-                                    fromKey.currentState!.save();
-                                    try {
-                                      await FirebaseAuth.instance
-                                          .signInWithEmailAndPassword(
-                                              email: profile.email,
-                                              password: profile.password)
-                                          .then((value) {
-                                        fromKey.currentState!.reset();
-                                        Navigator.pushReplacement(context,
-                                            MaterialPageRoute(
-                                          builder: (context) {
-                                            return const MyHomePage(
-                                              title: '',
-                                            );
-                                          },
-                                        ));
-                                      });
-                                    } on FirebaseAuthException catch (e) {
-                                      Fluttertoast.showToast(
-                                          msg: e.message!,
-                                          gravity: ToastGravity.CENTER);
-                                    }
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const StadiumBorder(),
-                                    backgroundColor: Colors.red.shade300),
-                                child: const Text(
-                                  "ลงชื่อเข้าใช้",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.20),
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      if (fromKey.currentState!.validate()) {
+                                        fromKey.currentState!.save();
+                                        try {
+                                          await FirebaseAuth.instance
+                                              .signInWithEmailAndPassword(
+                                                  email: profile.email,
+                                                  password: profile.password)
+                                              .then((value) {
+                                            fromKey.currentState!.reset();
+                                            Navigator.pushReplacement(context,
+                                                MaterialPageRoute(
+                                              builder: (context) {
+                                                return const MyHomePage(
+                                                  title: '',
+                                                );
+                                              },
+                                            ));
+                                          });
+                                        } on FirebaseAuthException catch (e) {
+                                          Fluttertoast.showToast(
+                                              msg: e.message!,
+                                              gravity: ToastGravity.CENTER);
+                                        }
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: const StadiumBorder(),
+                                        backgroundColor: Colors.red.shade300,
+                                        minimumSize: Size(200, 50)),
+                                    child: const Text(
+                                      "ลงชื่อเข้าใช้",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          const SizedBox(
+                            height: 30,
                           ),
-
                           // ลงทะเบียน
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -227,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              backgroundColor: Colors.grey.shade300, // สี backgroun
+              backgroundColor: Colors.pink.shade50, // สี backgroun
             );
           }
           // ignore: prefer_const_constructors

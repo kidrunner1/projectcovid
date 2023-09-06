@@ -12,7 +12,7 @@ class _SyringePageState extends State<SyringePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('นั ด ฉี ด วั ค ซี น'),
+        title: const Text('นั ด ฉี ด วั ค ซี น'),
       ),
     );
   }

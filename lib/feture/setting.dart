@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -12,32 +12,22 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.grey.shade300,
-        body: ListView(children: const [
-          SizedBox(height: 50),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'ก า ร ตั้ ง ค่ า',
-                style: TextStyle(fontSize: 24),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return const SafeArea(
+      child: Scaffold(
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
               children: [
-                SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.10),
-                    ))
+                Text(
+                  'การตั้งค่า',
+                  style: TextStyle(fontSize: 25),
+                ),
               ],
             ),
-          )
-        ]));
+          ],
+        ),
+      ),
+    );
   }
 }

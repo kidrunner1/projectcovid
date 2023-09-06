@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tracker_covid_v1/feture/profile_page.dart';
+import 'package:tracker_covid_v1/screen/profile_page.dart';
 
 import 'package:tracker_covid_v1/feture/setting.dart';
 
@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.pink.shade50,
       body: IndexedStack(
         index: _currentIndex,
         children: _children,

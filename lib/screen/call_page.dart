@@ -84,15 +84,17 @@ class CallPage extends StatelessWidget {
                             scheme: 'tel',
                             path: "1323",
                           );
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
+                          if (await canLaunch(url.toString())) {
+                            // Corrected this line
+                            await launch(url.toString());
                           } else {
                             print('cannot launch this url');
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 7, 143, 21)),
+                          backgroundColor:
+                              const Color.fromARGB(255, 7, 143, 21),
+                        ),
                         child: const Text(
                           '1323',
                           style: TextStyle(fontSize: 20),

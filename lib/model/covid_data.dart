@@ -15,13 +15,20 @@ class CountryCovidData {
   final int cases;
   final int recovered;
   final int deaths;
-  final String flagUrl;
+  final String countryFlagCode; // Add this property
 
   CountryCovidData({
     required this.country,
     required this.cases,
     required this.recovered,
     required this.deaths,
-    required this.flagUrl,
+    required this.countryFlagCode,
   });
+}
+
+class ProvinceData {
+  final String provinceName;
+  final int totalCases;
+
+  ProvinceData({required this.provinceName, required this.totalCases});
 }

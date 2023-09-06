@@ -55,7 +55,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
-              'ใส่รหัสผ่านของคุณ เพื่อ ทำการเปลี่ยนรหัสผ่าน',
+              'ใส่อีเมลของคุณ เพื่อ ทำการเปลี่ยนรหัสผ่าน',
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -85,7 +85,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           MaterialButton(
             shape: const StadiumBorder(),
             onPressed: passwordReset,
-            color: Colors.red.shade300,
+            color: Colors.green.shade300,
             child: const Text('เปลี่ยนรหัสผ่าน'),
           )
         ],

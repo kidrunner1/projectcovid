@@ -5,8 +5,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
+import 'package:tracker_covid_v1/screen/record_daily.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 
 class NewsScreens extends StatefulWidget {
@@ -26,7 +28,7 @@ class _NewsScreensState extends State<NewsScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.pink.shade50,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -97,7 +99,7 @@ class _NewsScreensState extends State<NewsScreens> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const SettingScreen();
+                        return SettingScreen();
                       }));
                     },
                     child: Container(
@@ -266,7 +268,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const SettingScreen();
+                          return const Memo();
                         }));
                       },
                       child: Container(
