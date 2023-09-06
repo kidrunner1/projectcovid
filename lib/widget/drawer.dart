@@ -57,7 +57,7 @@ Widget buildMenuItems(BuildContext context) => Container(
             ),
             onTap: (() {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => UserProfileScreen(),
               ));
             }),
           ),

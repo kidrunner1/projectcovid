@@ -1,74 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker_covid_v1/screen/profile_edit_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
+class UserProfileScreen extends StatefulWidget {
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  final currentUser = FirebaseAuth.instance.currentUser;
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection('users');
+  User? user;
+
+  String? userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    user = auth.currentUser;
+    
+  }
+
+ 
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink.shade50,
-      body: ListView(children: [
-        const SizedBox(height: 50),
-        const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'ข้ อ มู ล ส่ ว น ตั ว',
-              style: TextStyle(fontSize: 24),
-            ),
-          ],
-        ),
-        // profile pic
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.person,
-            size: 80,
-          ),
-        ),
-
-        // user email
-        Text(
-          currentUser!.email!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.black),
-        ),
-
-        // user detail
-
-        // username
-        const SizedBox(
-          height: 10,
-        ),
-        Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const EditProfilePage();
-                  },
-                ));
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.green.shade300,
-                shape: StadiumBorder(),
-              ),
-              child: const Text('แ ก้ ไข ข้ อ มู ล '),
-            ),
-          ],
-        )
-      ]),
+   
     );
   }
 }

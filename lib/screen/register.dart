@@ -44,14 +44,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Future addUserDetails(String firstName, String lastName, String email,
+  Future<void> addUserDetails(String firstName, String lastName, String email,
       String phonenumber) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'first name': firstName,
-      'last name': lastName,
-      'email': email,
-      'phone number': phonenumber,
-    });
+    try {
+      await FirebaseFirestore.instance.collection('users').add({
+        'first name': firstName,
+        'last name': lastName,
+        'email': email,
+        'phone number': phonenumber,
+      });
+      print("User details added successfully.");
+    } catch (e) {
+      print("Error adding user details: $e");
+    }
   }
 
 //password Confirm
@@ -214,7 +219,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                if (passwordConfirmed()) {
+                                if (fromKey.currentState!.validate() &&
+                                    passwordConfirmed()) {
                                   try {
                                     // authenticate user
                                     await FirebaseAuth.instance
@@ -223,17 +229,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       password: _passwordController.text.trim(),
                                     )
                                         .then((value) {
-                                      fromKey.currentState!.reset();
                                       Fluttertoast.showToast(
                                           msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
                                           gravity: ToastGravity.TOP);
                                       //add user details
                                       addUserDetails(
-                                          _emailController.text.trim(),
                                           _firtNameController.text.trim(),
                                           _lastNameController.text.trim(),
+                                          _emailController.text.trim(),
                                           _phonenumberController.text.trim());
-
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context) {
                                         return const LoginScreen();
@@ -255,6 +259,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         msg: message,
                                         gravity: ToastGravity.CENTER);
                                   }
+                                } else if (!passwordConfirmed()) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน",
+                                      gravity: ToastGravity.CENTER);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -311,7 +320,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-              backgroundColor: Colors.grey.shade300, // สี backgroun
+              backgroundColor: Colors.pink.shade50, // สี backgroun
             );
           }
 

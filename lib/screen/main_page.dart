@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const NewsScreens(),
     const ChatScreen(),
     const SettingScreen(),
-    const ProfilePage()
+     UserProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
