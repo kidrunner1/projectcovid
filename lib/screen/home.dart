@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:tracker_covid_v1/screen/login.dart';
+import 'package:tracker_covid_v1/screen/login_screen.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
 
 class HomeScreen extends StatelessWidget {

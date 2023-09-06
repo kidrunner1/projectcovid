@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/profile_page.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
-import 'package:tracker_covid_v1/screen/login.dart';
+import 'package:tracker_covid_v1/screen/login_screen.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseAuth_auth = FirebaseAuth.instance;

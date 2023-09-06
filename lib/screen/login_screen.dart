@@ -51,7 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               body: Center(child: Text("${snapshot.error}")),
             );
-          } //ตรวจสอบ Error firebase
+          } // ตรวจสอบข้อผิดพลาดจาก Firebase
+
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               body: Center(
@@ -75,10 +76,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
-                          // อีเมล TextField
+                          // ฟิลด์กรอกอีเมล
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
 
-                          // รหัสผ่าน textfield
+                          // ฟิลด์กรอกรหัสผ่าน
                           const SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       borderRadius: BorderRadius.circular(12))),
                               onSaved: (password) {
                                 profile.password = password!;
-                              }, // ปิดรหัสผ่าน
+                              },
                             ),
                           ),
 
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: ElevatedButton.styleFrom(
                                         shape: const StadiumBorder(),
                                         backgroundColor: Colors.red.shade300,
-                                        minimumSize: Size(200, 50)),
+                                        minimumSize: const Size(200, 50)),
                                     child: const Text(
                                       "ลงชื่อเข้าใช้",
                                       style: TextStyle(
@@ -200,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 30,
                           ),
-                          // ลงทะเบียน
+                          // ปุ่มลงทะเบียน
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Row(
@@ -229,7 +230,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          // Admin page
                         ],
                       ),
                     ),
@@ -241,7 +241,9 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           // ignore: prefer_const_constructors
           return Scaffold(
-            body: const Center(child: CircularProgressIndicator()),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         });
   }

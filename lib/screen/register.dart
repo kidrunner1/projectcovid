@@ -8,7 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-import 'package:tracker_covid_v1/screen/login.dart';
+import 'package:tracker_covid_v1/screen/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({
@@ -25,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
-  final _firtNameController = TextEditingController();
+  final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phonenumberController = TextEditingController();
 
@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmpasswordController.dispose();
-    _firtNameController.dispose();
+    _firstNameController.dispose();
     _lastNameController.dispose();
     _phonenumberController.dispose();
     super.dispose();
@@ -166,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             padding: EdgeInsets.all(8.0),
                           ),
                           TextFormField(
-                            controller: _firtNameController,
+                            controller: _firstNameController,
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
@@ -234,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           gravity: ToastGravity.TOP);
                                       //add user details
                                       addUserDetails(
-                                          _firtNameController.text.trim(),
+                                          _firstNameController.text.trim(),
                                           _lastNameController.text.trim(),
                                           _emailController.text.trim(),
                                           _phonenumberController.text.trim());
