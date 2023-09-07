@@ -1,92 +1,63 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  final auth = FirebaseAuth.instance;
-  final firestore = FirebaseFirestore.instance.collection('users');
-  User? user;
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<DocumentSnapshot> userData;
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
-  Map<String, dynamic>? userData;
+  Future<DocumentSnapshot> getUserData() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      return await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .get();
+    }
+    throw Exception('User not logged in');
+  }
 
   @override
   void initState() {
     super.initState();
-    user = auth.currentUser;
-    _fetchUserData();
-  }
-
-  _fetchUserData() async {
-    if (user != null) {
-      print("Fetching data for user: ${user!.uid}");
-      try {
-        DocumentSnapshot document = await firestore.doc(user!.uid).get();
-        if (document.exists) {
-          print("User data found: ${document.data()}");
-          setState(() {
-            userData = document.data() as Map<String, dynamic>;
-          });
-        } else {
-          print("No user data found for user: ${user!.uid}");
-        }
-      } catch (error) {
-        print("Error fetching user data: $error");
-      }
-    } else {
-      print("No user is logged in.");
-    }
+    userData = getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.person, size: 100), // Person Icon
-            const SizedBox(height: 20),
-            if (userData == null) ...[
-              // If userData is null, show this message
-              Text(
-                'No user data available',
-                style: const TextStyle(fontSize: 24, color: Colors.red),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: userData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            print(snapshot
+                .error); // This line will print the error to your console.
+            return Center(child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data!.exists) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('ชื่อ: ${snapshot.data!.get('name')}'),
+                  Text('นามสกุล: ${snapshot.data!.get('last name')}'),
+                  Text('อีเมล: ${snapshot.data!.get('email')}'),
+                  Text('เบอร์โทร: ${snapshot.data!.get('phone number')}'),
+                  // ... Add more fields as required.
+                ],
               ),
-              const SizedBox(height: 20),
-            ] else ...[
-              // If userData is not null, show user details
-              Text(
-                '${userData!['first name']} ${userData!['last name']}',
-                style: const TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: TextEditingController(text: userData!['email']),
-                readOnly: true,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller:
-                    TextEditingController(text: userData!['phone number']),
-                readOnly: true,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ]
-          ],
-        ),
+            );
+          }
+          return const Center(child: Text('ไม่พบข้อมูลผู้ใช้'));
+        },
       ),
     );
   }

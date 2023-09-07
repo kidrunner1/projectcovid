@@ -9,8 +9,6 @@ import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
-import '../model/profile.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -22,14 +20,21 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final fromKey = GlobalKey<FormState>();
-  Profile profile = Profile(
-      email: '', password: '', name: '', lastname: '', number: '', id: '');
+
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim());
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
+      // Print UID after successful login
+      print("User's UID is: ${FirebaseAuth.instance.currentUser!.uid}");
+    } catch (e) {
+      // Handle errors like invalid credentials
+      print(e.toString());
+    }
   }
 
   @override
@@ -83,20 +88,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              controller: _emailController,
                               validator: MultiValidator([
                                 EmailValidator(
-                                  errorText: "รูปแบบอีเมลไม่ถูกต้อง",
-                                ),
+                                    errorText: "รูปแบบอีเมลไม่ถูกต้อง"),
                                 RequiredValidator(errorText: "กรุณากรอก-อีเมล"),
                               ]),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                  hintText: 'อีเมล',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              onSaved: (email) {
-                                profile.email = email!;
-                              },
+                                hintText: 'อีเมล',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                              ),
                             ),
                           ),
 
@@ -105,16 +108,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              controller: _passwordController,
                               validator: RequiredValidator(
                                   errorText: "กรุณากรอก-รหัสผ่าน"),
                               obscureText: true,
                               decoration: InputDecoration(
-                                  hintText: 'รหัสผ่าน',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              onSaved: (password) {
-                                profile.password = password!;
-                              },
+                                hintText: 'รหัสผ่าน',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                              ),
                             ),
                           ),
 
@@ -163,21 +165,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (fromKey.currentState!.validate()) {
                                         fromKey.currentState!.save();
                                         try {
-                                          await FirebaseAuth.instance
-                                              .signInWithEmailAndPassword(
-                                                  email: profile.email,
-                                                  password: profile.password)
-                                              .then((value) {
-                                            fromKey.currentState!.reset();
-                                            Navigator.pushReplacement(context,
+                                          UserCredential userCredential =
+                                              await FirebaseAuth.instance
+                                                  .signInWithEmailAndPassword(
+                                                      email: _emailController
+                                                          .text
+                                                          .trim(),
+                                                      password:
+                                                          _passwordController
+                                                              .text
+                                                              .trim());
+
+                                          if (userCredential.user != null) {
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.pushReplacement(
+                                                context,
                                                 MaterialPageRoute(
-                                              builder: (context) {
-                                                return const MyHomePage(
-                                                  title: '',
-                                                );
-                                              },
-                                            ));
-                                          });
+                                                    builder: (context) =>
+                                                        MyHomePage(
+                                                          user: userCredential
+                                                              .user,
+                                                          title: '',
+                                                        )));
+                                          }
                                         } on FirebaseAuthException catch (e) {
                                           Fluttertoast.showToast(
                                               msg: e.message!,

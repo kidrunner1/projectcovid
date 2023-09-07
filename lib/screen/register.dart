@@ -25,8 +25,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final _phonenumberController = TextEditingController();
 
   final fromKey = GlobalKey<FormState>();
@@ -45,27 +45,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> addUserDetails(String firstName, String lastName, String email,
-      String phonenumber) async {
-    try {
-      await FirebaseFirestore.instance.collection('users').add({
-        'first name': firstName,
-        'last name': lastName,
-        'email': email,
-        'phone number': phonenumber,
-      });
-      print("User details added successfully.");
-    } catch (e) {
-      print("Error adding user details: $e");
-    }
+      String phoneNumber) async {
+    // This is just an example. You will replace the contents of this function
+    // with your logic to store the user details in Firebase or any other database.
+
+    // For demonstration, let's say you're adding these details to Firebase Firestore:
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    return await users
+        .add({
+          'firstName': firstName,
+          'lastName': lastName,
+          'email': email,
+          'phoneNumber': phoneNumber,
+        })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
 //password Confirm
   bool passwordConfirmed() {
-    if (_passwordController.text.trim() ==
-        _confirmpasswordController.text.trim()) {
-      return true;
-    } else {
-      return false;
+    return _passwordController.text.trim() ==
+        _confirmpasswordController.text.trim();
+  }
+
+  Future<void> register() async {
+    if (!passwordConfirmed()) {
+      print("Passwords do not match!");
+      return;
+    }
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // If registration successful, add user details to Firestore
+      await addUserDetails(
+        _firstNameController.text.trim(),
+        _lastNameController.text.trim(),
+        _emailController.text.trim(),
+        _phonenumberController.text.trim(),
+      );
+      print("Registration successful for UID: ${userCredential.user!.uid}");
+    } catch (e) {
+      print("Error during registration: $e");
     }
   }
 
@@ -219,51 +243,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                if (fromKey.currentState!.validate() &&
-                                    passwordConfirmed()) {
+                                if (fromKey.currentState!.validate()) {
+                                  if (_passwordController.text !=
+                                      _confirmpasswordController.text) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน",
+                                        gravity: ToastGravity.CENTER);
+                                    return;
+                                  }
                                   try {
                                     // authenticate user
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text.trim(),
-                                    )
-                                        .then((value) {
-                                      Fluttertoast.showToast(
-                                          msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
-                                          gravity: ToastGravity.TOP);
-                                      //add user details
-                                      addUserDetails(
-                                          _firstNameController.text.trim(),
-                                          _lastNameController.text.trim(),
-                                          _emailController.text.trim(),
-                                          _phonenumberController.text.trim());
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return const LoginScreen();
-                                      }));
-                                    });
+                                    );
+
+                                    Fluttertoast.showToast(
+                                        msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
+                                        gravity: ToastGravity.TOP);
+
+                                    // add user details
+                                    await addUserDetails(
+                                      _firstNameController.text.trim(),
+                                      _lastNameController.text.trim(),
+                                      _emailController.text.trim(),
+                                      _phonenumberController.text.trim(),
+                                    );
+
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()));
                                   } on FirebaseAuthException catch (e) {
-                                    // ignore: avoid_print
-                                    print(e.code);
                                     var message;
+
                                     if (e.code == 'email-already-in-use') {
                                       message = "อีเมลนี้ มีผู้ใช้แล้ว";
                                     } else if (e.code == 'weak-password') {
                                       message =
                                           "ความยาวรหัสผ่านต้อง 6 ตัวอักษรขึ้นไป";
                                     } else {
-                                      message = e.message;
+                                      message =
+                                          e.message ?? 'An error occurred.';
                                     }
                                     Fluttertoast.showToast(
                                         msg: message,
                                         gravity: ToastGravity.CENTER);
                                   }
-                                } else if (!passwordConfirmed()) {
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          "รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน",
-                                      gravity: ToastGravity.CENTER);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -325,7 +355,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
 
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         });
   }
