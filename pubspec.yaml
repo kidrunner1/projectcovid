@@ -47,7 +47,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_easyloading: ^3.0.5
   flutter_phone_direct_caller: ^2.1.1
-  url_launcher: ^6.1.12
+  url_launcher: ^6.1.14
   cloud_firestore: ^4.8.4
   firebase_core: ^2.15.0
   fl_chart: ^0.63.0
@@ -55,6 +55,10 @@ dependencies:
   awesome_dialog: ^3.1.0
   group_button: ^5.3.3
   curved_navigation_bar: ^1.0.3
+  intl: ^0.18.1
+  flutter_localizations:
+    sdk: flutter
+  android_intent: ^2.0.2
   
   
   

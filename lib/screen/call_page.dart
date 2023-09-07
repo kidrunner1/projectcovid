@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'dart:io';
+import 'package:android_intent/android_intent.dart';
+
 void _makePhoneCall(String phoneNumber) async {
-  final url = 'tel:$phoneNumber';
-  if (await canLaunch(url)) {
-    await launch(url);
+  if (Platform.isAndroid) {
+    final AndroidIntent intent = AndroidIntent(
+      action: 'action_dial', // This opens the dialer without initiating a call
+      data: 'tel:$phoneNumber',
+    );
+    await intent.launch();
   } else {
-    throw 'Could not launch $url';
+    final url = 'tel:$phoneNumber';
+    // ignore: deprecated_member_use
+    if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }
+
 
 class CallPage extends StatelessWidget {
   @override
@@ -21,7 +35,6 @@ class CallPage extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 255, 97, 97),
         ),
         body: Container(
-          // พื้นหลัง
           padding: const EdgeInsets.all(8.0),
           width: double.infinity,
           decoration: const BoxDecoration(
@@ -43,7 +56,6 @@ class CallPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                //ปรึกษาสุขภาพจิต
                 Container(
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 218, 90, 90),
@@ -79,18 +91,7 @@ class CallPage extends StatelessWidget {
                         width: 30,
                       ),
                       ElevatedButton(
-                        onPressed: () async {
-                          final Uri url = Uri(
-                            scheme: 'tel',
-                            path: "1323",
-                          );
-                          if (await canLaunch(url.toString())) {
-                            // Corrected this line
-                            await launch(url.toString());
-                          } else {
-                            print('cannot launch this url');
-                          }
-                        },
+                        onPressed: () => _makePhoneCall('1323'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               const Color.fromARGB(255, 7, 143, 21),

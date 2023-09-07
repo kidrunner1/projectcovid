@@ -277,7 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const LoginScreen()));
+                                                 LoginScreen()));
                                   } on FirebaseAuthException catch (e) {
                                     var message;
 
@@ -328,7 +328,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return const LoginScreen();
+                                          return LoginScreen();
                                         }));
                                       },
                                       child: const Text(

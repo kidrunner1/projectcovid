@@ -1,7 +1,5 @@
 //หน้าบันทึกผลตรวจโควิด ประจำวัน
 
-
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -50,55 +48,43 @@ class _MemoState extends State<Memo> {
                 child: Column(children: [
                   const SizedBox(height: 20),
                   Container(
-                      margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[50],
-                      ),
-                      child: Center(
-                        child: TextFormField(
-                          controller:
-                              dateinput, //editing controller of this TextField
-                          decoration: const InputDecoration(
-                            suffixIcon:
-                                Icon(Icons.calendar_today), //icon of text field
-                            labelText: "วัน/เดือน/ปี",
-                            contentPadding: EdgeInsets.all(8.0),
-                            border: InputBorder.none,
-                            //label text of field
-                          ),
-                          validator: RequiredValidator(
-                              errorText: "กรุณาระบุวัน/เดือน/ปี"),
-                          readOnly:
-                              true, //set it true, so that user will not able to edit text
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                locale: const Locale("th", "TH"),
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(
-                                    2000), //DateTime.now() - not to allow to choose before today.
-                                lastDate: DateTime(2101));
-
-                            if (pickedDate != null) {
-                              print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
-                              //you can implement different kind of Date Format here according to your requirement
-
-                              setState(() {
-                                dateinput.text =
-                                    formattedDate; //set output date to TextField value.
-                              });
-                            } else {
-                              print("Date is not selected");
-                            }
-                          },
+                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey[50],
+                    ),
+                    child: Center(
+                      child: TextFormField(
+                        controller: dateinput,
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(Icons.calendar_today),
+                          labelText: "วัน/เดือน/ปี",
+                          contentPadding: EdgeInsets.all(8.0),
+                          border: InputBorder.none,
                         ),
-                      )),
+                        readOnly: true,
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            locale: const Locale("th", "TH"),
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101),
+                          );
+
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('dd-MM-yyyy').format(pickedDate);
+                            setState(() {
+                              dateinput.text = formattedDate;
+                            });
+                          } else {
+                            print("Date is not selected");
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 10),
                   Container(
                       margin: const EdgeInsets.only(left: 20.0, right: 20.0),

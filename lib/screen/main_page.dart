@@ -26,10 +26,12 @@ class _MyHomePageState extends State<MyHomePage> {
       _currentIndex = index;
     });
   }
+  
+  
 
   final List<Widget> _children = [
     const NewsScreens(),
-    const ChatScreen(),
+    const ChatScreen(), 
     const SettingScreen(),
     ProfileScreen()
   ];

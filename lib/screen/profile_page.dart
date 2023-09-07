@@ -4,13 +4,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
+
+  final User? user;
+
+  const ProfileScreen({super.key, this.user});
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+
+
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<DocumentSnapshot> userData;
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  
+
+  User? user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = widget.user;
+  }
 
   Future<DocumentSnapshot> getUserData() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -23,11 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     throw Exception('User not logged in');
   }
 
-  @override
-  void initState() {
-    super.initState();
-    userData = getUserData();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
