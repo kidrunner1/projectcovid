@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:tracker_covid_v1/screen/profile_page.dart';
@@ -9,8 +10,9 @@ import '../feture/news_screen.dart';
 import '../widget/drawer.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, this.user});
   final String title;
+  final User? user;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -29,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const NewsScreens(),
     const ChatScreen(),
     const SettingScreen(),
-     UserProfileScreen()
+    ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
