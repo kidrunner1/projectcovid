@@ -7,7 +7,7 @@ import 'package:tracker_covid_v1/screen/startscreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

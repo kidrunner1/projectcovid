@@ -1,76 +1,117 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tracker_covid_v1/screen/main_page.dart';
+import 'package:tracker_covid_v1/screen/profile_edit_page.dart';
 
-class ProfileScreen extends StatefulWidget {
-
-  final User? user;
-
-  const ProfileScreen({super.key, this.user});
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-
-
-
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  late Future<DocumentSnapshot> userData;
-  final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  
-
-  User? user;
-
-  @override
-  void initState() {
-    super.initState();
-    user = widget.user;
-  }
-
-  Future<DocumentSnapshot> getUserData() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      return await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser.uid)
-          .get();
-    }
-    throw Exception('User not logged in');
-  }
-
- 
+class ProfileScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<DocumentSnapshot>(
-        future: userData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            print(snapshot
-                .error); // This line will print the error to your console.
-            return Center(child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data!.exists) {
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ชื่อ: ${snapshot.data!.get('name')}'),
-                  Text('นามสกุล: ${snapshot.data!.get('last name')}'),
-                  Text('อีเมล: ${snapshot.data!.get('email')}'),
-                  Text('เบอร์โทร: ${snapshot.data!.get('phone number')}'),
-                  // ... Add more fields as required.
+      backgroundColor: Colors.pink.shade50, // Light pink background
+      body: Center(
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(_auth.currentUser?.uid)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text("Something went wrong");
+            }
+
+            if (snapshot.connectionState == ConnectionState.active) {
+              Map<String, dynamic>? data =
+                  snapshot.data?.data() as Map<String, dynamic>?;
+              return ProfileBox(data: data);
+            }
+
+            return const CircularProgressIndicator(); // Loading indicator while fetching data
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileBox extends StatelessWidget {
+  final Map<String, dynamic>? data;
+
+  ProfileBox({this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      // Removed the height constraint to let the content determine its own height
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        // Added SingleChildScrollView
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
                 ],
               ),
-            );
-          }
-          return const Center(child: Text('ไม่พบข้อมูลผู้ใช้'));
-        },
+              child: const Icon(
+                Icons.person,
+                size: 90,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              "${data?['firstName']} ${data?['lastName']}",
+              style: const TextStyle(
+                fontSize: 23.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EditProfileScreen()));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade300,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  elevation: 5.0,
+                  shadowColor: Colors.black),
+              child: const Text(
+                'แก้ไขข้อมูล',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

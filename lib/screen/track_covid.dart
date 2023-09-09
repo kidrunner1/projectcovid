@@ -53,7 +53,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
-                  padding: const EdgeInsets.all(50),
+                  padding: const EdgeInsets.all(60),
                   decoration: BoxDecoration(
                     color: Colors.red.shade400,
                     borderRadius: BorderRadius.circular(20),

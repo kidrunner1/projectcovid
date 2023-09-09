@@ -44,16 +44,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Future<void> addUserDetails(String firstName, String lastName, String email,
-      String phoneNumber) async {
-    // This is just an example. You will replace the contents of this function
-    // with your logic to store the user details in Firebase or any other database.
-
-    // For demonstration, let's say you're adding these details to Firebase Firestore:
+  Future<void> addUserDetails(String uid, String firstName, String lastName,
+      String email, String phoneNumber) async {
+    // Getting a reference to the users collection and the specific document with the UID
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
     return await users
-        .add({
+        .doc(uid)
+        .set({
           'firstName': firstName,
           'lastName': lastName,
           'email': email,
@@ -69,25 +66,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _confirmpasswordController.text.trim();
   }
 
-  Future<void> register() async {
+  Future<void> register(String uid) async {
     if (!passwordConfirmed()) {
       print("Passwords do not match!");
       return;
     }
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      // If registration successful, add user details to Firestore
+      // If registration successful, add user details to Firestore using the provided UID
       await addUserDetails(
+        uid,
         _firstNameController.text.trim(),
         _lastNameController.text.trim(),
         _emailController.text.trim(),
         _phonenumberController.text.trim(),
       );
-      print("Registration successful for UID: ${userCredential.user!.uid}");
+      print("Registration successful for UID: $uid");
     } catch (e) {
       print("Error during registration: $e");
     }
@@ -252,32 +245,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         gravity: ToastGravity.CENTER);
                                     return;
                                   }
+
                                   try {
                                     // authenticate user
-                                    await FirebaseAuth.instance
-                                        .createUserWithEmailAndPassword(
+                                    UserCredential userCredential =
+                                        await FirebaseAuth.instance
+                                            .createUserWithEmailAndPassword(
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text.trim(),
                                     );
 
-                                    Fluttertoast.showToast(
-                                        msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
-                                        gravity: ToastGravity.TOP);
+                                    // Call the register function
+                                    await register(userCredential.user!.uid);
 
-                                    // add user details
+                                    // Get UID of the authenticated user
+                                    String uid = userCredential.user!.uid;
+
+                                    // If user authentication is successful, then add user details to Firestore using the UID
                                     await addUserDetails(
+                                      uid,
                                       _firstNameController.text.trim(),
                                       _lastNameController.text.trim(),
                                       _emailController.text.trim(),
                                       _phonenumberController.text.trim(),
                                     );
 
+                                    Fluttertoast.showToast(
+                                        msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
+                                        gravity: ToastGravity.TOP);
+
+                                    // Navigate to LoginScreen after successful registration
                                     // ignore: use_build_context_synchronously
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                 LoginScreen()));
+                                                LoginScreen()));
                                   } on FirebaseAuthException catch (e) {
                                     var message;
 
