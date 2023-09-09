@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/profile_page.dart';
 
 import 'package:tracker_covid_v1/feture/setting.dart';
+import 'package:tracker_covid_v1/widget/drawer.dart';
 
 import '../feture/chat.dart';
 import '../feture/news_screen.dart';
-import '../widget/drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, this.user});
@@ -26,12 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _currentIndex = index;
     });
   }
-  
-  
 
   final List<Widget> _children = [
     const NewsScreens(),
-    const ChatScreen(), 
+    const ChatScreen(),
     const SettingScreen(),
     ProfileScreen()
   ];

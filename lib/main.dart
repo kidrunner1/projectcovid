@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:tracker_covid_v1/screen/startscreen.dart';
 
@@ -21,13 +20,13 @@ class MyApp extends StatelessWidget {
       title: 'flutter demo',
       theme: ThemeData(),
       localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales: const [
-          Locale('en', 'US'), // English
-          Locale('th', 'TH'), // Thai
-    ],
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'), // English
+        Locale('th', 'TH'), // Thai
+      ],
       home: StartScreen(),
     );
   }
