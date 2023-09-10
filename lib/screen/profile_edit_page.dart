@@ -37,52 +37,67 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.pink.shade50,
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: const Text("ข้อมูลส่วนตัว"),
+        backgroundColor: Colors.red.shade300,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            TextFormField(
-              controller: _firstNameController,
-              decoration: const InputDecoration(
-                labelText: "ชื่อ",
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            const Text(
+              'แก้ไขข้อมูลส่วนตัว',
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: const InputDecoration(
-                labelText: "นามสกุล",
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            const SizedBox(
+              height: 50,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                // Update the Firestore document with the new values.
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(_auth.currentUser?.uid)
-                    .update({
-                  'firstName': _firstNameController.text.trim(),
-                  'lastName': _lastNameController.text.trim(),
-                });
-                // Pop back to the previous screen after updating.
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  backgroundColor: Colors.green.shade300),
-              child: const Text(
-                'บันทึก',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19),
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "ชื่อ",
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "นามสกุล",
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Update the Firestore document with the new values.
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(_auth.currentUser?.uid)
+                        .update({
+                      'firstName': _firstNameController.text.trim(),
+                      'lastName': _lastNameController.text.trim(),
+                    });
+                    // Pop back to the previous screen after updating.
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      backgroundColor: Colors.green.shade300),
+                  child: const Text(
+                    'บันทึก',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

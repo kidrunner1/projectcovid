@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
+import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/record_daily.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 
@@ -96,7 +97,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return SettingScreen();
+                          return CovidDataScreen();
                         }));
                       },
                       child: Container(

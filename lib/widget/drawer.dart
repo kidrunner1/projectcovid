@@ -7,8 +7,8 @@ import 'package:tracker_covid_v1/screen/login_screen.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseAuth_auth = FirebaseAuth.instance;
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class NavigatorScreen extends StatelessWidget {
+  const NavigatorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

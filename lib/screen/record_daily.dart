@@ -24,7 +24,9 @@ class _MemoState extends State<Memo> {
   // ProducTypeEnum? _producTypeEnum;
   String type = '';
   final memoKey = GlobalKey<FormState>();
+  // ignore: unused_field
   final TextEditingController _latitude = TextEditingController();
+  // ignore: unused_field
   final TextEditingController _longitude = TextEditingController();
 
   @override
@@ -248,6 +250,7 @@ class _MemoState extends State<Memo> {
                                 color: Colors.green,
                                 pressEvent: () async {
                                   if (memoKey.currentState!.validate()) {
+                                    // ignore: unnecessary_null_comparison
                                     if (type == null) {
                                       // กรณีผลตรวจไม่ถูกเลือก
                                       AwesomeDialog(
