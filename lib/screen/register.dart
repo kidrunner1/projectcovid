@@ -137,6 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ]),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
+                                labelText: 'อีเมล',
                                 hintText: 'อี เ ม ล',
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -154,6 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
                             decoration: InputDecoration(
+                                labelText: 'รหัสผ่าน',
                                 hintText: 'ร หั ส ผ่ า น',
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -170,6 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 errorText: "กรุณากรอก-รหัสผ่าน"),
                             obscureText: true,
                             decoration: InputDecoration(
+                                labelText: 'ยืนยันรหัสผ่าน',
                                 hintText: 'ยื น ยั น ร หั ส ผ่ า น',
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -187,6 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator:
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
+                                labelText: 'ชื่อ',
                                 hintText: 'ชื่ อ',
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -203,6 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-นามสกุล"),
                             decoration: InputDecoration(
+                                labelText: 'นามสกุล',
                                 hintText: 'น า ม ส กุ ล',
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -222,6 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: RequiredValidator(
                                 errorText: "กรุณากรอก-เบอร์โทร"),
                             decoration: InputDecoration(
+                                labelText: 'เบอร์โทร',
                                 hintText: 'เ บ อ ร์ โ ท ร',
                                 filled: true,
                                 border: OutlineInputBorder(
