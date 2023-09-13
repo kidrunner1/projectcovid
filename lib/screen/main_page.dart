@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                         builder: (context) => const SettingScreen()));
               },
-              icon: const Icon(Icons.notifications))
+              icon: const Icon(Icons.notifications,color: Colors.white,))
         ],
       ),
       // ignore: prefer_const_constructors

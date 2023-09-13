@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'home.dart';
 
 class StartScreen extends StatefulWidget {
-  const StartScreen({super.key});
+  const StartScreen({Key? key}) : super(key: key);
 
   @override
   State<StartScreen> createState() => _StartScreenState();
@@ -19,8 +20,9 @@ class _StartScreenState extends State<StartScreen> {
     return Scaffold(
       body: isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.red.shade300),
+              child: SpinKitThreeBounce(
+                color: Colors.red.shade300,
+                size: 50.0,
               ),
             )
           : Center(
@@ -97,7 +99,7 @@ class _StartScreenState extends State<StartScreen> {
                                 borderRadius: BorderRadius.circular(40),
                               ),
                               child: const Center(
-                                child: Icon(Icons.arrow_forward,
+                                child: Icon(Icons.arrow_forward_ios_rounded,
                                     color: Colors.white),
                               ),
                             ),

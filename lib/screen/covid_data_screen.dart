@@ -28,6 +28,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
         'https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces');
     var response = await http.get(url);
 
+    // ignore: unnecessary_null_comparison
     if (response.statusCode == 200 && response.body != null) {
       return json.decode(response.body) as List<dynamic>?;
     } else {

@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: const Text(
                                         "สร้างบัญชีผู้ใช้",
-                                        style: TextStyle(fontSize: 24),
+                                        style: TextStyle(fontSize: 24,color: Colors.white),
                                       ),
                                     )),
                               )),
@@ -79,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: const Text("เข้าสู่ระบบ",
-                                          style: TextStyle(fontSize: 24)),
+                                          style: TextStyle(fontSize: 24,color: Colors.white)),
                                     )),
                               ))
                         ],

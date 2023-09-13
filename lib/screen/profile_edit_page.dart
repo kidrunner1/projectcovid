@@ -57,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 TextFormField(
                   controller: _firstNameController,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(),prefixIcon: Icon(Icons.person),
                     labelText: "ชื่อ",
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -66,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 TextFormField(
                   controller: _lastNameController,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(),prefixIcon: Icon(Icons.person),
                     labelText: "นามสกุล",
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
                   ),

@@ -97,7 +97,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return CovidDataScreen();
+                          return SettingScreen();
                         }));
                       },
                       child: Container(
@@ -301,42 +301,107 @@ class _NewsScreensState extends State<NewsScreens> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const SettingScreen();
-                          }));
-                        },
-                        child: Container(
-                          width: 120,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.red.shade200,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.calendar_month,
-                                  size: 30,
-                                  color: Colors.redAccent,
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  'การนัดของคุณ',
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.black),
-                                )
-                              ]),
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CovidDataScreen();
+                        }));
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.red.shade200,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.assignment_outlined,
+                                size: 30,
+                                color: Colors.redAccent,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                'การนัดของคุณ',
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
+                              )
+                            ]),
                       ),
-                    ]),
-              )
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CovidDataScreen();
+                        }));
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.red.shade200,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_location,
+                                size: 30,
+                                color: Colors.redAccent,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                'ภายในจังหวัด',
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
+                              )
+                            ]),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SettingScreen();
+                        }));
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.red.shade200,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.home,
+                                size: 30,
+                                color: Colors.redAccent,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                'นัดฉีดวัคซีน',
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
+                              )
+                            ]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
