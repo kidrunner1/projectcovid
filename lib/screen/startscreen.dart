@@ -11,57 +11,104 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  double slidePosition = 0;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(children: [
-              Padding(
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.red.shade300),
+              ),
+            )
+          : Center(
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset("assets/images/page.png"),
-              ),
-              const Text(
-                "ระบบจัดการสถานะการณ์ COVID-19",
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                ),
-              ),
-              Column(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(32),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 30),
-                          backgroundColor: Colors.red.shade300,
-                          minimumSize: const Size.fromHeight(72),
-                          shape: const StadiumBorder()),
-                      child: const Text('เริ่มแอปพลิเคชั่น'),
-                      onPressed: () async {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const HomeScreen();
-                        }));
-                      },
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset("assets/images/page.png"),
                     ),
-                  )
-                ],
+                    const Text(
+                      "ระบบจัดการสถานะการณ์ COVID-19",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                    ),
+                    Stack(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(32),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Slide to Start',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                          ),
+                        ),
+                        AnimatedPositioned(
+                          left: slidePosition,
+                          duration: const Duration(milliseconds: 200),
+                          child: GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              setState(() {
+                                slidePosition += details.delta.dx;
+                                if (slidePosition < 0) slidePosition = 0;
+                                if (slidePosition >
+                                    MediaQuery.of(context).size.width * 0.8 -
+                                        100) {
+                                  slidePosition = 0;
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return const HomeScreen();
+                                    }));
+                                  });
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade300,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: const Center(
+                                child: Icon(Icons.arrow_forward,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
               ),
-            ]),
-          ),
-        ),
-      ),
+            ),
       backgroundColor: Colors.white,
     );
   }
