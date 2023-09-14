@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tracker_covid_v1/screen/login_screen.dart';
 
@@ -139,7 +140,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'อีเมล',
                                 hintText: 'อี เ ม ล',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                           ),
@@ -157,7 +161,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'รหัสผ่าน',
                                 hintText: 'ร หั ส ผ่ า น',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             // ปิดรหัสผ่าน
@@ -174,7 +181,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'ยืนยันรหัสผ่าน',
                                 hintText: 'ยื น ยั น ร หั ส ผ่ า น',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             // ปิดรหัสผ่าน
@@ -191,8 +201,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 RequiredValidator(errorText: "กรุณากรอก-ชื่อ"),
                             decoration: InputDecoration(
                                 labelText: 'ชื่อ',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 hintText: 'ชื่ อ',
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12))),
                           ),
@@ -209,7 +222,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'นามสกุล',
                                 hintText: 'น า ม ส กุ ล',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 )),
@@ -229,7 +245,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'เบอร์โทร',
                                 hintText: 'เ บ อ ร์ โ ท ร',
+                                labelStyle: GoogleFonts.prompt(),
+                                hintStyle: GoogleFonts.prompt(),
                                 filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 )),

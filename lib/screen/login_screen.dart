@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
@@ -55,10 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              'เข้าสู่ระบบ',
-                              style: TextStyle(fontSize: 50),
-                              textAlign: TextAlign.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('เข้าสู่ระบบ',
+                                    style: TextStyle(
+                                      fontSize: 50,
+                                    ))
+                              ],
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -76,8 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 labelText: 'อีเมล',
+                                labelStyle: GoogleFonts.prompt(),
                                 hintText: 'อีเมล',
+                                hintStyle: GoogleFonts.prompt(),
                                 prefixIcon: const Icon(Icons.mail),
+                                filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -96,15 +105,21 @@ class _LoginScreenState extends State<LoginScreen> {
                               obscureText: true,
                               decoration: InputDecoration(
                                 labelText: 'รหัสผ่าน',
+                                labelStyle: GoogleFonts.prompt(),
                                 hintText: 'รหัสผ่าน',
+                                hintStyle: GoogleFonts.prompt(),
                                 prefixIcon: const Icon(Icons.key),
+                                filled: true,
+                                fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
                             ),
                           ),
-
+                          const SizedBox(
+                            height: 10,
+                          ),
                           // Password Reset
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -191,7 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       "ลงชื่อเข้าใช้",
                                       style: TextStyle(
                                         fontSize: 20,
-                                        fontWeight: FontWeight.bold,color: Colors.white
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
                             ),

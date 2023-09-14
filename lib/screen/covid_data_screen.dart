@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -137,8 +138,8 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                                         vertical: 8.0),
                                     child: ListTile(
                                       title: Text(provinceData['province'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold)),
+                                          style:
+                                              GoogleFonts.prompt(fontSize: 16)),
                                       onTap: () {
                                         _showProvinceDetails(provinceData);
                                       },

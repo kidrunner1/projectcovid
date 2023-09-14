@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
@@ -78,15 +79,10 @@ class _NewsScreensState extends State<NewsScreens> {
                   );
                 }),
               ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'บ ริ ก า ร',
-                    style: TextStyle(fontSize: 30, color: Colors.redAccent),
-                  ),
-                ],
+              SizedBox(
+                height: 30,
               ),
+
               // ไอค่อนไปยังหน้าต่อไป
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -97,7 +93,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return SettingScreen();
+                          return const SettingScreen();
                         }));
                       },
                       child: Container(
@@ -161,7 +157,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return SettingScreen();
+                          return const SettingScreen();
                         }));
                       },
                       child: Container(
@@ -371,7 +367,7 @@ class _NewsScreensState extends State<NewsScreens> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return SettingScreen();
+                          return const SettingScreen();
                         }));
                       },
                       child: Container(
@@ -436,7 +432,7 @@ Widget _iconContainer({
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(fontSize: 15, color: Colors.black),
+            style: const TextStyle(fontSize: 15, color: Colors.black),
             textAlign: TextAlign.center,
           ),
         ],

@@ -61,7 +61,7 @@ class _StartScreenState extends State<StartScreen> {
                           ),
                           child: const Center(
                             child: Text(
-                              'Slide to Start',
+                              'เลื่อนเพื่อเปิด',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ),
@@ -96,7 +96,7 @@ class _StartScreenState extends State<StartScreen> {
                               height: 80,
                               decoration: BoxDecoration(
                                 color: Colors.red.shade300,
-                                borderRadius: BorderRadius.circular(40),
+                                borderRadius: BorderRadius.circular(60),
                               ),
                               child: const Center(
                                 child: Icon(Icons.arrow_forward_ios_rounded,

@@ -1,24 +1,76 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
-// ignore: use_key_in_widget_constructors
 class EditProfileScreen extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ImagePicker _picker = ImagePicker();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  String? _photoURL;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Initially populate the text fields with the current user data.
     fetchInitialData();
+  }
+
+  Future<void> saveInformation() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .update({
+      'firstName': _firstNameController.text.trim(),
+      'lastName': _lastNameController.text.trim(),
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      isLoading = false;
+    });
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Notification",
+              style: GoogleFonts.prompt(fontSize: 20),
+            ),
+            content: Text(
+              "ข้อมูลได้รับการปรับปรุงแล้ว",
+              style: GoogleFonts.prompt(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: GoogleFonts.prompt(fontSize: 16),
+                ),
+              )
+            ],
+          );
+        });
   }
 
   Future<void> fetchInitialData() async {
@@ -30,77 +82,143 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         documentSnapshot.data() as Map<String, dynamic>;
     _firstNameController.text = userData['firstName'];
     _lastNameController.text = userData['lastName'];
+    setState(() {
+      _photoURL = userData['photoURL'];
+    });
+  }
+
+  Future<void> selectImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      File image = File(pickedFile.path);
+      String filePath = 'profile_pics/${_auth.currentUser!.uid}.png';
+      await FirebaseStorage.instance.ref(filePath).putFile(image);
+      String newPhotoURL =
+          await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+      setState(() {
+        _photoURL = newPhotoURL;
+      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser?.uid)
+          .update({'photoURL': newPhotoURL});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.pink.shade50,
-      appBar: AppBar(
-        title: const Text("ข้อมูลส่วนตัว"),
-        backgroundColor: Colors.red.shade300,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            const Text(
-              'แก้ไขข้อมูลส่วนตัว',
-              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: _firstNameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),prefixIcon: Icon(Icons.person),
-                    labelText: "ชื่อ",
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _lastNameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),prefixIcon: Icon(Icons.person),
-                    labelText: "นามสกุล",
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    // Update the Firestore document with the new values.
-                    await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(_auth.currentUser?.uid)
-                        .update({
-                      'firstName': _firstNameController.text.trim(),
-                      'lastName': _lastNameController.text.trim(),
-                    });
-                    // Pop back to the previous screen after updating.
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      backgroundColor: Colors.green.shade300),
-                  child: const Text(
-                    'บันทึก',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return LoadingOverlay(
+      isLoading: isLoading,
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          title: Text(
+            "ข้อมูลส่วนตัว",
+            style: GoogleFonts.prompt(color: Colors.white),
+          ),
+          backgroundColor: Colors.red[300],
+          elevation: 0,
         ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'แก้ไขข้อมูลส่วนตัว',
+                      style: GoogleFonts.prompt(
+                          fontSize: 25, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 30),
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: _photoURL != null
+                              ? NetworkImage(_photoURL!)
+                              : null,
+                          child: _photoURL == null
+                              ? Icon(Icons.camera_alt,
+                                  color: Colors.grey[400], size: 50)
+                              : null,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red[300],
+                            radius: 20,
+                            child: IconButton(
+                              icon: Icon(Icons.camera_alt,
+                                  size: 20, color: Colors.white),
+                              onPressed: selectImage,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    _buildTextField(
+                      controller: _firstNameController,
+                      label: "ชื่อ",
+                      icon: Icons.person,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildTextField(
+                      controller: _lastNameController,
+                      label: "นามสกุล",
+                      icon: Icons.person_outline,
+                    ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: saveInformation,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: Colors.red[300],
+                      ),
+                      child: Text(
+                        'บันทึก',
+                        style: GoogleFonts.prompt(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        prefixIcon: Icon(icon, color: Colors.blueGrey[800]),
+        labelText: label,
+        labelStyle: GoogleFonts.prompt(
+            fontWeight: FontWeight.w500, color: Colors.blueGrey[800]),
       ),
     );
   }
