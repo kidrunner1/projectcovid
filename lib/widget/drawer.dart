@@ -52,7 +52,7 @@ Widget buildMenuItems(BuildContext context) => Container(
               color: Colors.black,
             ),
             title: const Text(
-              'ข้ อ มู ล ส่ ว น ตั ว',
+              'ข้อมูลส่วนตัว',
               style: TextStyle(color: Colors.black),
             ),
             onTap: (() {
@@ -67,7 +67,7 @@ Widget buildMenuItems(BuildContext context) => Container(
               color: Colors.black,
             ),
             title: const Text(
-              'ก า ร ตั้ ง ค่ า',
+              'การตั้งค่า',
               style: TextStyle(color: Colors.black),
             ),
             onTap: () {
@@ -82,7 +82,7 @@ Widget buildMenuItems(BuildContext context) => Container(
               color: Colors.black,
             ),
             title: const Text(
-              'อ อ ก จ า ก ร ะ บ บ',
+              'ออกจากระบบ',
               style: TextStyle(color: Colors.black),
             ),
             onTap: () async {

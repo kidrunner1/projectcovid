@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'home.dart';
@@ -33,21 +33,16 @@ class _StartScreenState extends State<StartScreen> {
                   child: Column(children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.asset("assets/images/page.png"),
+                      child: Image.asset("assets/images/logo.png",width: 220,),
                     ),
-                    const Text(
+                    Text(
                       "ระบบจัดการสถานะการณ์ COVID-19",
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                      ),
-                    ),
+                    const SizedBox(height: 40),
                     Stack(
                       children: [
                         Container(
@@ -56,14 +51,22 @@ class _StartScreenState extends State<StartScreen> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(40),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
                           ),
-                          child: const Center(
-                            child: Text(
-                              'เลื่อนเพื่อเปิด',
-                              style: TextStyle(color: Colors.black54),
-                            ),
+                          child: Text(
+                            'เลื่อนเพื่อเปิด',
+                            style: GoogleFonts.prompt(
+                                color: Colors.black54, fontSize: 15),
                           ),
                         ),
                         AnimatedPositioned(
@@ -95,8 +98,24 @@ class _StartScreenState extends State<StartScreen> {
                               width: 100,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.red.shade300,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.red.shade500,
+                                    Colors.red.shade300
+                                  ],
+                                ),
                                 borderRadius: BorderRadius.circular(60),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
                               ),
                               child: const Center(
                                 child: Icon(Icons.arrow_forward_ios_rounded,
@@ -111,7 +130,7 @@ class _StartScreenState extends State<StartScreen> {
                 ),
               ),
             ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.pink[50],
     );
   }
 }

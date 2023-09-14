@@ -42,9 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
         children: _children,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.red.shade300,
-        selectedItemColor: Colors.red.shade300,
-        unselectedItemColor: Colors.red.shade300,
+        backgroundColor: Colors.black,
+        selectedItemColor: const Color.fromARGB(255, 27, 12, 96),
+        unselectedItemColor: const Color.fromARGB(255, 27, 12, 96),
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         // ignore: prefer_const_literals_to_create_immutables

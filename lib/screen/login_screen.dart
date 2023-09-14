@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final fromKey = GlobalKey<FormState>();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -29,231 +30,259 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  bool _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: firebase,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Scaffold(
-              appBar: AppBar(title: const Text("Error")),
-              body: Center(child: Text("${snapshot.error}")),
-            );
-          }
+      future: firebase,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(title: const Text("Error")),
+            body: Center(child: Text("${snapshot.error}")),
+          );
+        }
 
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Form(
-                    key: fromKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('เข้าสู่ระบบ',
-                                    style: TextStyle(
-                                      fontSize: 50,
-                                    ))
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-
-                          // Email field
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _emailController,
-                              validator: MultiValidator([
-                                EmailValidator(
-                                    errorText: "รูปแบบอีเมลไม่ถูกต้อง"),
-                                RequiredValidator(errorText: "กรุณากรอก-อีเมล"),
-                              ]),
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: 'อีเมล',
-                                labelStyle: GoogleFonts.prompt(),
-                                hintText: 'อีเมล',
-                                hintStyle: GoogleFonts.prompt(),
-                                prefixIcon: const Icon(Icons.mail),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // Password field
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _passwordController,
-                              validator: RequiredValidator(
-                                  errorText: "กรุณากรอก-รหัสผ่าน"),
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: 'รหัสผ่าน',
-                                labelStyle: GoogleFonts.prompt(),
-                                hintText: 'รหัสผ่าน',
-                                hintStyle: GoogleFonts.prompt(),
-                                prefixIcon: const Icon(Icons.key),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          // Password Reset
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text('ลืมรหัสผ่าน ?  '),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const ResetPassword();
-                                    }));
-                                  },
-                                  child: const Text(
-                                    'กดตรงนี้ ',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-
-                          // Login button
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.20),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (fromKey.currentState!.validate()) {
-                                  setState(() {
-                                    _isLoading = true; // Start loading
-                                  });
-
-                                  fromKey.currentState!.save();
-                                  try {
-                                    UserCredential userCredential =
-                                        await FirebaseAuth.instance
-                                            .signInWithEmailAndPassword(
-                                                email: _emailController.text
-                                                    .trim(),
-                                                password: _passwordController
-                                                    .text
-                                                    .trim());
-
-                                    if (userCredential.user != null) {
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MyHomePage(
-                                            user: userCredential.user,
-                                            title: '',
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  } on FirebaseAuthException catch (e) {
-                                    Fluttertoast.showToast(
-                                        msg: e.message!,
-                                        gravity: ToastGravity.CENTER);
-                                  } finally {
-                                    setState(() {
-                                      _isLoading = false; // Stop loading
-                                    });
-                                  }
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(),
-                                backgroundColor: Colors.red.shade300,
-                                minimumSize: const Size(200, 50),
-                              ),
-                              child: _isLoading
-                                  ? const SpinKitFadingCircle(
-                                      color: Colors.white,
-                                      size: 24.0,
-                                    )
-                                  : const Text(
-                                      "ลงชื่อเข้าใช้",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-
-                          // Register button
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('ยังไม่มีบัญชีใช่ไหม?   '),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return RegisterScreen();
-                                    }));
-                                  },
-                                  child: const Text(
-                                    'ลงทะเบียน',
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Form(
+                  key: fromKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildTitle(),
+                        _combinedEmailPasswordResetWidgets(), // Combined widgets
+                        _buildLoginButton(),
+                        _buildRegisterLink(),
+                      ],
                     ),
                   ),
                 ),
               ),
-              backgroundColor: Colors.pink.shade50,
-            );
-          }
-          // ignore: prefer_const_constructors
-          return Scaffold(
-            body: const Center(
-              child: CircularProgressIndicator(),
+            ),
+            backgroundColor: Colors.pink.shade50,
+          );
+        }
+
+        // ignore: prefer_const_constructors
+        return Scaffold(
+          body: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _combinedEmailPasswordResetWidgets() {
+    return Container(
+      width: double.infinity, // This gives the maximum width.
+      height: 250, // Set height as needed.
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Column(
+        mainAxisAlignment:
+            MainAxisAlignment.center, // This centers the widgets inside.
+        children: [const SizedBox(height: 20,),
+         
+          _buildEmailField(),
+          const SizedBox(
+            height: 5,
+          ),
+          _buildPasswordField(),
+          const SizedBox(
+            height: 5,
+          ),
+          _buildResetPasswordLink(),
+        ]
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'เข้าสู่ระบบ',
+            style: GoogleFonts.prompt(
+              fontSize: 50,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: _emailController,
+        validator: MultiValidator([
+          EmailValidator(errorText: "รูปแบบอีเมลไม่ถูกต้อง"),
+          RequiredValidator(errorText: "กรุณากรอก-อีเมล"),
+        ]),
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          labelText: 'อีเมล',
+          labelStyle: GoogleFonts.prompt(),
+          hintText: 'อีเมล',
+          hintStyle: GoogleFonts.prompt(),
+          prefixIcon: const Icon(Icons.mail),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: _passwordController,
+        validator: RequiredValidator(errorText: "กรุณากรอก-รหัสผ่าน"),
+        obscureText: true,
+        decoration: InputDecoration(
+          labelText: 'รหัสผ่าน',
+          labelStyle: GoogleFonts.prompt(),
+          hintText: 'รหัสผ่าน',
+          hintStyle: GoogleFonts.prompt(),
+          prefixIcon: const Icon(Icons.key),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResetPasswordLink() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text('ลืมรหัสผ่านใช่ไหม?   ',
+              style: GoogleFonts.prompt(color: Colors.grey)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ResetPassword()));
+            },
+            child: Text(
+              'รีเซ็ตรหัสผ่าน',
+              style: GoogleFonts.prompt(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.20, vertical: 20),
+      child: ElevatedButton(
+        onPressed: _loginFunction,
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          backgroundColor: Colors.red.shade300,
+          minimumSize: const Size(200, 50),
+        ),
+        child: _isLoading
+            ? const SpinKitFadingCircle(
+                color: Colors.white,
+                size: 24.0,
+              )
+            : Text(
+                "ลงชื่อเข้าใช้",
+                style: GoogleFonts.prompt(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterLink() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('ยังไม่มีบัญชีใช่ไหม?   ',
+              style: GoogleFonts.prompt(color: Colors.grey)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()));
+            },
+            child: Text(
+              'ลงทะเบียน',
+              style: GoogleFonts.prompt(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _loginFunction() async {
+    if (fromKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Start loading
+      });
+
+      fromKey.currentState!.save();
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim());
+
+        if (userCredential.user != null) {
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                user: userCredential.user,
+                title: '',
+              ),
             ),
           );
+        }
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(msg: e.message!, gravity: ToastGravity.CENTER);
+      } finally {
+        setState(() {
+          _isLoading = false; // Stop loading
         });
+      }
+    }
   }
 }
