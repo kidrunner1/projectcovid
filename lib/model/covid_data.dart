@@ -1,13 +1,23 @@
 class CovidData {
+  final String country;
   final int cases;
   final int recovered;
   final int deaths;
 
-  CovidData({
-    required this.cases,
-    required this.recovered,
-    required this.deaths,
-  });
+  CovidData(
+      {required this.country,
+      required this.cases,
+      required this.recovered,
+      required this.deaths});
+
+  factory CovidData.fromMap(Map<String, dynamic> map) {
+    return CovidData(
+      country: map['country'],
+      cases: map['cases'],
+      recovered: map['recovered'],
+      deaths: map['deaths'],
+    );
+  }
 }
 
 class CountryCovidData {

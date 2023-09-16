@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/covid_data.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
-import 'package:tracker_covid_v1/widget/covid_stats_widget.dart';
-import '../services/covid_api.dart';
+import 'package:tracker_covid_v1/services/covid_api.dart';
+
+import 'package:intl/intl.dart'; // For formatting numbers with commas
 
 class CovidTrackerScreen extends StatefulWidget {
   @override
@@ -12,217 +13,247 @@ class CovidTrackerScreen extends StatefulWidget {
 
 class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
   final CovidApiService _covidApiService = CovidApiService();
-  late Future<CovidData> _thailandCovidData;
-  late Future<CovidData> _worldCovidData;
+  late Future<CovidData>? _thailandCovidData;
+
+  late Future<CovidData>? _worldCovidData;
+  late Future<List<CovidData>>? _top5CountriesCovidData;
+
+  final Map<String, String> countryToCode = {
+    'USA': 'us',
+    'India': 'in',
+    'Brazil': 'br',
+    'Russia': 'ru',
+    'UK': 'gb',
+    // Add more countries as required.
+  };
 
   @override
   void initState() {
     super.initState();
     _thailandCovidData = _covidApiService.fetchCovidDataForThailand();
     _worldCovidData = _covidApiService.fetchCovidDataForWorld();
+    _top5CountriesCovidData = _covidApiService.fetchTop5CountriesByCases();
+  }
+
+  _initializeData() {
+    setState(() {
+      _thailandCovidData = _covidApiService.fetchCovidDataForThailand();
+      _worldCovidData = _covidApiService.fetchCovidDataForWorld();
+      _top5CountriesCovidData = _covidApiService.fetchTop5CountriesByCases();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
+    final TextStyle headStyle = GoogleFonts.prompt(
+      fontSize: width * 0.06,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+    final TextStyle subHeadStyle = GoogleFonts.prompt(
+      fontSize: width * 0.045,
+      fontWeight: FontWeight.w600,
+      color: Colors.white70,
+    );
+    final TextStyle dataStyle = GoogleFonts.prompt(
+      fontSize: width * 0.04,
+      color: Colors.white60,
+    );
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.pink.shade50,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: TextButton(
+        backgroundColor: Colors.deepPurple.shade400,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.deepPurple.shade200, Colors.deepPurple.shade700],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white70),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const MyHomePage(title: "")));
                     },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.brown,
-                    )),
-              ),
-              const Text('ยืนยันตัวเลขผู้ติดเชื้อ',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const Text('Covid-19',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const Text('ในประเทศไทย',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  padding: const EdgeInsets.all(60),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade400,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: FutureBuilder<CovidData>(
-                    future: _thailandCovidData,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text('Error loading data');
-                      } else {
-                        final covidData = snapshot.data!;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'ผู้ติดเชื้อสะสม : ${covidData.cases}',
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-                    },
                   ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                Text(
+                  'ข้อมูลสถิติผู้ติดเชื้อทั่วโลก',
+                  textAlign: TextAlign.center,
+                  style: headStyle,
                 ),
-                child: FutureBuilder<CovidData>(
-                  future: _thailandCovidData,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return const Text('Error loading data');
-                    } else {
-                      return Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CovidStatsWidget(
-                                title: 'กำลังรักษา',
-                                count: snapshot.data!.recovered,
-                                color: Colors.amber,
-                              ),
-                              CovidStatsWidget(
-                                title: 'หายแล้ว',
-                                count: snapshot.data!.recovered,
-                                color: Colors.green,
-                              ),
-                              CovidStatsWidget(
-                                title: 'เสียชีวิต',
-                                count: snapshot.data!.deaths,
-                                color: Colors.red,
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'ผู้ติดเชื้อทั่วโลก',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        FutureBuilder<CovidData>(
-                          future: _worldCovidData,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return const Text('Error loading data');
-                            } else {
-                              final covidData = snapshot.data!;
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${covidData.cases}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'หายแล้ว:   ${covidData.recovered}',
-                                    style: const TextStyle(fontSize: 15),
-                                  ),
-                                  Text(
-                                    'เสียชีวิต:   ${covidData.deaths}',
-                                    style: const TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'ประเทศ ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'ติดเชื้อ ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'หายดี ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'เสียชีวิต ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _buildThailandDataCard(dataStyle, subHeadStyle),
+                      const SizedBox(height: 20),
+                      _buildTop5CountriesCard(dataStyle, subHeadStyle),
+                    ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThailandDataCard(TextStyle dataStyle, TextStyle subHeadStyle) {
+    return Card(
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(24.0),
+        child: FutureBuilder<CovidData>(
+          future: _thailandCovidData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator(
+                color: Colors.deepPurple,
+              );
+            } else if (snapshot.hasError) {
+              return Text(
+                'Error loading data for Thailand',
+                style:
+                    dataStyle.copyWith(color: Colors.redAccent, fontSize: 16),
+                textAlign: TextAlign.center,
+              );
+            } else {
+              final thailandData = snapshot.data!;
+              int activeCases = thailandData.cases - thailandData.recovered;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Thailand',
+                    style: subHeadStyle.copyWith(
+                      color: Colors.deepPurple.shade700,
+                      fontSize: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _simpleCovidStat('เคสทั้งหมด', thailandData.cases, dataStyle,
+                      color: Colors.black),
+                  const SizedBox(height: 10),
+                  _simpleCovidStat('กำลังรักษา', activeCases, dataStyle,
+                      color: Colors.amber),
+                  const SizedBox(height: 10),
+                  _simpleCovidStat('หายแล้ว', thailandData.recovered, dataStyle,
+                      color: Colors.green),
+                  const SizedBox(height: 10),
+                  _simpleCovidStat('เสียชีวิต', thailandData.deaths, dataStyle,
+                      color: Colors.red),
+                  const SizedBox(height: 10),
+                  // Add any other type of data here, following the same pattern
+                ],
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _simpleCovidStat(String label, int value, TextStyle style,
+      {Color? color}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: style.copyWith(
+              color: color?.withOpacity(0.7), fontWeight: FontWeight.normal),
+        ),
+        Text(
+          '${NumberFormat("#,###").format(value)}',
+          style: style.copyWith(color: color, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTop5CountriesCard(TextStyle dataStyle, TextStyle subHeadStyle) {
+    return Card(
+      elevation: 5.0, // Added shadow for depth
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding:
+            const EdgeInsets.all(20.0), // Increased padding for a spacious feel
+        child: FutureBuilder<List<CovidData>>(
+          future: _top5CountriesCovidData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator(
+                color: Colors.deepPurple,
+              );
+            } else if (snapshot.hasError) {
+              return Text(
+                'Error loading top 5 countries',
+                style: dataStyle.copyWith(
+                    color: Colors.redAccent), // Make error noticeable
+              );
+            } else {
+              final top5Data = snapshot.data!;
+              return Column(
+                children: List<Widget>.generate(top5Data.length, (index) {
+                  final countryData = top5Data[index];
+                  final countryCode = countryToCode[countryData.country] ?? '';
+                  return Container(
+                    margin: const EdgeInsets.only(
+                        bottom: 12.0), // Added space between items
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 15.0), // Padding inside each list item
+                    decoration: BoxDecoration(
+                      // New decoration
+                      color: index % 2 == 0
+                          ? Colors.deepPurple.shade100
+                          : Colors.deepPurple.shade50, // Zebra-striping
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero, // Adjusted padding
+                      leading: countryCode.isNotEmpty
+                          ? CircleAvatar(
+                              backgroundImage: AssetImage(
+                                'icons/flags/png/$countryCode.png',
+                                package: 'country_icons',
+                              ),
+                              radius: 25, // Increased radius
+                            )
+                          : null,
+                      title: Text(countryData.country,
+                          style: subHeadStyle.copyWith(
+                              color: Colors
+                                  .deepPurple.shade700)), // Adjusted color
+                      subtitle: Text(
+                        'Cases: ${NumberFormat("#,###").format(countryData.cases)}',
+                        style: dataStyle,
+                      ),
+                    ),
+                  );
+                }),
+              );
+            }
+          },
         ),
       ),
     );

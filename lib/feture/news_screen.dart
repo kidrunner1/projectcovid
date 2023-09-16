@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // <-- Import this
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
@@ -52,7 +53,7 @@ class _NewsScreensState extends State<NewsScreens> {
         height: 100,
         decoration: BoxDecoration(
           color: Colors.red[100],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -85,10 +86,10 @@ class _NewsScreensState extends State<NewsScreens> {
             children: [
               CarouselSlider(
                 options: CarouselOptions(
-                  height: 250,
-                  autoPlay: true,
+                  height: 200,
+                  autoPlay: false,
                   autoPlayInterval: const Duration(seconds: 3),
-                  viewportFraction: 1.0, // Ensure images don't overlap
+                  viewportFraction: 1.0,
                   onPageChanged: (index, reason) {
                     setState(() {
                       _currentPage = index;
@@ -120,86 +121,103 @@ class _NewsScreensState extends State<NewsScreens> {
     );
   }
 
+  Widget _buildNavigationRow(Widget child) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: child,
+    );
+  }
+
   Widget _buildNavigationRow1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _iconContainer(
-            iconData: Icons.assignment_outlined,
-            label: 'ประเมินความเสี่ยง',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()));
-            }),
-        _iconContainer(
-            iconData: Icons.trending_up,
-            label: 'จำนวนผู้ติดเชือ',
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CovidTrackerScreen()));
-            }),
-        _iconContainer(
-            iconData: Icons.home,
-            label: 'นัดฉีดวัคซีน',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()));
-            }),
-      ],
+    return _buildNavigationRow(
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _iconContainer(
+              iconData: Icons.assignment_outlined,
+              label: 'ประเมินความเสี่ยง',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: Icons.trending_up,
+              label: 'จำนวนผู้ติดเชือ',
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CovidTrackerScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.syringe,
+              label: 'นัดฉีดวัคซีน',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+              }),
+        ],
+      ),
     );
   }
 
   Widget _buildNavigationRow2() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _iconContainer(
-            iconData: Icons.phone,
-            label: 'สายด่วน',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CallPage()));
-            }),
-        _iconContainer(
-            iconData: Icons.phone,
-            label: 'ติดต่อเข้ารับยา',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SettingScreen()));
-            }),
-        _iconContainer(
-            iconData: Icons.assignment,
-            label: 'บันทึกผลตรวจประจำวัน',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Memo()));
-            }),
-      ],
+    return _buildNavigationRow(
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _iconContainer(
+              iconData: FontAwesomeIcons.ambulance,
+              label: 'สายด่วน',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CallPage()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.pills,
+              label: 'ติดต่อเข้ารับยา',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: Icons.assignment,
+              label: 'บันทึกผลตรวจประจำวัน',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Memo()));
+              }),
+        ],
+      ),
     );
   }
 
   Widget _buildNavigationRow3() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start, // Centers the icons
-      children: [
-        _iconContainer(
-            iconData: Icons.assignment_outlined,
-            label: 'การนัดของคุณ',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CovidDataScreen()));
-            }),
-        SizedBox(width: 15), // Provides consistent spacing between icons
-        _iconContainer(
-            iconData: Icons.add_location,
-            label: 'ภายในจังหวัด',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CovidDataScreen()));
-            }),
-      ],
+    return _buildNavigationRow(
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _iconContainer(
+              iconData: Icons.calendar_month,
+              label: 'การนัดของคุณ',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.locationDot,
+              label: 'ภายในจังหวัด',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
+              }),
+        ],
+      ),
     );
   }
 }

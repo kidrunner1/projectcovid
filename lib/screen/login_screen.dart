@@ -78,28 +78,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _combinedEmailPasswordResetWidgets() {
-    return Container(
-      width: double.infinity, // This gives the maximum width.
-      height: 250, // Set height as needed.
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center, // This centers the widgets inside.
-        children: [const SizedBox(height: 20,),
-         
-          _buildEmailField(),
-          const SizedBox(
-            height: 5,
-          ),
-          _buildPasswordField(),
-          const SizedBox(
-            height: 5,
-          ),
-          _buildResetPasswordLink(),
-        ]
+    return SingleChildScrollView(
+      child: Container(
+        width: double.infinity, // This gives the maximum width.
+        height: 250, // Set height as needed.
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // This centers the widgets inside.
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                _buildEmailField(),
+                const SizedBox(
+                  height: 0,
+                ),
+                _buildPasswordField(),
+                const SizedBox(
+                  height: 0,
+                ),
+                _buildResetPasswordLink(),
+              ]),
+        ),
       ),
     );
   }
@@ -180,13 +185,15 @@ class _LoginScreenState extends State<LoginScreen> {
               style: GoogleFonts.prompt(color: Colors.grey)),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ResetPassword()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ResetPassword()));
             },
             child: Text(
               'รีเซ็ตรหัสผ่าน',
               style: GoogleFonts.prompt(
-                color: Colors.blue,
+                color: Colors.blue[700],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
@@ -240,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'ลงทะเบียน',
               style: GoogleFonts.prompt(
-                color: Colors.blue,
+                color: Colors.blue[700],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),

@@ -9,6 +9,7 @@ class CovidStatsWidget extends StatelessWidget {
     required this.title,
     required this.count,
     required this.color,
+    required int fontSize,
   });
 
   @override

@@ -10,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100], // Lighter background
+      backgroundColor: Colors.pink[50], // Lighter background
 
       body: Center(
         child: StreamBuilder<DocumentSnapshot>(

@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -45,16 +46,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       isLoading = false;
     });
 
+    // ignore: use_build_context_synchronously
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              "Notification",
+              "แจ้งเตือน ",
               style: GoogleFonts.prompt(fontSize: 20),
             ),
             content: Text(
-              "ข้อมูลได้รับการปรับปรุงแล้ว",
+              "แก้ไขข้อมูลเรียบร้อย",
               style: GoogleFonts.prompt(fontSize: 16),
             ),
             actions: [
@@ -141,12 +143,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         CircleAvatar(
                           radius: 50,
+                          backgroundColor: Colors.grey,
                           backgroundImage: _photoURL != null
                               ? NetworkImage(_photoURL!)
                               : null,
                           child: _photoURL == null
-                              ? Icon(Icons.camera_alt,
-                                  color: Colors.grey[400], size: 50)
+                              ? Icon(FontAwesomeIcons.camera,
+                                  color: Colors.white, size: 50)
                               : null,
                         ),
                         Positioned(
@@ -156,6 +159,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             backgroundColor: Colors.red[300],
                             radius: 20,
                             child: IconButton(
+                              // ignore: prefer_const_constructors
                               icon: Icon(Icons.camera_alt,
                                   size: 20, color: Colors.white),
                               onPressed: selectImage,
