@@ -19,7 +19,10 @@ class HomeScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset("assets/images/logo.png",width: 180,),
+              child: Image.asset(
+                "assets/images/logo.png",
+                width: 180,
+              ),
             ),
             SizedBox(
               height: 30,
@@ -27,9 +30,9 @@ class HomeScreen extends StatelessWidget {
             Text(
               'แอปพลิเคชันติดตามและ \n ประเมินผู้ที่มีความเสี่ยงโควิด-19',
               style: GoogleFonts.prompt(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,color: Colors.red[300]
-              ),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[300]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
@@ -85,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                     child: const SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("1"),
+                        child: Text("1111"),
                       ),
                     ),
                   ),
