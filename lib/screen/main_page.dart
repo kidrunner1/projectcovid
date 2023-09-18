@@ -11,9 +11,8 @@ import '../feture/chat.dart';
 import '../feture/news_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title, this.user})
+  const MyHomePage({Key? key,  this.user})
       : super(key: key);
-  final String title;
   final User? user;
 
   @override
@@ -100,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: Colors.red[400],
         title: Text(
-          widget.title,
+         "",
           style: GoogleFonts.prompt(
             color: Colors.white,
             fontSize: 26,

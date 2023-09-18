@@ -47,10 +47,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               TextButton(
                 child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MyHomePage(
-                            title: '',
-                          )));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
                 },
               )
             ],

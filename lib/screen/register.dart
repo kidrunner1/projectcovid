@@ -56,6 +56,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'lastName': lastName,
           'email': email,
           'phoneNumber': phoneNumber,
+          'isAdmin': false,
+          'photoURL': ""
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -112,15 +114,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           Padding(
+                          Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Center(
                               child: Column(
                                 children: [
-                                  Text(
-                                    'สร้างบัญชีผู้ใช้',
-                                    style: GoogleFonts.prompt(fontSize: 40)
-                                  ),
+                                  Text('สร้างบัญชีผู้ใช้',
+                                      style: GoogleFonts.prompt(fontSize: 40)),
                                 ],
                               ),
                             ),
@@ -139,9 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'อีเมล',
-                                
                                 labelStyle: GoogleFonts.prompt(),
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -160,9 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: true,
                             decoration: InputDecoration(
                                 labelText: 'รหัสผ่าน',
-                                
                                 labelStyle: GoogleFonts.prompt(),
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -180,9 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             obscureText: true,
                             decoration: InputDecoration(
                                 labelText: 'ยืนยันรหัสผ่าน',
-                                
                                 labelStyle: GoogleFonts.prompt(),
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -202,8 +196,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             decoration: InputDecoration(
                                 labelText: 'ชื่อ',
                                 labelStyle: GoogleFonts.prompt(),
-                                
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -221,9 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 errorText: "กรุณากรอก-นามสกุล"),
                             decoration: InputDecoration(
                                 labelText: 'นามสกุล',
-                                
                                 labelStyle: GoogleFonts.prompt(),
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -244,9 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 errorText: "กรุณากรอก-เบอร์โทร"),
                             decoration: InputDecoration(
                                 labelText: 'เบอร์โทร',
-                                
                                 labelStyle: GoogleFonts.prompt(),
-                                
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
@@ -331,7 +319,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text("ลงทะเบียน",
-                                    style: GoogleFonts.prompt(fontSize: 25,color: Colors.white)),
+                                    style: GoogleFonts.prompt(
+                                        fontSize: 25, color: Colors.white)),
                               ),
                             ),
                           ),
@@ -343,25 +332,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                 Text(
-                                  'กลับหน้าเข้าสู่ระบบ  ',
-                                  style: GoogleFonts.prompt(fontSize: 20)
-                                ),
+                                Text('กลับหน้าเข้าสู่ระบบ  ',
+                                    style: GoogleFonts.prompt(fontSize: 20)),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return LoginScreen();
-                                        }));
-                                      },
-                                      child:  Text(
-                                        'กดตรงนี้ ',
-                                        style: GoogleFonts.prompt(fontSize: 20,color: Colors.blue))
-                                    ),
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return LoginScreen();
+                                          }));
+                                        },
+                                        child: Text('กดตรงนี้ ',
+                                            style: GoogleFonts.prompt(
+                                                fontSize: 20,
+                                                color: Colors.blue))),
                                   ],
                                 ),
                               ],
@@ -385,5 +372,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
   }
 }
-
-

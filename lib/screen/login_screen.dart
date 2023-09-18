@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/model/users.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
+
+import 'admin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -272,16 +276,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 password: _passwordController.text.trim());
 
         if (userCredential.user != null) {
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                user: userCredential.user,
-                title: '',
+          String uid = userCredential.user!.uid;
+          Users? u = await Users.getUser(uid);
+          if (u != null && (u.isAdmin != true || u.isAdmin == null)) {
+            //  ignore: use_build_context_synchronously
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                  user: userCredential.user,
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+// ignore: use_build_context_synchronously
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AdminScreen(
+                  user: u!,
+                ),
+              ),
+            );
+          }
         }
       } on FirebaseAuthException catch (e) {
         Fluttertoast.showToast(msg: e.message!, gravity: ToastGravity.CENTER);

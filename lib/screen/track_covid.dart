@@ -84,7 +84,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                     icon: Icon(Icons.arrow_back, color: Colors.white70),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const MyHomePage(title: "")));
+                          builder: (context) => const MyHomePage()));
                     },
                   ),
                 ),
