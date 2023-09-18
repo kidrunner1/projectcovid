@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                     child: const SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("เข้าสู่ระบบ"),
+                        child: Text("1"),
                       ),
                     ),
                   ),
