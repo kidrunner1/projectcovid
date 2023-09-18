@@ -56,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'lastName': lastName,
           'email': email,
           'phoneNumber': phoneNumber,
-          'isAdmin': false,
+          'role': 3,
           'photoURL': ""
         })
         .then((value) => print("User Added"))

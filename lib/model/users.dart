@@ -1,44 +1,91 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class Users {
+  String uid;
   String? email;
   String? firstName;
   String? lastName;
-  bool? isAdmin;
-
+  int? role;
+  // bool? isAdmin;
   String? phoneNumber;
   String? photoURL;
 
   Users({
+    required this.uid,
     this.email,
     this.firstName,
     this.lastName,
-    this.isAdmin,
+    this.role,
+    // this.isAdmin,
     this.phoneNumber,
     this.photoURL,
   });
 
   static Future<Users?> getUser(String uid) async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
     try {
-      Map<String, dynamic>? u = snapshot.data() as Map<String, dynamic>?;
-      if (u != null) {
-        Users user = Users(
-          email: u['email'],
-          firstName: u['firstName'],
-          lastName: u['lastName'],
-          isAdmin: u['isAdmin'],
-          phoneNumber: u['phoneNumber'],
-          photoURL: u['photoURL'],
-        );
-        return user;
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic>? u = snapshot.data() as Map<String, dynamic>?;
+
+        if (u != null) {
+          Users user = Users(
+            uid: snapshot.id,
+            email: u['email'] as String?,
+            firstName: u['firstName'] as String?,
+            lastName: u['lastName'] as String?,
+            // isAdmin: u['isAdmin'] as bool?,
+            role: u['role'],
+            phoneNumber: u['phoneNumber'] as String?,
+            photoURL: u['photoURL'] as String?,
+          );
+          return user;
+        }
       }
       return null;
     } catch (err) {
+      print(
+          "Error getting user data: $err"); // This will print the error in your debug console.
       return null;
     }
+  }
+
+  static Future<List<Users>?> getUsers() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection("users").get();
+
+      List<Users> users = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+        Users u = Users(
+          uid: doc.id,
+          email: data['email'],
+          firstName: data['firstName'],
+          lastName: data['lastName'],
+          // isAdmin: u['isAdmin'] as bool?,
+          role: data['role'],
+          phoneNumber: data['phoneNumber'],
+          photoURL: data['photoURL'],
+        );
+        return u;
+      }).toList();
+      if (users.isNotEmpty) {
+        return users;
+      }
+      return null;
+    } catch (err) {
+      print(
+          "Error getting user data: $err"); // This will print the error in your debug console.
+      return null;
+    }
+  }
+
+  static updateRoleUser(String uid, int i) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'role': 1,
+    });
   }
 }
