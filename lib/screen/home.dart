@@ -58,11 +58,15 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
-                    child: const SizedBox(
+                    child:  SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("สร้างบัญชีผู้ใช้"),
-                      ),
+                        child: Text("สร้างบัญชีผู้ใช้",style: GoogleFonts.prompt(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),),
+                      
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -85,10 +89,14 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: const SizedBox(
+                    child:  SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("เข้าสู่ระบบ"),
+                        child: Text("เข้าสู่ระบบ",style: GoogleFonts.prompt(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),),
                       ),
                     ),
                   ),
