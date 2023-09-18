@@ -169,7 +169,7 @@ Widget buildMenuItems(BuildContext context) => Container(
       ),
       ListTile(
         leading: const Icon(
-          FontAwesomeIcons.houseChimney,
+          FontAwesomeIcons.gear,
           color: Colors.black,
         ),
         title: Text(

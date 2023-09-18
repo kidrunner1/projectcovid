@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/change_password.dart';
 import 'package:tracker_covid_v1/screen/profile_page.dart';
-import 'package:tracker_covid_v1/screen/reset_page.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override

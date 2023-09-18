@@ -70,6 +70,7 @@ dependencies:
   country_icons: ^2.0.2
   googleapis: ^11.4.0
   googleapis_auth: ^1.4.1
+  csv: ^5.0.2
   
   
   
@@ -101,5 +102,4 @@ flutter:
   assets:
     - assets/images/
     - assets/krit-hgyk-f9e8ca580c2b.json
-
   

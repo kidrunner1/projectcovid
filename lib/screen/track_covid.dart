@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/covid_data.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
-import 'package:tracker_covid_v1/services/covid_api.dart';
 
-import 'package:intl/intl.dart'; // For formatting numbers with commas
+import 'package:intl/intl.dart';
+import 'package:tracker_covid_v1/services/covid_api_service.dart'; // For formatting numbers with commas
 
 class CovidTrackerScreen extends StatefulWidget {
   @override

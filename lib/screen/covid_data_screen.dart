@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -83,7 +84,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Icon(Icons.person,
+                  const Icon(FontAwesomeIcons.person,
                       color: Colors.orangeAccent, size: 24.0),
                   const SizedBox(width: 10),
                   Expanded(
