@@ -7,6 +7,7 @@ import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/record_daily.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
+import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -137,8 +138,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.assignment_outlined,
               label: 'ประเมินความเสี่ยง',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Evaluate_Symptoms()));
               }),
           SizedBox(width: 12),
           _iconContainer(

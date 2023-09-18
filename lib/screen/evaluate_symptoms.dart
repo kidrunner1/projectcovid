@@ -13,14 +13,7 @@ class Evaluate_Symptoms extends StatefulWidget {
 }
 
 class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
-  final Future<FirebaseApp> firebase = Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: 'AIzaSyBrFsi0_vD0GCACUQ3rKLsOiL7-4jORFDg',
-      appId: '1:361500910371:android:a5fb4e53e6cad329bce296',
-      messagingSenderId: '',
-      projectId: 'trackercovid-b2538',
-    ),
-  );
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   final formKey = GlobalKey<FormState>();
   Map<String, String> symptoms = {
@@ -82,6 +75,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           title: 'อาการเบื้องต้นของผู้ติดเชื้อ!',
           content: 'คำแนะนำจากการทำแบบประเมินอาการ:\n1.แยกห้องพัก...',
         );
+        break;
       } else if (hasOtherSymptoms) {
         // ignore: use_build_context_synchronously
         _showDialog(
@@ -89,12 +83,14 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
           content: 'แต่อาจจะติดโรคร้ายแรงอื่นๆ',
         );
+        break;
       } else {
         _showDialog(
           context,
           title: 'คุณสุขภาพร่างกายแข็งแรงดี',
           content: null,
         );
+        break;
       }
     }
 
@@ -223,6 +219,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -234,6 +231,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
             ),
             ElevatedButton(
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
