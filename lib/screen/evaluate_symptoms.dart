@@ -235,9 +235,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyHomePage(
-                      title: '',
-                    ),
+                    builder: (context) => MyHomePage(),
                   ),
                 );
               },
