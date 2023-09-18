@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
               icon:
-                  const Icon(Icons.notifications_outlined, color: Colors.white))
+                  const Icon(Icons.notifications, color: Colors.white))
         ],
       ),
       drawer: const NavigatorScreen(),

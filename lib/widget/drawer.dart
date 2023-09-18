@@ -71,10 +71,7 @@ class _NavigatorScreenState extends State<NavigatorScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
-              ),
+             
             ),
             child: Center(
               child: Text(
