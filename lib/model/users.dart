@@ -88,4 +88,31 @@ class Users {
       'role': 1,
     });
   }
+
+  // Add this factory constructor inside your Users class
+  factory Users.fromDocument(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Users(
+      uid: doc.id,
+      email: data['email'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      role: data['role'],
+      phoneNumber: data['phoneNumber'],
+      photoURL: data['photoURL'],
+    );
+  }
+
+// Add this static method inside your Users class to fetch the stream
+  static Stream<List<Users>> getUsersStream() {
+    return FirebaseFirestore.instance.collection('users').snapshots().map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => Users.fromDocument(doc),
+              )
+              .toList(),
+        );
+  }
+
+  static fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> doc) {}
 }
