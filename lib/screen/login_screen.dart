@@ -6,11 +6,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/users.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/admin_screen.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
-import 'admin_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -292,8 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
           } else {
             // If user is an admin, navigate to the admin page
             if (mounted) {
-              Navigator.pushReplacement(
-                context,
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => AdminScreen(
                     user: u!,
