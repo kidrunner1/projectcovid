@@ -29,6 +29,8 @@ class _AdminManagerScreenState extends State<AdminManagerScreen> {
                 return ListTile(
                   title: Text(u.email ?? "No Email"),
                   subtitle: Text("${u.firstName} ${u.lastName}"),
+                  onTap: () =>
+                      _showOptionsDialog(u), // Added onTap to show more options
                 );
               }).toList(),
             );
@@ -36,6 +38,40 @@ class _AdminManagerScreenState extends State<AdminManagerScreen> {
           return const CircularProgressIndicator();
         },
       ),
+    );
+  }
+
+  void _showOptionsDialog(Users user) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Options for ${user.firstName} ${user.lastName}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Check patient history'),
+                onTap: () {
+                  // Navigate to patient history page or show the history here
+                },
+              ),
+              ListTile(
+                title: const Text('Update medicine appointment schedule'),
+                onTap: () {
+                  // Navigate to medicine schedule page or provide an interface to update
+                },
+              ),
+              ListTile(
+                title: const Text('Update vaccination schedule'),
+                onTap: () {
+                  // Navigate to vaccination schedule page or provide an interface to update
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -281,8 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (u != null && (u.role == 3 || u.role == null)) {
             // If user is not an admin, navigate to the main page
             if (mounted) {
-              Navigator.pushReplacement(
-                context,
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => MyHomePage(
                     user: userCredential.user,

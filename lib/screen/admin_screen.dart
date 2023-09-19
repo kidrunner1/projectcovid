@@ -44,7 +44,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Data"),
+        title: const Text("ผู้ดูแลระบบ"),
         actions: roleID == 1
             ? [
                 IconButton(
