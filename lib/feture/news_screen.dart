@@ -4,8 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
+import 'package:tracker_covid_v1/screen/check_covid/screen_check.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
-import 'package:tracker_covid_v1/screen/record_daily.dart';
+import 'package:tracker_covid_v1/result/collect_check.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 
 class NewsScreens extends StatefulWidget {
@@ -189,7 +190,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'บันทึกผลตรวจประจำวัน',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Memo()));
+                    MaterialPageRoute(builder: (context) => const HomeScreen_check()));
               }),
         ],
       ),

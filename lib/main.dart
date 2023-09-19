@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'package:tracker_covid_v1/screen/startscreen.dart';
+
+import 'provider/provider_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,18 +19,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'flutter demo',
-      theme: ThemeData(),
-      localizationsDelegates: const [
+     return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) {
+            return CheckProvider();
+          }),
+          ],
+    child: const MaterialApp(
+      localizationsDelegates:  [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', 'US'), // English
+      supportedLocales: 
+       [
+        // Locale('en', 'US'), // English
         Locale('th', 'TH'), // Thai
       ],
       home: StartScreen(),
-    );
+    ));
   }
 }

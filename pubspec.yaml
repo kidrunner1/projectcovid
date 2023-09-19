@@ -71,6 +71,11 @@ dependencies:
   googleapis: ^11.4.0
   googleapis_auth: ^1.4.1
   csv: ^5.0.2
+  path_provider: ^2.1.1
+  path: ^1.8.3
+  sembast: ^3.5.0+1
+  provider: ^6.0.5
+  flutter_rounded_date_picker: ^3.0.4
   
   
   
