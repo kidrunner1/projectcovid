@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 import 'package:tracker_covid_v1/screen/record_daily.dart';
+
+import '../model/users.dart';
 
 class Evaluate_Symptoms extends StatefulWidget {
   const Evaluate_Symptoms({super.key});
@@ -14,6 +17,14 @@ class Evaluate_Symptoms extends StatefulWidget {
 
 class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  Users user = Users();
+  Map<String, String> selectedSymptoms = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUSer();
+  }
 
   final formKey = GlobalKey<FormState>();
   Map<String, String> symptoms = {
@@ -52,7 +63,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
       return;
     }
     // Create a map to store the selected symptoms
-    Map<String, String> selectedSymptoms = {};
+    // Map<String, String> selectedSymptoms = {};
     bool hasCovidSymptoms = false;
     bool hasOtherSymptoms = false;
 
@@ -69,29 +80,26 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           hasOtherSymptoms = true;
         }
       }
-      if (hasCovidSymptoms) {
-        _showDialog(
-          context,
-          title: 'อาการเบื้องต้นของผู้ติดเชื้อ!',
-          content: 'คำแนะนำจากการทำแบบประเมินอาการ:\n1.แยกห้องพัก...',
-        );
-        break;
-      } else if (hasOtherSymptoms) {
-        // ignore: use_build_context_synchronously
-        _showDialog(
-          context,
-          title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
-          content: 'แต่อาจจะติดโรคร้ายแรงอื่นๆ',
-        );
-        break;
-      } else {
-        _showDialog(
-          context,
-          title: 'คุณสุขภาพร่างกายแข็งแรงดี',
-          content: null,
-        );
-        break;
-      }
+    }
+    if (hasCovidSymptoms) {
+      _showDialog(
+        context,
+        title: 'อาการเบื้องต้นของผู้ติดเชื้อ!',
+        content: 'คำแนะนำจากการทำแบบประเมินอาการ:\n1.แยกห้องพัก...',
+      );
+    } else if (hasOtherSymptoms) {
+      // ignore: use_build_context_synchronously
+      _showDialog(
+        context,
+        title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
+        content: 'แต่อาจจะติดโรคร้ายแรงอื่นๆ',
+      );
+    } else {
+      _showDialog(
+        context,
+        title: 'คุณสุขภาพร่างกายแข็งแรงดี',
+        content: null,
+      );
     }
 
     // Check if there are any selected symptoms
@@ -99,17 +107,12 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
       try {
         await FirebaseFirestore.instance.collection('evaluate_symptoms').add({
           'symptoms': selectedSymptoms,
+          'email': user.email,
         });
-        // Show a success dialog
-        // _showDialog(
-        //   context,
-        //   title: 'อาการถูกบันทึกแล้ว!',
-        //   content: 'ขอบคุณที่ให้ข้อมูล',
-        // );
       } catch (e) {
         print('Error adding data to Firestore: $e');
       }
-    } else {}
+    }
   }
 
   @override
@@ -208,6 +211,17 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
     );
   }
 
+  void getUSer() async {
+    final auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid;
+    Users? tempData = await Users.getUser(uid);
+    if (tempData != null) {
+      setState(() {
+        user = tempData;
+      });
+    }
+  }
+
   void _showDialog(BuildContext context,
       {required String title, String? content}) {
     showDialog(
@@ -223,7 +237,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Memo(),
+                    builder: (context) =>
+                        Memo(selectedSymptoms: selectedSymptoms),
                   ),
                 );
               },
