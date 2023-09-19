@@ -4,7 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
-import 'package:tracker_covid_v1/result/result_detail.dart';
+import 'package:tracker_covid_v1/screen/getdata_daily/result_detail.dart';
 
 // enum ProducTypeEnum { positive, negative }
 

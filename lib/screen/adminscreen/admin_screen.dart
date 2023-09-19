@@ -100,14 +100,17 @@ class _AdminScreenState extends State<AdminScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _confirmDelete(u),
-                      ),
                       Chip(
                         label: Text(roleToString(u.role ?? 3),
                             style: GoogleFonts.prompt(fontSize: 12.0)),
                         backgroundColor: roleToColor(u.role ?? 3),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          // show a confirmation dialog before deletion
+                          _showDeletionDialog(u);
+                        },
                       ),
                     ],
                   ),
@@ -172,31 +175,13 @@ class _AdminScreenState extends State<AdminScreen> {
               ),
               actions: <Widget>[
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.grey.shade800,
-                  ),
-                  child: const Text(
-                    'CANCEL',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0, vertical: 10.0),
-                  ),
-                  child: const Text(
-                    'UPDATE',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: const Text('Update'),
                   onPressed: () async {
                     if (selectedRole != null) {
                       await _updateUserRole(user.uid, selectedRole!);
@@ -212,22 +197,23 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 
-  void _confirmDelete(Users user) {
+  void _showDeletionDialog(Users user) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete Confirmation"),
-          content: const Text("Are you sure you want to delete this user?"),
-          actions: [
+          title: Text('Confirm Deletion'),
+          content: Text(
+              'Do you want to delete ${user.email}? This action cannot be undone.'),
+          actions: <Widget>[
             TextButton(
-              child: const Text("CANCEL"),
+              child: Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text("DELETE"),
+              child: Text('Delete'),
               onPressed: () async {
                 await _deleteUser(user);
                 Navigator.of(context).pop();
@@ -254,12 +240,12 @@ class _AdminScreenState extends State<AdminScreen> {
   Color roleToColor(int role) {
     switch (role) {
       case 1:
-        return Colors.red[300]!;
+        return Colors.red.shade300;
       case 2:
-        return Colors.blue;
+        return Colors.green;
       case 3:
       default:
-        return Colors.grey.shade300;
+        return Colors.blueAccent;
     }
   }
 }

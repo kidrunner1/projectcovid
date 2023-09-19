@@ -1,6 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker_covid_v1/screen/record_daily.dart';
+import 'package:tracker_covid_v1/screen/getdata_daily/record_daily.dart';
 
 class Key_data extends StatefulWidget {
   const Key_data({super.key});

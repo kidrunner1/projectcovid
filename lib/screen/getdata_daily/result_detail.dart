@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../screen/record_daily.dart';
+import 'record_daily.dart';
 
 // ignore: must_be_immutable
 class Detail extends StatefulWidget {
