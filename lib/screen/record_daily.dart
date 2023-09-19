@@ -1,21 +1,32 @@
 //หน้าบันทึกผลตรวจโควิด ประจำวัน
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker_covid_v1/result/result_detail.dart';
 
+import '../model/users.dart';
+
 // enum ProducTypeEnum { positive, negative }
 
 class Memo extends StatefulWidget {
-  const Memo({super.key});
+  Map<String, String> selectedSymptoms;
+  Memo({
+    super.key,
+    required this.selectedSymptoms,
+  });
 
   @override
   State<Memo> createState() => _MemoState();
 }
 
 class _MemoState extends State<Memo> {
+  Users user = Users();
+
+  Map<String, String> selectedSymptoms = {};
   late String message;
   TextEditingController dateinput = TextEditingController();
   TextEditingController timeinput = TextEditingController();
@@ -35,6 +46,9 @@ class _MemoState extends State<Memo> {
     super.initState();
     timeinput.text = ""; //set the initial value of text field
     super.initState();
+    selectedSymptoms = widget.selectedSymptoms;
+    print(selectedSymptoms);
+    getUSer();
   }
 
   @override
@@ -204,7 +218,7 @@ class _MemoState extends State<Memo> {
                               value: 'negative',
                               groupValue: type,
                               activeColor: Colors.red[400],
-                              title: const Text('ผลเป็นบวก'),
+                              title: const Text('ผลเป็นลบ'),
                               onChanged: (val) {
                                 setState(() {
                                   type = val!;
@@ -261,6 +275,13 @@ class _MemoState extends State<Memo> {
                                         btnOkOnPress: () {},
                                       ).show();
                                     } else {
+                                      await FirebaseFirestore.instance
+                                          .collection('evaluate_symptoms')
+                                          .add({
+                                        'symptoms': selectedSymptoms,
+                                        'email': user.email,
+                                        //'type' :
+                                      });
                                       // กรอกข้อมูลสำเร็จ
                                       AwesomeDialog(
                                         context: context,
@@ -297,5 +318,16 @@ class _MemoState extends State<Memo> {
                             ),
                           ]))
                 ]))));
+  }
+
+  void getUSer() async {
+    final auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid;
+    Users? tempData = await Users.getUser(uid);
+    if (tempData != null) {
+      setState(() {
+        user = tempData;
+      });
+    }
   }
 }

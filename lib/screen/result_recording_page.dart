@@ -67,11 +67,11 @@ class _Key_dataState extends State<Key_data> {
           tooltip: 'เพิ่ม',
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Memo(),
-                ));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => Memo(),
+            //     ));
           }),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(

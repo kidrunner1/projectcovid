@@ -98,11 +98,11 @@ class _DetailState extends State<Detail> {
             color: Colors.grey[700],
           ),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Memo(),
-                ));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => Memo(),
+            //     ));
           }),
     );
   }
