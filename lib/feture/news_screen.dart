@@ -191,13 +191,8 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.assignment,
               label: 'บันทึกผลตรวจประจำวัน',
               onTap: () {
-<<<<<<< HEAD
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => const Memo()));
-=======
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SettingsScreen()));
->>>>>>> main
               }),
         ],
       ),
