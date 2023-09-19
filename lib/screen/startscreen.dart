@@ -33,7 +33,10 @@ class _StartScreenState extends State<StartScreen> {
                   child: Column(children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.asset("assets/images/logo.png",width: 220,),
+                      child: Image.asset(
+                        "assets/images/logo.png",
+                        width: 220,
+                      ),
                     ),
                     Text(
                       "ระบบจัดการสถานะการณ์ COVID-19",
