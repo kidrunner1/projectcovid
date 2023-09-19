@@ -3,18 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
-import 'package:tracker_covid_v1/screen/appointment/screen_appoints.dart';
+import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
+
 import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/check_covid/form_check.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
-<<<<<<< HEAD
-=======
-import 'package:tracker_covid_v1/screen/getdata_daily/record_daily.dart';
->>>>>>> main
-import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
+import 'package:tracker_covid_v1/screen/track_covid.dart';
 
-import '../screen/appointment/form_appoints.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
