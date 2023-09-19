@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
-import 'package:tracker_covid_v1/screen/getdata_daily/record_daily.dart';
+
 
 class Evaluate_Symptoms extends StatefulWidget {
   const Evaluate_Symptoms({super.key});
@@ -223,7 +224,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Memo(),
+                    builder: (context) => SettingsScreen(),
                   ),
                 );
               },
