@@ -261,35 +261,7 @@ class _FormCheckState extends State<FormCheck> {
                                                 desc:
                                                     'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\nคำแนะนำ!!!\n\n1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น',
                                                 btnOkOnPress: () {
-                                                  // if (checkKey.currentState!.validate()) {
-                                                  //   var date = dateinput.text;
-                                                  //   var time = timeinput.text;
-                                                  //   var weight = weightinput.text;
-                                                  //   var temp = tempinput.text;
-                                                  //   var type = typeinput;
-
-                                                  //   Check report = Check(
-                                                  //     date: date,
-                                                  //     time: time,
-                                                  //     weight: weight,
-                                                  //     temp: temp,
-                                                  //     type: type,
-                                                  //   );
-
-                                                  //   var provider = Provider.of<CheckProvider>(
-                                                  //     context,
-                                                  //     listen:false
-                                                  //     );
-                                                  //     provider.addCheck(report);
-
-                                                  //     Navigator.pop(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         CollectCheck(check: check)
-                                                  //   ),
-                                                  // );
-                                                  // }
+                                                
                                                 },
                                               ).show();
                                             }
