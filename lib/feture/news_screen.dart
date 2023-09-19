@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
+import 'package:tracker_covid_v1/screen/appointment/screen_appoints.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
-import 'package:tracker_covid_v1/screen/check_covid/screen_check.dart';
+import 'package:tracker_covid_v1/screen/check_covid/form_check.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
-import 'package:tracker_covid_v1/result/collect_check.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
+
+import '../screen/appointment/form_appoints.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -182,7 +184,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'ติดต่อเข้ารับยา',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                    MaterialPageRoute(builder: (context) => const FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -190,7 +192,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'บันทึกผลตรวจประจำวัน',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen_check()));
+                    MaterialPageRoute(builder: (context) =>  FormCheck()));
               }),
         ],
       ),

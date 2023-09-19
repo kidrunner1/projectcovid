@@ -223,34 +223,34 @@ class _FormAppointments extends State<FormAppointments> {
                                     title: 'บันทึกข้อมูลเรียบร้อย!!',
                                     desc: '   ',
                                     btnOkOnPress: () {
-                                      if (formKey.currentState!.validate()) {
-                                        var frist = fristnameController.text;
-                                        var last = lastnameController.text;
-                                        var date = dateController.text;
-                                        var time = selectedTime;
-                                        Appointments statement = Appointments(
-                                          fristname: frist,
-                                          lastname: last,
-                                          date: date,
-                                          selectedTime: time,
-                                        );
+                                      // if (formKey.currentState!.validate()) {
+                                      //   var frist = fristnameController.text;
+                                      //   var last = lastnameController.text;
+                                      //   var date = dateController.text;
+                                      //   var time = selectedTime;
+                                      //   Appointments statement = Appointments(
+                                      //     fristname: frist,
+                                      //     lastname: last,
+                                      //     date: date,
+                                      //     selectedTime: time,
+                                      //   );
                                         
 
-                                        var provider =
-                                            Provider.of<AppointmentsProvider>(
-                                                context,
-                                                listen: false);
-                                        provider.addAppointments(statement);
+                                      //   var provider =
+                                      //       Provider.of<AppointmentsProvider>(
+                                      //           context,
+                                      //           listen: false);
+                                      //   provider.addAppointments(statement);
                                         
-                                        Navigator.pop(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return const HomeScreen();
+                                      //   Navigator.pop(context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) {
+                                      //     return const HomeScreen();
                                           
-                                        }
-                                        ),
-                                        );
-                                      }
+                                      //   }
+                                      //   ),
+                                      //   );
+                                      // }
                                     }).show();
                               }
                             }

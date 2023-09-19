@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'package:tracker_covid_v1/screen/startscreen.dart';
 
-import 'provider/provider_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,23 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) {
-            return CheckProvider();
-          }),
-          ],
-    child: const MaterialApp(
+    
+    return const MaterialApp(
       localizationsDelegates:  [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: 
        [
-        // Locale('en', 'US'), // English
+        Locale('en', 'US'), // English
         Locale('th', 'TH'), // Thai
       ],
       home: StartScreen(),
-    ));
+    );
   }
 }
