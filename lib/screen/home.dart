@@ -19,7 +19,10 @@ class HomeScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset("assets/images/logo.png",width: 180,),
+              child: Image.asset(
+                "assets/images/logo.png",
+                width: 180,
+              ),
             ),
             SizedBox(
               height: 30,
@@ -27,9 +30,9 @@ class HomeScreen extends StatelessWidget {
             Text(
               'แอปพลิเคชันติดตามและ \n ประเมินผู้ที่มีความเสี่ยงโควิด-19',
               style: GoogleFonts.prompt(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,color: Colors.red[300]
-              ),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[300]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
@@ -55,11 +58,15 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
-                    child: const SizedBox(
+                    child:  SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("สร้างบัญชีผู้ใช้"),
-                      ),
+                        child: Text("สร้างบัญชีผู้ใช้",style: GoogleFonts.prompt(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),),
+                      
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -82,10 +89,14 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: const SizedBox(
+                    child:  SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("1"),
+                        child: Text("เข้าสู่ระบบ",style: GoogleFonts.prompt(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),),
                       ),
                     ),
                   ),

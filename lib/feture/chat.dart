@@ -1,5 +1,6 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
+
 import 'package:tracker_covid_v1/feture/Messages.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -76,13 +77,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         const SizedBox(width: 10),
                         FloatingActionButton(
-                          onPressed: () {
-                            sendMessage(_controller.text);
-                            _controller.clear();
-                          },
-                          child: const Icon(Icons.send),
-                          backgroundColor: Colors.deepPurple.shade600,
-                        ),
+                            onPressed: () {
+                              sendMessage(_controller.text);
+                              _controller.clear();
+                            },
+                            backgroundColor: Colors.deepPurple.shade600,
+                            child: const Icon(Icons.send)),
                       ],
                     ),
                   ),
