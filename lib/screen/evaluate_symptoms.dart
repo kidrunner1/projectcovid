@@ -14,7 +14,6 @@ class Evaluate_Symptoms extends StatefulWidget {
   State<Evaluate_Symptoms> createState() => _Evaluate_SymptomsState();
 }
 
-//create class asdasdadasdadasdassdadas
 class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   Users user = Users(uid: "gg");
