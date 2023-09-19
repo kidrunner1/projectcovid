@@ -13,7 +13,6 @@ import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 
-
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
 
@@ -188,8 +187,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: FontAwesomeIcons.pills,
               label: 'ติดต่อเข้ารับยา',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const FormAppointments()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(

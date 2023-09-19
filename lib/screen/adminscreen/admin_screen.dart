@@ -47,205 +47,24 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("ผู้ดูแลระบบ"),
-        actions: roleID == 1
-            ? [
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AdminManagerScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.settings))
-              ]
-            : null,
-        backgroundColor: Colors.red[300],
-      ),
-      body: StreamBuilder<List<Users>>(
-        stream: _getUsersStream(),
-        builder: (context, AsyncSnapshot<List<Users>> snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          }
-
-          List<Users> users = snapshot.data!;
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              Users u = users[index];
-              return Card(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0)),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  title: Text(u.email ?? "No Email",
-                      style: GoogleFonts.prompt(fontSize: 16.0)),
-                  subtitle: Text(
-                    "${u.firstName} ${u.lastName} - ${roleToString(u.role ?? 3)}",
-                    style: GoogleFonts.prompt(
-                        fontSize: 14.0, color: Colors.grey[600]),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Chip(
-                        label: Text(roleToString(u.role ?? 3),
-                            style: GoogleFonts.prompt(fontSize: 12.0)),
-                        backgroundColor: roleToColor(u.role ?? 3),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          // show a confirmation dialog before deletion
-                          _showDeletionDialog(u);
-                        },
-                      ),
-                    ],
-                  ),
-                  onTap: () => _showRoleDialog(u),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  void _showRoleDialog(Users user) {
-    int? selectedRole = user.role; // initial value
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              title: const Text(
-                'กำหนดสิทธิ์ผู้ใช้งาน',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-              content: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<int>(
-                    isExpanded: true,
-                    value: selectedRole,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedRole = newValue;
-                      });
-                    },
-                    items:
-                        <int>[1, 2, 3].map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(
-                          roleToString(value),
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      );
-                    }).toList(),
-                    dropdownColor: Colors.white,
-                  ),
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    if (selectedRole != null) {
-                      await _updateUserRole(user.uid, selectedRole!);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showDeletionDialog(Users user) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text(
-              'Do you want to delete ${user.email}? This action cannot be undone.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Delete'),
-              onPressed: () async {
-                await _deleteUser(user);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  String roleToString(int role) {
-    switch (role) {
-      case 1:
-        return "Admin";
-      case 2:
-        return "Doctor/Nurse";
-      case 3:
-      default:
-        return "User";
-    }
-  }
-
-  Color roleToColor(int role) {
-    switch (role) {
-      case 1:
-        return Colors.red.shade300;
-      case 2:
-        return Colors.green;
-      case 3:
-      default:
-        return Colors.blueAccent;
-    }
+        appBar: AppBar(
+          title: const Text("หมอพยาบาล"),
+          actions: roleID == 1
+              ? [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdminManagerScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.settings))
+                ]
+              : null,
+          backgroundColor: Colors.red[300],
+        ),
+        body: Container());
   }
 }
