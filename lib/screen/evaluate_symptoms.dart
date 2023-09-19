@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
-
-
 import '../model/users.dart';
 
 class Evaluate_Symptoms extends StatefulWidget {
@@ -16,9 +14,10 @@ class Evaluate_Symptoms extends StatefulWidget {
   State<Evaluate_Symptoms> createState() => _Evaluate_SymptomsState();
 }
 
+//create class asdasdadasdadasdassdadas
 class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  Users user = Users();
+  Users user = Users(uid: "gg");
   Map<String, String> selectedSymptoms = {};
   @override
   void initState() {
@@ -238,12 +237,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-<<<<<<< HEAD
-                    builder: (context) =>
-                        Memo(selectedSymptoms: selectedSymptoms),
-=======
                     builder: (context) => SettingsScreen(),
->>>>>>> main
                   ),
                 );
               },
