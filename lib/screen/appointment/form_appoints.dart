@@ -2,7 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
- class FormAppointments extends StatefulWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FormAppointments extends StatefulWidget {
   const FormAppointments({super.key});
 
   @override
@@ -15,8 +17,35 @@ class _FormAppointments extends State<FormAppointments> {
   final fristnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final CollectionReference appointments =
+      FirebaseFirestore.instance.collection('appointments');
+  Future<void> saveAppointment() async {
+    try {
+      await appointments.add({
+        'date': dateController.text,
+        'time': selectedTime,
+        'first_name': fristnameController.text,
+        'last_name': lastnameController.text,
+      });
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        title: 'บันทึกข้อมูลเรียบร้อย!!',
+        desc: 'Data saved successfully in Firebase.',
+        btnOkOnPress: () {},
+      ).show();
+    } catch (e) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Error',
+        desc: 'Failed to save data to Firebase. Please try again.',
+        btnOkOnPress: () {},
+      ).show();
+    }
+  }
 
-@override
+  @override
   void initState() {
     dateController.text = ""; // set the initial value of text field
     super.initState();
@@ -118,7 +147,7 @@ class _FormAppointments extends State<FormAppointments> {
                     value: '13.00น.',
                     groupValue: selectedTime,
                     onChanged: (val) {
-                    setState(() {
+                      setState(() {
                         selectedTime = val!;
                       });
                     },
@@ -128,7 +157,7 @@ class _FormAppointments extends State<FormAppointments> {
                     value: '14.00น.',
                     groupValue: selectedTime,
                     onChanged: (val) {
-                     setState(() {
+                      setState(() {
                         selectedTime = val!;
                       });
                     },
@@ -138,7 +167,7 @@ class _FormAppointments extends State<FormAppointments> {
                     value: '15.00น.',
                     groupValue: selectedTime,
                     onChanged: (val) {
-                     setState(() {
+                      setState(() {
                         selectedTime = val!;
                       });
                     },
@@ -200,7 +229,6 @@ class _FormAppointments extends State<FormAppointments> {
                           pressEvent: () {
                             if (formKey.currentState!.validate()) {
                               if (selectedTime.isEmpty) {
-                                // กรณีผลตรวจไม่ถูกเลือก
                                 AwesomeDialog(
                                   context: context,
                                   dialogType: DialogType.warning,
@@ -209,43 +237,7 @@ class _FormAppointments extends State<FormAppointments> {
                                   btnOkOnPress: () {},
                                 ).show();
                               } else {
-                                // กรอกข้อมูลสำเร็จ
-                                AwesomeDialog(
-                                 
-                                    context: context,
-                                    dialogType: DialogType.success,
-                                    title: 'บันทึกข้อมูลเรียบร้อย!!',
-                                    desc: '   ',
-                                    btnOkOnPress: () {
-                                      // if (formKey.currentState!.validate()) {
-                                      //   var frist = fristnameController.text;
-                                      //   var last = lastnameController.text;
-                                      //   var date = dateController.text;
-                                      //   var time = selectedTime;
-                                      //   Appointments statement = Appointments(
-                                      //     fristname: frist,
-                                      //     lastname: last,
-                                      //     date: date,
-                                      //     selectedTime: time,
-                                      //   );
-                                        
-
-                                      //   var provider =
-                                      //       Provider.of<AppointmentsProvider>(
-                                      //           context,
-                                      //           listen: false);
-                                      //   provider.addAppointments(statement);
-                                        
-                                      //   Navigator.pop(context,
-                                      //       MaterialPageRoute(
-                                      //           builder: (context) {
-                                      //     return const HomeScreen();
-                                          
-                                      //   }
-                                      //   ),
-                                      //   );
-                                      // }
-                                    }).show();
+                                saveAppointment(); // Call the function here
                               }
                             }
                           },
