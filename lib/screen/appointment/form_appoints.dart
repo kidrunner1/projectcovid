@@ -2,12 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:tracker_covid_v1/model/appoints.dart';
-import 'package:tracker_covid_v1/screen/home.dart';
-
-import '../../provider/provider_appoints.dart';
-
  class FormAppointments extends StatefulWidget {
   const FormAppointments({super.key});
 
