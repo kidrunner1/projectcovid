@@ -1,17 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/users.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/admin_screen.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
 import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
-import 'admin.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -262,10 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // This function will handle user login.
   Future<void> _loginFunction() async {
     if (fromKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true; // Start loading
+        _isLoading = true; // Start loading spinner while processing login
       });
 
       fromKey.currentState!.save();
@@ -278,33 +279,37 @@ class _LoginScreenState extends State<LoginScreen> {
         if (userCredential.user != null) {
           String uid = userCredential.user!.uid;
           Users? u = await Users.getUser(uid);
-          if (u != null && (u.isAdmin != true || u.isAdmin == null)) {
-            //  ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                  user: userCredential.user,
+          if (u != null && (u.role == 3 || u.role == null)) {
+            // If user is not an admin, navigate to the main page
+            if (mounted) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(
+                    user: userCredential.user,
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           } else {
-// ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AdminScreen(
-                  user: u!,
+            // If user is an admin, navigate to the admin page
+            if (mounted) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => AdminScreen(
+                    user: u!,
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           }
         }
       } on FirebaseAuthException catch (e) {
-        Fluttertoast.showToast(msg: e.message!, gravity: ToastGravity.CENTER);
+        // Instead of Fluttertoast, let's use a SnackBar
+        final snackBar = SnackBar(content: Text(e.message!));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } finally {
         setState(() {
-          _isLoading = false; // Stop loading
+          _isLoading = false; // Stop the loading spinner after processing
         });
       }
     }

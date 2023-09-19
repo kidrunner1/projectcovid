@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 26,
             fontWeight: FontWeight.w600,
             shadows: [
-              Shadow(
+              const Shadow(
                 offset: Offset(1.0, 1.0),
                 blurRadius: 2.0,
                 color: Colors.black26,
@@ -116,7 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: const Icon(Icons.menu,color: Colors.white
+              ,),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },

@@ -15,6 +15,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
   final CovidApiService _covidApiService = CovidApiService();
   late Future<CovidData>? _thailandCovidData;
 
+  // ignore: unused_field
   late Future<CovidData>? _worldCovidData;
   late Future<List<CovidData>>? _top5CountriesCovidData;
 

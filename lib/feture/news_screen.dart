@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
-import 'package:tracker_covid_v1/screen/record_daily.dart';
+
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 
@@ -191,8 +191,13 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.assignment,
               label: 'บันทึกผลตรวจประจำวัน',
               onTap: () {
+<<<<<<< HEAD
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => const Memo()));
+=======
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+>>>>>>> main
               }),
         ],
       ),
