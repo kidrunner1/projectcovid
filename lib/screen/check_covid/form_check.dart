@@ -1,11 +1,12 @@
-//หน้าบันทึกผลตรวจโควิด ประจำวัน
-
+import 'dart:io';
+import 'package:path/path.dart' as Path;
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:intl/intl.dart';
-
-// enum ProducTypeEnum { positive, negative }
+import 'package:image_picker/image_picker.dart';
+import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FormCheck extends StatefulWidget {
   const FormCheck({super.key});
@@ -15,268 +16,192 @@ class FormCheck extends StatefulWidget {
 }
 
 class _FormCheckState extends State<FormCheck> {
-  late String message;
-  final dateinput = TextEditingController();
-  final timeinput = TextEditingController();
   final weightinput = TextEditingController();
   final tempinput = TextEditingController();
   String typeinput = '';
   final checkKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    super.initState();
-    timeinput.text = ""; //set the initial value of text field
-    super.initState();
+  File? _image;
+  final picker = ImagePicker();
+
+  Future<void> _getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future<String?> _uploadImageToFirebase(File? image) async {
+    if (image == null) return null;
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('atk_results/${Path.basename(image.path)}');
+    UploadTask uploadTask = ref.putFile(image);
+    await uploadTask.whenComplete(() => {});
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
+  bool dataSaved = false; // Add this line
+
+  Future<void> _saveToFirebase() async {
+    String? imageUrl = await _uploadImageToFirebase(_image);
+    await FirebaseFirestore.instance.collection('checkResults').add({
+      'weight': weightinput.text,
+      'temperature': tempinput.text,
+      'result': typeinput,
+      'timestamp': FieldValue.serverTimestamp(),
+      if (imageUrl != null) 'imageUrl': imageUrl,
+    });
+
+    setState(() {
+      dataSaved = true; // Update dataSaved to true once data is saved
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-            return Scaffold(
-                backgroundColor: const Color.fromRGBO(255, 223, 226, 1),
-                appBar: AppBar(
-                    title: const Text('บันทึกผลตรวจโควิด-19 ประจำวัน'),
-                    backgroundColor: Colors.red[200]),
-                body: SingleChildScrollView(
-                    child: Form(
-                        key: checkKey,
-                        child: Column(
-                          children: [
-                          const SizedBox(height: 20),
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey[50],
-                              ),
-                              child: Center(
-                                child: TextFormField(
-                                  controller:
-                                      dateinput, //editing controller of this TextField
-                                  decoration: const InputDecoration(
-                                    suffixIcon: Icon(Icons
-                                        .calendar_today), //icon of text field
-                                    labelText: "วัน/เดือน/ปี",
-                                    contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none,
-                                    //label text of field
-                                  ),
-                                  validator: RequiredValidator(
-                                      errorText: "กรุณาระบุวัน/เดือน/ปี"),
-                                  readOnly:
-                                      true, //set it true, so that user will not able to edit text
-                                  onTap: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                        context: context,
-                                        locale: const Locale("th", "TH"),
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(
-                                            2000), //DateTime.now() - not to allow to choose before today.
-                                        lastDate: DateTime(2101));
+    return Scaffold(
+      backgroundColor: Colors.pink[50],
+      appBar: AppBar(
+        title: const Text('บันทึกผลตรวจโควิด-19 ประจำวัน'),
+        backgroundColor: Colors.red[400],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: checkKey,
+          child: Column(
+            children: [
+              _buildInputField(weightinput, "น้ำหนักปัจจุบัน", Icons.scale),
+              const SizedBox(height: 20),
+              _buildInputField(tempinput, "อุณหภูมิร่างกาย", Icons.thermostat),
+              const SizedBox(height: 20),
+              const Text(
+                "ผลตรวจ ATK วันนี้",
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                margin: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile<String>(
+                        contentPadding: const EdgeInsets.all(0.0),
+                        value: 'ผลเป็นลบ',
+                        groupValue: typeinput,
+                        activeColor: Colors.red[400],
+                        title: const Text('ผลเป็นลบ'),
+                        onChanged: (val) {
+                          setState(() {
+                            typeinput = val!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile<String>(
+                        contentPadding: const EdgeInsets.all(0.0),
+                        value: 'ผลเป็นบวก',
+                        groupValue: typeinput,
+                        activeColor: Colors.red[400],
+                        title: const Text('ผลเป็นบวก'),
+                        onChanged: (val) {
+                          setState(() {
+                            typeinput = val!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              if (_image != null) Image.file(_image!, height: 200, width: 200),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _getImage,
+                child: Row(
+                  children: [
+                    Icon(Icons.upload),
+                    SizedBox(width: 8),
+                    Text("Upload Image")
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red[400],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType
+                        .SUCCES, // Note: It should be 'SUCCESS' not 'SUCCES'
+                    animType: AnimType.BOTTOMSLIDE,
+                    title: 'สำเร็จ',
+                    desc:
+                        'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ ... [rest of the description]',
+                    btnOkOnPress: () {
+                      // Here, after closing the dialog, you can navigate to the DetailsCheckScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DetailsCheckScreen(weight: '', temperature: '',)),
+                      );
+                    },
+                  ).show();
+                },
+                child: Text("Save"),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-                                    if (pickedDate != null) {
-                                      print(
-                                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                      String formattedDate =
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(pickedDate);
-                                      print(
-                                          formattedDate); //formatted date output using intl package =>  2021-03-16
-                                      //you can implement different kind of Date Format here according to your requirement
-
-                                      setState(() {
-                                        dateinput.text =
-                                            formattedDate; //set output date to TextField value.
-                                      });
-                                    } else {
-                                      print("Date is not selected");
-                                    }
-                                  },
-                                ),
-                              )),
-                          const SizedBox(height: 10),
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey[50],
-                              ),
-                              child: Center(
-                                  child: TextFormField(
-                                controller:
-                                    timeinput, //editing controller of this TextField
-                                decoration: const InputDecoration(
-                                  suffixIcon:
-                                      Icon(Icons.timer), //icon of text field
-                                  labelText: "เวลาที่บันทึก",
-                                  contentPadding: EdgeInsets.all(8.0),
-                                  border:
-                                      InputBorder.none, //label text of field
-                                ),
-                                validator: RequiredValidator(
-                                    errorText: "กรุณาระบุเวลา"),
-                                readOnly:
-                                    true, //set it true, so that user will not able to edit text
-                                onTap: () async {
-                                  TimeOfDay? pickedTime = await showTimePicker(
-                                    initialTime: TimeOfDay.now(),
-                                    context: context,
-                                  );
-
-                                  if (pickedTime != null) {
-                                    print(pickedTime
-                                        .format(context)); //output 10:51 PM
-                                    DateTime parsedTime = DateFormat.jm().parse(
-                                        pickedTime.format(context).toString());
-                                    //converting to DateTime so that we can further format on different pattern.
-                                    print(
-                                        parsedTime); //output 1970-01-01 22:53:00.000
-                                    String formattedTime =
-                                        DateFormat('HH:mm').format(parsedTime);
-                                    print(formattedTime); //output 14:59:00
-                                    //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-                                    setState(() {
-                                      timeinput.text =
-                                          formattedTime; //set the value of text field.
-                                    });
-                                  } else {
-                                    print("Time is not selected");
-                                  }
-                                },
-                              ))),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey[50],
-                              ),
-                              child: TextFormField(
-                                controller: weightinput,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(Icons.scale),
-                                  labelText: "น้ำหนักปัจจุบัน",
-                                  contentPadding: EdgeInsets.all(8.0),
-                                  border: InputBorder.none,
-                                ),
-                                validator: RequiredValidator(
-                                    errorText: "กรุณาป้อนน้ำหนัก"),
-                              )),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey[50],
-                              ),
-                              child: TextFormField(
-                                controller: tempinput,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(Icons.thermostat),
-                                  labelText: "อุณหภูมิร่างกาย",
-                                  contentPadding: EdgeInsets.all(8.0),
-                                  border: InputBorder.none,
-                                ),
-                                validator: RequiredValidator(
-                                    errorText: "กรุณาป้อนอุณหภูมิ"),
-                              )),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "ผลตรวจ ATK วันนี้",
-                            style: TextStyle(
-                                color: Colors.redAccent, fontSize: 20),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: RadioListTile<String>(
-                                      contentPadding: const EdgeInsets.all(0.0),
-                                      value: 'Negative',
-                                      groupValue: typeinput,
-                                      activeColor: Colors.red[400],
-                                      title: const Text('ผลเป็นลบ'),
-                                      onChanged: (val) {
-                                        setState(() {
-                                          typeinput = val!;
-                                        });
-                                      }),
-                                ),
-                                Expanded(
-                                  child: RadioListTile<String>(
-                                      contentPadding: const EdgeInsets.all(0.0),
-                                      value: 'Positive',
-                                      groupValue: typeinput,
-                                      activeColor: Colors.red[400],
-                                      title: const Text('ผลเป็นบวก'),
-                                      onChanged: (val) {
-                                        setState(() {
-                                          typeinput = val!;
-                                        });
-                                      }),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                              width: 120,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    AnimatedButton(
-                                        text: 'บันทึก',
-                                        color: Colors.green,
-                                        pressEvent: ()  {
-                                          if (checkKey.currentState!
-                                              .validate())  {
-                                            if (typeinput.isEmpty) {
-                                              // กรณีผลตรวจไม่ถูกเลือก
-                                              AwesomeDialog(
-                                                context: context,
-                                                dialogType: DialogType.warning,
-                                                title: 'ผลตรวจไม่ถูกเลือก',
-                                                desc: 'กรุณาเลือกผลตรวจ',
-                                                btnOkOnPress: () {},
-                                              ).show();
-                                            } else {
-                                              // กรอกข้อมูลสำเร็จ
-                                              AwesomeDialog(
-                                                context: context,
-                                                dialogType: DialogType.success,
-                                                title:
-                                                    'บันทึกข้อมูลเรียบร้อย!!',
-                                                desc:
-                                                    'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\nคำแนะนำ!!!\n\n1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น',
-                                                btnOkOnPress: () {
-                                                
-                                                },
-                                              ).show();
-                                            }
-                                          }
-                                        }),
-                                    const SizedBox(height: 10),
-                                    AnimatedButton(
-                                      text: 'ยกเลิก',
-                                      color: Colors.red,
-                                      pressEvent: () {
-                                        
-                                      },
-                                    ),
-                                  ]))
-                        ]))));
-          }
-
-        }
+Widget _buildInputField(
+    TextEditingController controller, String label, IconData icon) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 6,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      validator: RequiredValidator(errorText: "กรุณาป้อน$label"),
+    ),
+  );
+}
