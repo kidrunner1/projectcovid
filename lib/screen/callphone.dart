@@ -11,58 +11,72 @@ class CallPhone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "สายด่วน",
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.red[300],
+      appBar: AppBar(
+        title: const Text(
+          "สายด่วน",
         ),
-        body: ListView.builder(
+        centerTitle: true,
+        backgroundColor: Colors.red[300],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
           itemCount: EmergencyNumbers.numbers.length,
           itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 8,horizontal: 10),
-              padding: const EdgeInsets.all(20),
-              width: double.infinity,
-              decoration:BoxDecoration(
-                
+            return Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.red[200],
-                ),
-                
-              child: SingleChildScrollView(
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: ListTile(
-                  title: Text(EmergencyNumbers.numbers[index]['name']!, ),
-                  titleTextStyle:const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16),
-                  subtitle: Text(numbers[index]['number']!,),
-                  subtitleTextStyle:const TextStyle(
-                    fontSize: 16,
-                    fontWeight:FontWeight.bold),
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    EmergencyNumbers.numbers[index]['name']!,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      numbers[index]['number']!,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(numbers[index]['image']!),
                   ),
-                  trailing: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
-                      foregroundColor: Colors.black,
-                      padding:const EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+                  trailing: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                    child: const Text('โทร'),
+                    icon: Icon(Icons.call),
+                    label: Text('โทร'),
                     onPressed: () async {
                       String num = numbers[index]['number']!;
-                      // ignore: deprecated_member_use
-                      launch('tel://$num');
                       await FlutterPhoneDirectCaller.callNumber(num);
+                      launch('tel://$num');
                     },
                   ),
                 ),
               ),
             );
           },
-        ));
+        ),
+      ),
+      backgroundColor: Colors.pink[50],
+    );
   }
 }
