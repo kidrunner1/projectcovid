@@ -56,11 +56,11 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
     final TextStyle subHeadStyle = GoogleFonts.prompt(
       fontSize: width * 0.045,
       fontWeight: FontWeight.w600,
-      color: Colors.white70,
+      color: Colors.white,
     );
     final TextStyle dataStyle = GoogleFonts.prompt(
       fontSize: width * 0.04,
-      color: Colors.white60,
+      color: Colors.white,
     );
 
     return SafeArea(
@@ -227,7 +227,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                       // New decoration
                       color: index % 2 == 0
                           ? Colors.deepPurple.shade100
-                          : Colors.deepPurple.shade50, // Zebra-striping
+                          : Colors.deepPurple.shade100, // Zebra-striping
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
@@ -246,7 +246,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                               color: Colors
                                   .deepPurple.shade700)), // Adjusted color
                       subtitle: Text(
-                        'Cases: ${NumberFormat("#,###").format(countryData.cases)}',
+                        'จำนวนผู้ป่วย: ${NumberFormat("#,###").format(countryData.cases)}',
                         style: dataStyle,
                       ),
                     ),
