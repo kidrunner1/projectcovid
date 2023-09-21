@@ -91,16 +91,14 @@ class _showdata_symptomState extends State<showdata_symptom> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var document = snapshot.data!.docs[index];
-              var dateTimeString = document['date_time']
-                  as String; // Assuming 'date_time' is a String
-              DateTime date = DateTime.parse(
-                  dateTimeString); // Parse the string to DateTime
+              var dateString = document['date']
+                  as String; // Access the 'date' field as a String
 
-              return ListTile(
-                title:
-                    Text('Date: ${date.toString()}'), // Display your data here
-                // Add more ListTile properties to display additional data
-              );
+              // return ListTile(
+              //   title: document.contains('date') // Check if 'date' field exists
+              //       ? Text('Date: $dateString')
+              //       : Text('Date not available'),
+              // );
             },
           );
         },

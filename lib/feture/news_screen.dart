@@ -145,8 +145,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.assignment_outlined,
               label: 'ประเมินความเสี่ยง',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Show_Test()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => showdata_symptom()));
               }),
           SizedBox(width: 12),
           _iconContainer(
