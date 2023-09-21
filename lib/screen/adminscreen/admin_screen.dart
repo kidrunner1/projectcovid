@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:tracker_covid_v1/model/users.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/drawer_admin.dart';
+
 import 'admin_manager.dart';
 
 class DoctorScreen extends StatefulWidget {
@@ -60,11 +63,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.settings))
+                      icon: const Icon(FontAwesomeIcons.person))
                 ]
               : null,
           backgroundColor: Colors.red[300],
         ),
+        drawer: NavigationAdmin(),
         body: Container());
   }
 }
