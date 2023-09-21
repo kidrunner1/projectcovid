@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/feture/setting.dart';
-import 'package:tracker_covid_v1/screen/main_page.dart';
+import 'package:intl/intl.dart';
 import '../model/users.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Evaluate_Symptoms extends StatefulWidget {
   const Evaluate_Symptoms({super.key});
@@ -81,32 +81,43 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
       }
     }
     if (hasCovidSymptoms) {
-      _showDialog(
+      _showAlert(
         context,
+        topicMessage: 'ผลการประเมินอาการ',
         title: 'อาการเบื้องต้นของผู้ติดเชื้อ!',
-        content: 'คำแนะนำจากการทำแบบประเมินอาการ:\n1.แยกห้องพัก...',
+        content:
+            'คำแนะนำจากการทำแบบประเมินอาการ:\n1) แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น\n(หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2) ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3) หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4) สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5) เว้นระยะห่าง อย่างน้อย 2 เมตร\n6) แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น\n\nคุณต้องการบันทึกอาการโควิดเลยหรือไม่ ? ',
+        image: Image.asset("assets/images/icons/warning.png", height: 100),
       );
     } else if (hasOtherSymptoms) {
       // ignore: use_build_context_synchronously
-      _showDialog(
+      _showAlert(
         context,
+        topicMessage: 'ผลการประเมินอาการ',
         title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
         content: 'แต่อาจจะติดโรคร้ายแรงอื่นๆ',
+        image: Image.asset("assets/images/icons/check.png", height: 100),
       );
     } else {
-      _showDialog(
+      _showAlert(
+        topicMessage: 'ผลการประเมินอาการ',
         context,
         title: 'คุณสุขภาพร่างกายแข็งแรงดี',
         content: null,
+        image: Image.asset("assets/images/icons/check.png", height: 100),
       );
     }
-
     // Check if there are any selected symptoms
     if (selectedSymptoms.isNotEmpty) {
       try {
+        DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+        DateFormat timeFormat = DateFormat("HH:mm:ss");
+        DateTime now = DateTime.now();
         await FirebaseFirestore.instance.collection('evaluate_symptoms').add({
           'symptoms': selectedSymptoms,
           'email': user.email,
+          'date': dateFormat.format(now), // Separate date field
+          'time': timeFormat.format(now), // Separate time field
         });
       } catch (e) {
         print('Error adding data to Firestore: $e');
@@ -221,42 +232,57 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
     }
   }
 
-  void _showDialog(BuildContext context,
-      {required String title, String? content}) {
-    showDialog(
+  void _showAlert(BuildContext context,
+      {required String title,
+      String? content,
+      required,
+      required Image image,
+      required String topicMessage}) {
+    Alert(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title),
-          content: content != null ? Text(content) : null,
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
-                  ),
-                );
-              },
-              child: Text('ใช่'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomePage(),
-                  ),
-                );
-              },
-              child: Text('ไม่'),
-            ),
-          ],
-        );
-      },
-    );
+      image: image,
+      title: "",
+      desc: null,
+      content: Column(children: [
+        Text(
+          topicMessage,
+          style: GoogleFonts.prompt(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        Chip(
+          label: Text(
+            title,
+            style: GoogleFonts.prompt(fontSize: 18, color: Colors.white),
+          ),
+          backgroundColor: Colors.green,
+        ),
+        SizedBox(height: 10),
+        if (content != null)
+          Text(
+            content,
+            style: GoogleFonts.prompt(fontSize: 16),
+          ),
+      ]),
+      buttons: [
+        DialogButton(
+          child: Text(
+            "ใช่",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Color.fromRGBO(0, 179, 134, 1.0),
+        ),
+        DialogButton(
+          child: Text(
+            "ไม่",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+        )
+      ],
+    ).show();
   }
 }

@@ -8,11 +8,13 @@ import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
 import 'package:tracker_covid_v1/screen/call_page.dart';
 import 'package:tracker_covid_v1/screen/check_covid/form_check.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
+import 'package:tracker_covid_v1/screen/showtest.dart';
 
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 
+import '../screen/showdata_symptom.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -143,10 +145,8 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.assignment_outlined,
               label: 'ประเมินความเสี่ยง',
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Evaluate_Symptoms()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Show_Test()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -188,8 +188,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: FontAwesomeIcons.pills,
               label: 'ติดต่อเข้ารับยา',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const FormAppointments()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -220,6 +222,14 @@ class _NewsScreensState extends State<NewsScreens> {
           _iconContainer(
               iconData: FontAwesomeIcons.locationDot,
               label: 'ภายในจังหวัด',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.locationDot,
+              label: 'ประวัติบันทึกอาการ',
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CovidDataScreen()));
