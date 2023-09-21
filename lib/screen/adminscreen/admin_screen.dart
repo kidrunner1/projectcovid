@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:tracker_covid_v1/model/users.dart';
 import 'admin_manager.dart';
 
-class AdminScreen extends StatefulWidget {
+class DoctorScreen extends StatefulWidget {
   final Users user;
-  AdminScreen({Key? key, required this.user}) : super(key: key);
+  DoctorScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
+  State<DoctorScreen> createState() => _DoctorScreenState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
+class _DoctorScreenState extends State<DoctorScreen> {
   late Users user;
   int roleID = 3;
 

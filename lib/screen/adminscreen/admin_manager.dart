@@ -45,7 +45,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("หมอพยาบาล"),
+        title: const Text("ผู้ดูแลระบบ"),
         backgroundColor: Colors.red[300],
       ),
       body: StreamBuilder<List<Users>>(
