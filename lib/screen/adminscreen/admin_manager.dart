@@ -190,13 +190,16 @@ class _AdminScreenState extends State<AdminManagerScreen> {
               'Do you want to delete ${user.email}? This action cannot be undone.'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.prompt(),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: Text('Delete', style: GoogleFonts.prompt()),
               onPressed: () async {
                 await _deleteUser(user);
                 Navigator.of(context).pop();

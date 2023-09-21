@@ -71,7 +71,6 @@ class _NavigatorScreenState extends State<NavigatorScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-             
             ),
             child: Center(
               child: Text(
@@ -123,7 +122,7 @@ class _NavigatorScreenState extends State<NavigatorScreen> {
                       CircleAvatar(
                         radius: 50,
                         child: Icon(Icons.person,
-                            size: 50, color: Colors.grey[400]),
+                            size: 70, color: Colors.grey[400]),
                       ),
                     const SizedBox(height: 20),
                     Text(

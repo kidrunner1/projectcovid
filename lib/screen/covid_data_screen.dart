@@ -59,7 +59,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
           ),
           title: Text(
             provinceData['province'] ?? 'Unknown Province',
-            style: GoogleFonts.robotoSlab(
+            style: GoogleFonts.prompt(
               fontSize: 22,
               color: Colors.deepPurpleAccent,
             ),
@@ -76,7 +76,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                   Expanded(
                     child: Text(
                       'เคสผู้ป่วยใหม่: ${provinceData['new_case'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.roboto(fontSize: 16),
+                      style: GoogleFonts.prompt(fontSize: 16),
                     ),
                   ),
                 ],
@@ -90,7 +90,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                   Expanded(
                     child: Text(
                       'เคสผู้ป่วยทั้งหมด: ${provinceData['total_case'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.roboto(fontSize: 16),
+                      style: GoogleFonts.prompt(fontSize: 16),
                     ),
                   ),
                 ],
@@ -104,7 +104,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                   Expanded(
                     child: Text(
                       'เสียชีวิตทั้งหมด: ${provinceData['total_death'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.roboto(fontSize: 16),
+                      style: GoogleFonts.prompt(fontSize: 16),
                     ),
                   ),
                 ],
@@ -118,8 +118,8 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
               },
               // ignore: sort_child_properties_last
               child: Text(
-                'Close',
-                style: GoogleFonts.robotoCondensed(
+                'ปิด',
+                style: GoogleFonts.prompt(
                   color: Colors.deepPurpleAccent,
                   fontSize: 16,
                 ),
@@ -170,7 +170,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                   ],
                 ),
                 child: TextField(
-                  style: GoogleFonts.roboto(),
+                  style: GoogleFonts.prompt(),
                   decoration: InputDecoration(
                     hintText: 'ค้นหาจังหวัด . . .',
                     prefixIcon: Icon(Icons.search, color: Colors.red[300]),
