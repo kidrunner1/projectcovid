@@ -95,7 +95,8 @@ class _FormCheckState extends State<FormCheck> {
                                     }
                                   },
                                 ),
-                              )),
+                              )
+                              ),
                           const SizedBox(height: 10),
                           Container(
                               margin: const EdgeInsets.only(

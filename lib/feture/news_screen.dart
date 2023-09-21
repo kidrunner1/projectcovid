@@ -4,14 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
-
-import 'package:tracker_covid_v1/screen/call_page.dart';
-import 'package:tracker_covid_v1/screen/check_covid/form_check.dart';
+import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
-import 'package:tracker_covid_v1/screen/track_covid.dart';
+import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
 
 
 class NewsScreens extends StatefulWidget {
@@ -164,7 +162,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'นัดฉีดวัคซีน',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                    MaterialPageRoute(builder: (context) => ScreenVaccine()));
               }),
         ],
       ),
@@ -181,7 +179,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'สายด่วน',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CallPage()));
+                    MaterialPageRoute(builder: (context) => CallPhone()));
               }),
           SizedBox(width: 12),
           _iconContainer(
