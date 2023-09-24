@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Recording {
   final Timestamp? createdAt;
@@ -72,9 +73,9 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: const Text(
+        title: Text(
           "รายละเอียดการบันทึกข้อมูล",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: GoogleFonts.prompt(),
         ),
       ),
       body: StreamBuilder<List<Recording>>(
@@ -98,10 +99,10 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                "No recordings found for this user.",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                "ผู้ใช้นี้ยังไม่ได้ทำการบันทึกผลตรวจประจำวัน.",
+                style: GoogleFonts.prompt(fontSize: 20),
               ),
             );
           }
@@ -110,55 +111,49 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               final recording = snapshot.data![index];
-              return Card(
-                elevation: 3,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  title: Text(
-                    '${recording.result ?? "Unknown result"} - ${recording.temperature ?? "Unknown"}°C',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // Rounded corners
                   ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Weight: ${recording.weight ?? "Unknown"}kg',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[700],
+                  child: Column(
+                    children: [
+                      if (recording.imageUrl != null)
+                        ClipRRect(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20)), // Top rounded corners
+                          child: Image.network(
+                            recording.imageUrl!,
+                            height: 150, // Larger Image
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'Date: ${recording.createdAt?.toDate().toString() ?? "Unknown date"}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                      ListTile(
+                        contentPadding: const EdgeInsets.all(15),
+                        title: Text(
+                            '${recording.result ?? "Unknown result"} - ${recording.temperature ?? "Unknown"}°C',
+                            style: GoogleFonts.prompt(fontSize: 15)),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'น้ำหนัก: ${recording.weight ?? "Unknown"}kg',
+                                  style: GoogleFonts.prompt(fontSize: 15)),
+                              SizedBox(height: 10),
+                              Text(
+                                  'วันที่: ${recording.createdAt?.toDate().toString() ?? "Unknown date"}',
+                                  style: GoogleFonts.prompt(fontSize: 15)),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  leading: recording.imageUrl != null
-                      ? CircleAvatar(
-                          radius: 24,
-                          backgroundImage: NetworkImage(recording.imageUrl!),
-                        )
-                      : CircleAvatar(
-                          radius: 24,
-                          backgroundColor: Colors.deepPurple[100],
-                          child: const Icon(
-                            Icons.image_not_supported,
-                            color: Colors.deepPurple,
-                          ),
-                        ),
                 ),
               );
             },

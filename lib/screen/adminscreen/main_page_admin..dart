@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/details_getdata_dailys.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/getdata_dailys_admin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/details_medicin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/dtails_evaluate_admin.dart';
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
@@ -92,7 +92,8 @@ class _MainPageAdminState extends State<MainPageAdmin> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DetailsEnvaluateAdminScreen()));
+                        builder: (context) =>
+                            const DetailsEnvaluateAdminScreen()));
               }),
           const SizedBox(width: 12),
           _iconContainer(
@@ -130,7 +131,8 @@ class _MainPageAdminState extends State<MainPageAdmin> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const GetdataDailysAdminScreen()));
+                        builder: (context) =>
+                            const GetdataDailysAdminScreen()));
               }),
         ],
       ),
