@@ -4,7 +4,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/feture/news_screen.dart';
+
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
 import '../../database/appoints_db.dart';
