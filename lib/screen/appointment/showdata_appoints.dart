@@ -49,7 +49,7 @@ class _Showdata_appointsState extends State<Showdata_appoints> {
               if (docs.isEmpty) {
                 return const Center(
                   child: Text(
-                    "กรุณาทำการบันทึก\nผลตรวจประจำวัน",
+                    "ว่าง",
                     style: TextStyle(fontSize: 25),
                   ),
                 );
