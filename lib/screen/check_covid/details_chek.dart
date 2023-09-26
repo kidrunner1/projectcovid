@@ -29,6 +29,25 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
     }
   }
 
+  Future<void> clearOldRecords(List<DocumentSnapshot> docs) async {
+    final today = DateTime.now();
+    for (var doc in docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data.containsKey('createdAt')) {
+        final createdAt = (data['createdAt'] as Timestamp).toDate();
+        if (createdAt.year != today.year ||
+            createdAt.month != today.month ||
+            createdAt.day != today.day) {
+          // This record is from another day, delete it.
+          await FirebaseFirestore.instance
+              .collection('checkResults')
+              .doc(doc.id)
+              .delete();
+        }
+      }
+    }
+  }
+
   bool canAddMoreRecords(List<DocumentSnapshot> docs) {
     final today = DateTime.now();
     int count = 0;
@@ -82,6 +101,7 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
               final docs = snapshot.data?.docs ?? [];
               WidgetsBinding.instance?.addPostFrameCallback((_) {
                 docsNotifier.value = docs;
+                clearOldRecords(docs);
               });
 
               if (docs.isEmpty) {
@@ -189,12 +209,11 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
               },
               child: const Icon(Icons.edit),
               backgroundColor: docs.isEmpty || canAddMoreRecords(docs)
-                  ? theme.floatingActionButtonTheme.backgroundColor
+                  ? theme.primaryColor
                   : Colors.grey,
             );
           },
         ),
-        backgroundColor: Colors.pink[50],
       ),
     );
   }
