@@ -8,10 +8,7 @@ import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
-import 'package:tracker_covid_v1/screen/showtest.dart';
-
 import 'package:tracker_covid_v1/screen/track_covid.dart';
-import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
 
 class NewsScreens extends StatefulWidget {

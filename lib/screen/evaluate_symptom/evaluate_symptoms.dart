@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 //import 'package:tracker_covid_v1/feture/news_screen.dart';
 
-import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../model/users.dart';
