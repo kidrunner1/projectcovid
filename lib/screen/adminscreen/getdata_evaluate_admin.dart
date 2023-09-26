@@ -83,22 +83,25 @@ class _DetailsEnvaluateAdminScreenState
                   ),
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   elevation: 5,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(15),
-                    tileColor: Colors.white,
-                    title: Text(
-                      '${users[index].firstName} ${users[index].lastName}',
-                      style: GoogleFonts.prompt(
-                          fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.deepPurple[100],
-                      child: Text(
-                        '${users[index].firstName![0]}${users[index].lastName![0]}',
-                        style: GoogleFonts.prompt(color: Colors.white),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.all(15),
+                      tileColor: Colors.white,
+                      title: Text(
+                        '${users[index].firstName} ${users[index].lastName}',
+                        style: GoogleFonts.prompt(
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.deepPurple[100],
+                        child: Text(
+                          '${users[index].firstName![0]}${users[index].lastName![0]}',
+                          style: GoogleFonts.prompt(color: Colors.white),
+                        ),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios, size: 18),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 18),
                   ),
                 );
               },

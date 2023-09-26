@@ -12,7 +12,7 @@ import 'package:tracker_covid_v1/screen/reset_page.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

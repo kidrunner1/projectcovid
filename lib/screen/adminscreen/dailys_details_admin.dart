@@ -72,7 +72,7 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.red[300],
         title: Text(
           "รายละเอียดการบันทึกข้อมูล",
           style: GoogleFonts.prompt(),
@@ -123,7 +123,7 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
                       if (recording.imageUrl != null)
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20)), // Top rounded corners
+                              top: Radius.circular(15)), // Top rounded corners
                           child: Image.network(
                             recording.imageUrl!,
                             height: 150, // Larger Image

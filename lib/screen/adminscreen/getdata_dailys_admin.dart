@@ -60,9 +60,9 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
         stream: usersStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 "No users found.",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -75,18 +75,18 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
             itemBuilder: (context, index) {
               final user = snapshot.data![index];
               return Card(
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: ListTile(
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   leading: CircleAvatar(
                     backgroundColor: Colors.deepPurple[100],
                     child: Text(
                       '${user.firstName!.substring(0, 1)}${user.lastName!.substring(0, 1)}',
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: const TextStyle(color: Colors.deepPurple),
                     ),
                   ),
                   title: Text(
@@ -94,8 +94,8 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
                     style: GoogleFonts.prompt(
                         fontSize: 20, fontWeight: FontWeight.w500),
                   ),
-                  trailing:
-                      Icon(Icons.arrow_forward_ios, color: Colors.deepPurple),
+                  trailing: const Icon(Icons.arrow_forward_ios,
+                      color: Colors.deepPurple),
                   onTap: () {
                     Navigator.push(
                       context,
