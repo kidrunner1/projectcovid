@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
-import 'package:intl/intl.dart'; 
+//import 'package:intl/intl.dart';
 
 class ScreenVaccine extends StatefulWidget {
   @override
@@ -13,8 +13,14 @@ class _ScreenVaccineState extends State<ScreenVaccine> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
 
-  final List<String> vaccines = ['Sinavac', 'Pfizer', 'Moderna', 'AstraZeneca', 'Sinopharm'];
-_selectDate(BuildContext context) async {
+  final List<String> vaccines = [
+    'Sinavac',
+    'Pfizer',
+    'Moderna',
+    'AstraZeneca',
+    'Sinopharm'
+  ];
+  _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -28,8 +34,7 @@ _selectDate(BuildContext context) async {
     } else {
       print("Date is not selected");
     }
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,26 +79,28 @@ _selectDate(BuildContext context) async {
             ),
             ElevatedButton(
               onPressed: () => _selectDate(context),
-              child: Text('เลือกวันที่: ${selectedDate.toLocal().toString().split(' ')[0]}'),
+              child: Text(
+                  'เลือกวันที่: ${selectedDate.toLocal().toString().split(' ')[0]}'),
             ),
             ElevatedButton(
               onPressed: () => _selectTime(context),
               child: Text('เลือกเวลา: ${selectedTime.format(context)}'),
             ),
             ElevatedButton(
-  onPressed: () {
-    print('โรงพยาบาลที่เลือก: $selectedHospital');
-    print('วัคซีนที่เลือก: $selectedVaccine');
-    print('วันที่รับวัคซีน: ${selectedDate.toLocal().toString().split(' ')[0]}');
-    print('เวลาที่รับวัคซีน: ${selectedTime.format(context)}');
+              onPressed: () {
+                print('โรงพยาบาลที่เลือก: $selectedHospital');
+                print('วัคซีนที่เลือก: $selectedVaccine');
+                print(
+                    'วันที่รับวัคซีน: ${selectedDate.toLocal().toString().split(' ')[0]}');
+                print('เวลาที่รับวัคซีน: ${selectedTime.format(context)}');
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => VaccineRecordsPage()),
-    );
-  },
-  child: Text('บันทึก'),
-)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VaccineRecordsPage()),
+                );
+              },
+              child: Text('บันทึก'),
+            )
           ],
         ),
       ),
@@ -101,7 +108,6 @@ _selectDate(BuildContext context) async {
   }
 }
 
-_selectTime(BuildContext context) {
-}
+_selectTime(BuildContext context) {}
 
 void main() => runApp(MaterialApp(home: ScreenVaccine()));

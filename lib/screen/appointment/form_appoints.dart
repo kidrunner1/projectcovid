@@ -4,7 +4,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tracker_covid_v1/feture/news_screen.dart';
-import 'package:tracker_covid_v1/screen/startscreen.dart';
+//import 'package:tracker_covid_v1/screen/startscreen.dart';
 
 import '../../database/appoints_db.dart';
 
@@ -71,10 +71,7 @@ class _FormAppointments extends State<FormAppointments> {
                           TextStyle(color: Colors.black.withOpacity(0.8)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide:
-                            const BorderSide(width: 3)
-                      ),
-                      
+                          borderSide: const BorderSide(width: 3)),
                     ),
                     validator:
                         RequiredValidator(errorText: "กรุณาระบุวัน/เดือน/ปี"),
@@ -201,9 +198,7 @@ class _FormAppointments extends State<FormAppointments> {
                           TextStyle(color: Colors.black.withOpacity(0.8)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                           borderSide:
-                             const BorderSide(width: 3)
-                      ),
+                          borderSide: const BorderSide(width: 3)),
                     ),
                     validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
                   ),
@@ -222,9 +217,7 @@ class _FormAppointments extends State<FormAppointments> {
                           TextStyle(color: Colors.black.withOpacity(0.8)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide:
-                             const BorderSide(width: 3)
-                      ),
+                          borderSide: const BorderSide(width: 3)),
                     ),
                     validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
                   ),
@@ -268,7 +261,10 @@ class _FormAppointments extends State<FormAppointments> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => NewsScreens()));
+                                      builder: (context) => NewsScreens(
+                                            symptomData: null,
+                                            selectedDate: null,
+                                          )));
                             },
                           ),
                         ]))
