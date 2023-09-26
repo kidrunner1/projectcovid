@@ -4,7 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../model/users.dart';
+//import 'package:tracker_covid_v1/feture/news_screen.dart';
+import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
+import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
+import 'package:tracker_covid_v1/screen/main_page.dart';
+import '../../model/users.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Evaluate_Symptoms extends StatefulWidget {
@@ -16,8 +20,10 @@ class Evaluate_Symptoms extends StatefulWidget {
 
 class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  User? currentUser = FirebaseAuth.instance.currentUser;
   Users user = Users(uid: "gg");
   Map<String, String> selectedSymptoms = {};
+
   @override
   void initState() {
     // TODO: implement initState
@@ -114,11 +120,21 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         DateFormat timeFormat = DateFormat("HH:mm:ss");
         DateTime now = DateTime.now();
         await FirebaseFirestore.instance.collection('evaluate_symptoms').add({
+          'userID': currentUser?.uid,
           'symptoms': selectedSymptoms,
           'email': user.email,
           'date': dateFormat.format(now), // Separate date field
           'time': timeFormat.format(now), // Separate time field
         });
+        // var data;
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => GetData_EvaluateSymptom(
+        //             symptomData: data,
+        //             selectedDate: data,
+        //           )),
+        // );
       } catch (e) {
         print('Error adding data to Firestore: $e');
       }
@@ -268,7 +284,13 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
             "ใช่",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            // Close the dialog and navigate to DetailsCheckScreen
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return DetailsCheckScreen();
+            }));
+          },
           color: Color.fromRGBO(0, 179, 134, 1.0),
         ),
         DialogButton(
@@ -276,7 +298,13 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
             "ไม่",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            // Close the dialog and navigate to NewsScreens
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return MyHomePage();
+            }));
+          },
           gradient: LinearGradient(colors: [
             Color.fromRGBO(116, 116, 191, 1.0),
             Color.fromRGBO(52, 138, 199, 1.0)
