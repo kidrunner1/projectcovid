@@ -1,25 +1,37 @@
-
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Showdata_appoints extends StatefulWidget {
+class Showdata extends StatefulWidget {
   @override
-  _Showdata_appointsState createState() => _Showdata_appointsState();
+  _ShowdataState createState() => _ShowdataState();
 }
 
-class _Showdata_appointsState extends State<Showdata_appoints> {
-  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+class _ShowdataState extends State<Showdata> {
+  Stream<QuerySnapshot>? _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      _stream = FirebaseFirestore.instance
+          .collection('appointments')
+          .where('userID', isEqualTo: userId)
+          .orderBy('date',
+              descending: true) // Most recent appointments at the top
+          .snapshots();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(
-      textTheme: GoogleFonts.promptTextTheme(Theme.of(context).textTheme),
       primaryColor: Colors.red[300],
-      hintColor: Colors.deepPurpleAccent,
+      backgroundColor: Colors.pink[50],
     );
 
     return Theme(
@@ -33,12 +45,9 @@ class _Showdata_appointsState extends State<Showdata_appoints> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("appointments")
-                .where("userID", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          child: StreamBuilder<QuerySnapshot>(
+            stream: _stream,
+            builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(child: Text("มีบางอย่างผิดพลาด"));
               }
@@ -49,63 +58,56 @@ class _Showdata_appointsState extends State<Showdata_appoints> {
               if (docs.isEmpty) {
                 return const Center(
                   child: Text(
-                    "ว่าง",
-                    style: TextStyle(fontSize: 25),
+                    "ไม่มีรายการนัดหมาย",
+                    style: TextStyle(fontSize: 20),
                   ),
                 );
               }
-return ListView.builder(
-  itemCount: docs.length,
-  itemBuilder: (BuildContext context, int index) {
-    DocumentSnapshot doc = docs[index];
-
-    // Check if the document data is not null
-    Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-    if (data == null) {
-      return Container(); // Return an empty container if data is null
-    }
-
-    String date = data['date'] ?? "Unknown Date";
-    String firstName = data['first_name'] ?? "Unknown";
-    String lastName = data['last_name'] ?? "";
-    String time = data['time'] ?? "Unknown Time";
-
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: ListTile(
-          title: Text(
-            date,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          subtitle: Text("$firstName $lastName at $time"),
-          trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => GetdataAppoints(
-                  getappoints: data,
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  },
-);
-
+              return ListView.builder(
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data = docs[index].data() as Map<String, dynamic>;
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.calendar_month,size: 40,color: Colors.black,),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      title: Text(
+                        'การติดต่อเข้ารับยา',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'วันที่: ${data['date']}\nเวลา: ${data['time']}', // Date and time as subtopics
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GetdataAppoints(getappoints: data),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
             },
           ),
         ),
+        backgroundColor: theme.backgroundColor,
       ),
     );
   }

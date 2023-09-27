@@ -1,5 +1,3 @@
-
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +62,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
           "ติดต่อเข้ารับยา",
           style: TextStyle(fontSize: 20),
         ),
-        backgroundColor: const Color.fromARGB(255, 239, 154, 154),
+        backgroundColor: Colors.red[300],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -91,7 +89,8 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       borderSide: const BorderSide(width: 3),
                     ),
                   ),
-                  validator: RequiredValidator(errorText: "กรุณาระบุวัน/เดือน/ปี"),
+                  validator:
+                      RequiredValidator(errorText: "กรุณาระบุวัน/เดือน/ปี"),
                   readOnly: true,
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
@@ -102,7 +101,10 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       lastDate: DateTime(2101),
                     );
                     if (pickedDate != null) {
-                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                      int yearInBE = pickedDate.year + 543;
+                      String formattedDate =
+                          DateFormat('d MMMM', 'th_TH').format(pickedDate) +
+                              ' $yearInBE';
                       dateController.text = formattedDate;
                     } else {
                       print("Date is not selected");
@@ -113,7 +115,10 @@ class _FormAppointmentsState extends State<FormAppointments> {
               const SizedBox(height: 35),
               const Text(
                 'ช่วงเวลาเข้ารับยา',
-                style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -124,8 +129,8 @@ class _FormAppointmentsState extends State<FormAppointments> {
                         Expanded(
                           child: RadioListTile(
                             activeColor: Colors.purple,
-                            title: Text('12.00น.'),
-                            value: '12.00น.',
+                            title: Text('09.00 น.'),
+                            value: '09.00 น.',
                             groupValue: selectedTime,
                             onChanged: (val) {
                               setState(() {
@@ -137,8 +142,8 @@ class _FormAppointmentsState extends State<FormAppointments> {
                         Expanded(
                           child: RadioListTile(
                             activeColor: Colors.purple,
-                            title: Text('13.00น.'),
-                            value: '13.00น.',
+                            title: Text('10.00 น.'),
+                            value: '10.00 น.',
                             groupValue: selectedTime,
                             onChanged: (val) {
                               setState(() {
@@ -154,8 +159,8 @@ class _FormAppointmentsState extends State<FormAppointments> {
                         Expanded(
                           child: RadioListTile(
                             activeColor: Colors.purple,
-                            title: Text('14.00น.'),
-                            value: '14.00น.',
+                            title: Text('11.00 น.'),
+                            value: '11.00 น.',
                             groupValue: selectedTime,
                             onChanged: (val) {
                               setState(() {
@@ -167,8 +172,8 @@ class _FormAppointmentsState extends State<FormAppointments> {
                         Expanded(
                           child: RadioListTile(
                             activeColor: Colors.purple,
-                            title: Text('15.00น.'),
-                            value: '15.00น.',
+                            title: Text('13.00 น.'),
+                            value: '13.00 น.',
                             groupValue: selectedTime,
                             onChanged: (val) {
                               setState(() {
@@ -185,7 +190,10 @@ class _FormAppointmentsState extends State<FormAppointments> {
               const SizedBox(height: 35),
               const Text(
                 'รายละเอียดผู้นัดรับ',
-                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
