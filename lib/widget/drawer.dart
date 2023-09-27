@@ -192,7 +192,7 @@ Widget buildMenuItems(BuildContext context) => Container(
               await _auth.signOut();
               // ignore: use_build_context_synchronously
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
             } catch (e) {
               // Show an error message to the user
             }

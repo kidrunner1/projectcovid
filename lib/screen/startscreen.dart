@@ -38,12 +38,15 @@ class _StartScreenState extends State<StartScreen> {
                         width: 220,
                       ),
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text(
-                      "ระบบจัดการสถานะการณ์ COVID-19",
+                      " COVID-19\nSave Health",
                       style: GoogleFonts.prompt(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red[300]),
                     ),
                     const SizedBox(height: 40),
                     Stack(

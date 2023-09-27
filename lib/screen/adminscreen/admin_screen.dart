@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/model/users.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/drawer_admin.dart';
-
+import 'package:tracker_covid_v1/screen/adminscreen/main_page_admin..dart';
+import 'package:tracker_covid_v1/screen/profile_page.dart';
 import 'admin_manager.dart';
 
 class DoctorScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class DoctorScreen extends StatefulWidget {
 class _DoctorScreenState extends State<DoctorScreen> {
   late Users user;
   int roleID = 3;
+  int _currentIndex = 0; // For BottomNavigationBar
 
   @override
   void initState() {
@@ -26,49 +28,79 @@ class _DoctorScreenState extends State<DoctorScreen> {
     roleID = user.role ?? 3;
   }
 
-  Future<void> _updateUserRole(String uid, int role) async {
-    await FirebaseFirestore.instance.collection('users').doc(uid).update({
-      'role': role,
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
     });
   }
 
-  Future<void> _deleteUser(Users user) async {
-    await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
-    // Note: You should also handle deleting the user from Firebase Auth if necessary.
-  }
-
-  Stream<List<Users>> _getUsersStream() {
-    return FirebaseFirestore.instance.collection('users').snapshots().map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => Users.fromDocument(doc),
-              )
-              .toList(),
-        );
+  Widget getScreen(int index) {
+    switch (index) {
+      case 0:
+        return MainPageAdmin();
+      case 1:
+        return SettingsScreen();
+      case 2:
+        return ProfileScreen();
+      default:
+        return MainPageAdmin();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("หมอพยาบาล"),
-          actions: roleID == 1
-              ? [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AdminManagerScreen(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(FontAwesomeIcons.person))
-                ]
-              : null,
-          backgroundColor: Colors.red[300],
+      appBar: AppBar(
+        title: const Text("หมอพยาบาล"),
+        actions: roleID == 1
+            ? [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminManagerScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(FontAwesomeIcons.userCog),
+                ),
+              ]
+            : null,
+        backgroundColor: Colors.red[300],
+      ),
+      drawer: NavigationAdmin(),
+      body: getScreen(_currentIndex), // Call the function here
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.home),
+            label: 'หน้าหลัก',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.gear),
+            label: 'ตั่่งค่า',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.person),
+            label: 'ข้อมูลส่วนตัว',
+          ),
+        ],
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.red[400],
+        selectedItemColor: Colors.grey[300],
+        unselectedItemColor: Colors.white70,
+        unselectedLabelStyle: GoogleFonts.prompt(
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 12,
         ),
-        drawer: NavigationAdmin(),
-        body: Container());
+        selectedLabelStyle: GoogleFonts.prompt(
+          color: Colors.deepPurple.shade50,
+          fontSize: 14,
+        ),
+      ),
+    );
   }
 }

@@ -2,16 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/feture/setting.dart';
+
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
 import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
-
+import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
-import 'package:tracker_covid_v1/screen/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
-
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -145,7 +143,7 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Evaluate_Symptoms()));
+                        builder: (context) => showdata_symptom()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -223,6 +221,14 @@ class _NewsScreensState extends State<NewsScreens> {
           _iconContainer(
               iconData: FontAwesomeIcons.locationDot,
               label: 'ภายในจังหวัด',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
+              }),
+          SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.locationDot,
+              label: 'ประวัติบันทึกอาการ',
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CovidDataScreen()));

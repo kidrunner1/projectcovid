@@ -318,7 +318,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   backgroundColor: Colors.red.shade300),
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child: Text("ลงทะเบียน",
+                                child: Text("สร้างบัญชีผู้ใช้",
                                     style: GoogleFonts.prompt(
                                         fontSize: 25, color: Colors.white)),
                               ),
