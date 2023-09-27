@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/details_envaluate_admin.dart';
 
 class User {
   final String? id; // ID field
@@ -11,7 +12,7 @@ class User {
 
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      id: doc.id, // Fetch ID
+      id: doc.id,
       firstName: doc['firstName'],
       lastName: doc['lastName'],
     );
@@ -85,22 +86,43 @@ class _DetailsEnvaluateAdminScreenState
                   elevation: 5,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(15),
-                      tileColor: Colors.white,
-                      title: Text(
-                        '${users[index].firstName} ${users[index].lastName}',
-                        style: GoogleFonts.prompt(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.deepPurple[100],
-                        child: Text(
-                          '${users[index].firstName![0]}${users[index].lastName![0]}',
-                          style: GoogleFonts.prompt(color: Colors.white),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GetDataenvaluateScreen(),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.deepPurple[100],
+                              child: Text(
+                                '${users[index].firstName![0]}${users[index].lastName![0]}',
+                                style: GoogleFonts.prompt(color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              '${users[index].firstName} ${users[index].lastName}',
+                              style: GoogleFonts.prompt(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 18),
+                          ],
                         ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios, size: 18),
                     ),
                   ),
                 );
@@ -113,3 +135,4 @@ class _DetailsEnvaluateAdminScreenState
     );
   }
 }
+

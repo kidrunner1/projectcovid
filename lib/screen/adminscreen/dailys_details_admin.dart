@@ -134,7 +134,7 @@ class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
                       ListTile(
                         contentPadding: const EdgeInsets.all(15),
                         title: Text(
-                            '${recording.result ?? "Unknown result"} - ${recording.temperature ?? "Unknown"}°C',
+                            '${recording.result ?? "Unknown result"}  ${recording.temperature ?? "Unknown"}°C',
                             style: GoogleFonts.prompt(fontSize: 15)),
                         subtitle: Padding(
                           padding: const EdgeInsets.only(top: 10),

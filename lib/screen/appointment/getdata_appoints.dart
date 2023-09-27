@@ -5,7 +5,8 @@ import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 
 class GetdataAppoints extends StatefulWidget {
   final Map<String, dynamic> getappoints;
-  const GetdataAppoints({Key? key, required this.getappoints}) : super(key: key);
+  const GetdataAppoints({Key? key, required this.getappoints})
+      : super(key: key);
 
   @override
   _GetdataAppointsState createState() => _GetdataAppointsState();
@@ -37,42 +38,41 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
             child: Column(
               children: [
                 Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 60),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 60),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                         Text(
-                                    "วันที่เข้ารับยา : ${widget.getappoints['date'] ?? 'Not available'}", 
-                                    style: _textStyle,
-                                  ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  "เวลา : ${widget.getappoints['time'] ?? 'Not available'}",
-                                  style: _textStyle,
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  "ชื่อ : ${widget.getappoints['first_name'] ?? 'Not available'}  ${widget.getappoints['last_name'] ?? 'Not available'}",
-                                  style: _textStyle,
-                                ),
-                                 const SizedBox(height: 40),
-                    AnimatedButton(
-                      text: 'ปิด',
-                      color: Colors.blueGrey,
-                      pressEvent: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Showdata(),
-                          ),
-                        );
-                      },
-                    ),
+                        Text(
+                          "วันที่เข้ารับยา : ${widget.getappoints['date'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "เวลา : ${widget.getappoints['time'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "ชื่อ : ${widget.getappoints['first_name'] ?? 'Not available'}  ${widget.getappoints['last_name'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 40),
+                        AnimatedButton(
+                          text: 'ปิด',
+                          color: Colors.blueGrey,
+                          pressEvent: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Showdata_appoints()));
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -86,4 +86,3 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
     );
   }
 }
-

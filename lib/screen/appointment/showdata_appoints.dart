@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Showdata extends StatefulWidget {
+class Showdata_appoints extends StatefulWidget {
   @override
   _ShowdataState createState() => _ShowdataState();
 }
 
-class _ShowdataState extends State<Showdata> {
+class _ShowdataState extends State<Showdata_appoints> {
   Stream<QuerySnapshot>? _stream;
 
   @override
@@ -74,12 +74,16 @@ class _ShowdataState extends State<Showdata> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ListTile(
-                      leading: Icon(Icons.calendar_month,size: 40,color: Colors.black,),
+                      leading: const Icon(
+                        Icons.calendar_month,
+                        size: 40,
+                        color: Colors.black,
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
-                      title: Text(
+                      title: const Text(
                         'การติดต่อเข้ารับยา',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         ),
@@ -92,7 +96,7 @@ class _ShowdataState extends State<Showdata> {
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
@@ -107,7 +111,7 @@ class _ShowdataState extends State<Showdata> {
             },
           ),
         ),
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.colorScheme.background,
       ),
     );
   }
