@@ -68,7 +68,7 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Showdata(),
+                            builder: (context) => Showdata_appoints(),
                           ),
                         );
                       },

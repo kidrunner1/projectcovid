@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
+import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
@@ -215,7 +216,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'การนัดของคุณ',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
+                    MaterialPageRoute(builder: (context) => Showdata_appoints()));
               }),
           SizedBox(width: 12),
           _iconContainer(

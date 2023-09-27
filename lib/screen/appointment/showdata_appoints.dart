@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Showdata extends StatefulWidget {
+class Showdata_appoints extends StatefulWidget {
   @override
   _ShowdataState createState() => _ShowdataState();
 }
 
-class _ShowdataState extends State<Showdata> {
+class _ShowdataState extends State<Showdata_appoints> {
   Stream<QuerySnapshot>? _stream;
 
   @override
