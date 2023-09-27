@@ -101,14 +101,15 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         context,
         topicMessage: 'ผลการประเมินอาการ',
         title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
-        content: 'แต่อาจจะติดโรคร้ายแรงอื่นๆ',
-        image: Image.asset("assets/images/icons/check.png", height: 100),
+        content:
+            '   แต่อาจจะเสี่ยงเป็นโรคร้ายแรงอื่นๆ\nคำแนะนำจากการประเมินอาการ : \n ***ถ้าหากมีอาการข้างเคียงที่รุนแรง ***\n       แนะนำให้รีบเข้าพบแพทย์ทันที!! ',
+        image: Image.asset("assets/images/icons/warning.png", height: 100),
       );
     } else {
       _showAlert(
         topicMessage: 'ผลการประเมินอาการ',
         context,
-        title: 'คุณสุขภาพร่างกายแข็งแรงดี',
+        title: 'ยินดีด้วย!! ตอนนี้คุณสุขภาพร่างกายแข็งแรงดี',
         content: null,
         image: Image.asset("assets/images/icons/check.png", height: 100),
       );
@@ -116,7 +117,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
     // Check if there are any selected symptoms
     if (selectedSymptoms.isNotEmpty) {
       try {
-        DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = DateFormat("yyy-MM-dd");
         DateFormat timeFormat = DateFormat("HH:mm:ss");
         DateTime now = DateTime.now();
         await FirebaseFirestore.instance.collection('evaluate_symptoms').add({

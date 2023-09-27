@@ -39,7 +39,7 @@ class _StartScreenState extends State<StartScreen> {
                       ),
                     ),
                     Text(
-                      "ระบบจัดการสถานะการณ์ COVID-19",
+                      "  COVID-19\nSave Health",
                       style: GoogleFonts.prompt(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
