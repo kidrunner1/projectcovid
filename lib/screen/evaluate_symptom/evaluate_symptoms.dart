@@ -287,7 +287,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           onPressed: () {
             // Close the dialog and navigate to DetailsCheckScreen
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
               return showdata_symptom();
             }));
           },
@@ -301,7 +302,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           onPressed: () {
             // Close the dialog and navigate to NewsScreens
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
               return MyHomePage();
             }));
           },

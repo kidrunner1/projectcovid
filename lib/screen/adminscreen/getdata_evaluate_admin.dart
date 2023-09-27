@@ -42,8 +42,26 @@ class _DetailsEnvaluateAdminScreenState
         .collection('users')
         .where('role', isEqualTo: 3)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => User.fromDocument(doc)).toList());
+        .asyncMap((snapshot) async {
+      var evaluatedUsers = <User>[];
+      for (var doc in snapshot.docs) {
+        var user = User.fromDocument(doc);
+        var hasEvaluated = await _userHasEvaluated(user.id!);
+        if (hasEvaluated) {
+          evaluatedUsers.add(user);
+        }
+      }
+      return evaluatedUsers;
+    });
+  }
+
+  Future<bool> _userHasEvaluated(String userId) async {
+    var evaluationSnapshot = await FirebaseFirestore.instance
+        .collection('evaluate_symptoms')
+        .where('userID', isEqualTo: userId)
+        .get();
+
+    return evaluationSnapshot.docs.isNotEmpty;
   }
 
   @override
@@ -91,8 +109,8 @@ class _DetailsEnvaluateAdminScreenState
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                GetDataenvaluateScreen(),
+                            builder: (context) => GetDataenvaluateScreen(
+                                userId: users[index].id!),
                           ),
                         );
                       },
@@ -135,4 +153,3 @@ class _DetailsEnvaluateAdminScreenState
     );
   }
 }
-

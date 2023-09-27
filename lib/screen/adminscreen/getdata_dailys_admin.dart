@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/dailys_details_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/details_envaluate_admin.dart';
 
 class User {
   final String? id; // ID field
@@ -12,7 +12,7 @@ class User {
 
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      id: doc.id, // Fetch ID
+      id: doc.id,
       firstName: doc['firstName'],
       lastName: doc['lastName'],
     );
@@ -20,7 +20,7 @@ class User {
 }
 
 class GetdataDailysAdminScreen extends StatefulWidget {
-  const GetdataDailysAdminScreen({Key? key}) : super(key: key); // Adjusted
+  const GetdataDailysAdminScreen({Key? key}) : super(key: key);
 
   @override
   State<GetdataDailysAdminScreen> createState() =>
@@ -41,77 +41,114 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
         .collection('users')
         .where('role', isEqualTo: 3)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => User.fromDocument(doc)).toList());
+        .asyncMap((snapshot) async {
+      var usersWithResults = <User>[];
+      for (var doc in snapshot.docs) {
+        var user = User.fromDocument(doc);
+        var hasResults = await _userHasDailyResults(user.id!);
+        if (hasResults) {
+          usersWithResults.add(user);
+        }
+      }
+      return usersWithResults;
+    });
+  }
+
+  Future<bool> _userHasDailyResults(String userId) async {
+    var resultsSnapshot = await FirebaseFirestore.instance
+        .collection('checkResults')
+        .where('userID', isEqualTo: userId)
+        .get();
+
+    return resultsSnapshot.docs.isNotEmpty;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red[300],
         title: Text(
           "รายละเอียดผู้ป่วยประจำวัน",
-          style: GoogleFonts.prompt(),
+          style: GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        elevation: 0.0, // Remove shadow
+        backgroundColor: Colors.red[300],
       ),
       body: StreamBuilder<List<User>>(
         stream: usersStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text(
+              'Error: ${snapshot.error}',
+              style: GoogleFonts.prompt(fontSize: 16, color: Colors.redAccent),
+            ));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text(
-                "No users found.",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final user = snapshot.data![index];
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.deepPurple[100],
-                    child: Text(
-                      '${user.firstName!.substring(0, 1)}${user.lastName!.substring(0, 1)}',
-                      style: const TextStyle(color: Colors.deepPurple),
-                    ),
+            return Center(
+                child: Text(
+              'No users found.',
+              style: GoogleFonts.prompt(fontSize: 16),
+            ));
+          } else {
+            List<User> users = snapshot.data!;
+            return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  title: Text(
-                    '${user.firstName} ${user.lastName}',
-                    style: GoogleFonts.prompt(
-                        fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios,
-                      color: Colors.deepPurple),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DailyDetailsAdminScreen(
-                          userId: user.id!,
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  elevation: 5,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GetDataenvaluateScreen(
+                                userId: users[index].id!),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.deepPurple[100],
+                              child: Text(
+                                '${users[index].firstName![0]}${users[index].lastName![0]}',
+                                style: GoogleFonts.prompt(color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              '${users[index].firstName} ${users[index].lastName}',
+                              style: GoogleFonts.prompt(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 18),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                ),
-              );
-            },
-          );
+                    ),
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
+      backgroundColor: Colors.red[50],
     );
   }
 }

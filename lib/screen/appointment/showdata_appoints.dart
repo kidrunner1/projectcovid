@@ -96,7 +96,7 @@ class _ShowdataState extends State<Showdata_appoints> {
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>

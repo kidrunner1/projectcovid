@@ -67,7 +67,7 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
                           text: 'ปิด',
                           color: Colors.blueGrey,
                           pressEvent: () {
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Showdata_appoints()));

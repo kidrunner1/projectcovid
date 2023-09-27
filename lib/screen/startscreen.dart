@@ -42,7 +42,7 @@ class _StartScreenState extends State<StartScreen> {
                       height: 30,
                     ),
                     Text(
-                      " COVID-19\nSave Health",
+                      "COVID-19\nSave Health",
                       style: GoogleFonts.prompt(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

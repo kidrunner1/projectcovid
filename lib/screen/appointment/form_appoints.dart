@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker_covid_v1/feture/news_screen.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
+import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../database/appoints_db.dart';
 
 class FormAppointments extends StatefulWidget {
@@ -271,7 +272,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NewsScreens(),
+                            builder: (context) => MyHomePage(),
                           ),
                         );
                       },
