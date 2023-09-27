@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 // Create a new Dart file for the EditSymptomScreen and import it here
 
@@ -66,6 +65,7 @@ class _GetData_EvaluateSymptomState extends State<GetData_EvaluateSymptom> {
         ),
       ),
       body: Center(
+        // ignore: unnecessary_null_comparison
         child: symptomData != null && symptomData.isNotEmpty
             ? ListView.builder(
                 itemCount: symptomData.length,

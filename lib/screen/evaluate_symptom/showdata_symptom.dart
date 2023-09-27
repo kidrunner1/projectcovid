@@ -223,7 +223,7 @@ class _showdata_symptomState extends State<showdata_symptom> {
           }
         },
         backgroundColor: Colors.red[500],
-        child: Icon(Icons.add),
+        child: Icon(Icons.edit),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: buildBottomNavigationBar(),

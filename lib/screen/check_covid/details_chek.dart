@@ -12,6 +12,8 @@ class DetailsCheckScreen extends StatefulWidget {
 
 class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
   Stream<QuerySnapshot>? _stream;
+  final ValueNotifier<List<DocumentSnapshot>> docsNotifier =
+      ValueNotifier<List<DocumentSnapshot>>([]);
 
   @override
   void initState() {
@@ -21,30 +23,72 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
       _stream = FirebaseFirestore.instance
           .collection('checkResults')
           .where('userID', isEqualTo: userId)
-          .orderBy('createdAt',
-              descending: false) // This orders the results by the timestamp
+          .orderBy('createdAt', descending: false)
           .snapshots();
     }
   }
 
-  String _ordinal(int n) {
-    if (n == 1) return "1";
-    if (n == 2) return "2";
-    if (n == 3) return "3";
-    return "${n}";
+  Future<void> clearOldRecords(List<DocumentSnapshot> docs) async {
+    final today = DateTime.now();
+    for (var doc in docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data.containsKey('createdAt')) {
+        final createdAt = (data['createdAt'] as Timestamp).toDate();
+        if (createdAt.year != today.year ||
+            createdAt.month != today.month ||
+            createdAt.day != today.day) {
+          await FirebaseFirestore.instance
+              .collection('checkResults')
+              .doc(doc.id)
+              .delete();
+        }
+      }
+    }
+  }
+
+  bool canAddMoreRecords(List<DocumentSnapshot> docs) {
+    final today = DateTime.now();
+    int count = 0;
+    for (var doc in docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data.containsKey('createdAt')) {
+        final createdAt = (data['createdAt'] as Timestamp).toDate();
+        if (createdAt.year == today.year &&
+            createdAt.month == today.month &&
+            createdAt.day == today.day) {
+          count++;
+        }
+      }
+    }
+    return count < 3;
+  }
+
+  Map<String, List<DocumentSnapshot>> _groupByDate(
+      List<DocumentSnapshot> docs) {
+    Map<String, List<DocumentSnapshot>> groupedData = {};
+    for (var doc in docs) {
+      final date = (doc['createdAt'] as Timestamp)
+          .toDate()
+          .toIso8601String()
+          .split('T')[0];
+      if (!groupedData.containsKey(date)) {
+        groupedData[date] = [];
+      }
+      groupedData[date]!.add(doc);
+    }
+    return groupedData;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Theme customization
     final theme = Theme.of(context).copyWith(
       textTheme: GoogleFonts.promptTextTheme(Theme.of(context).textTheme),
       primaryColor: Colors.red[300],
-      hintColor: Colors.deepPurpleAccent,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.deepPurpleAccent,
+      hintColor: Colors.red[300],
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.red[300],
       ),
-      iconTheme: IconThemeData(color: Colors.pink[50]),
+      iconTheme: IconThemeData(color: Colors.red[50]),
     );
 
     return Theme(
@@ -62,24 +106,35 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
             stream: _stream,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
+                print("Firestore Error: ${snapshot.error}");
                 return const Center(child: Text("มีบางอย่างผิดพลาด"));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
+
               final docs = snapshot.data?.docs ?? [];
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                docsNotifier.value = docs;
+                clearOldRecords(docs);
+              });
+
               if (docs.isEmpty) {
                 return const Center(
-                    child: Text(
-                  "กรุณาทำการบันทึก\nผลตรวจประจำวัน",
-                  style: TextStyle(fontSize: 25),
-                ));
+                    child: Text("กรุณาทำการบันทึก\nผลตรวจประจำวัน",
+                        style: TextStyle(fontSize: 25)));
               }
+
+              final groupedData = _groupByDate(docs);
+
               return ListView.builder(
-                itemCount: docs.length,
+                itemCount: groupedData.length,
                 itemBuilder: (context, index) {
+                  final date = groupedData.keys.elementAt(index);
+                  final data = groupedData[date]!;
+
                   return Card(
-                    margin: const EdgeInsets.only(bottom: 20),
+                    margin: const EdgeInsets.only(bottom: 15),
                     elevation: 5,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -87,21 +142,17 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
-                      title: Text(
-                        'บันทึกครั้งที่  ${_ordinal(index + 1)}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
+                      title: Text('บันทึกวันที่  $date',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 18)),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => GetDataCheckScreen(
-                                data:
-                                    docs[index].data() as Map<String, dynamic>),
+                              data: data[0].data() as Map<String, dynamic>,
+                            ),
                           ),
                         );
                       },
@@ -112,13 +163,63 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
             },
           ),
         ),
-        backgroundColor: Colors.pink[50],
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => FormCheck()));
+        backgroundColor: Colors.red[50],
+        floatingActionButton: ValueListenableBuilder<List<DocumentSnapshot>>(
+          valueListenable: docsNotifier,
+          builder: (context, docs, child) {
+            return FloatingActionButton(
+              onPressed: () {
+                if (docs.isEmpty || canAddMoreRecords(docs)) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => FormCheck()));
+                } else if (!canAddMoreRecords(docs)) {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      content: Container(
+                        height: 250,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.error_outline,
+                                color: Colors.yellow, size: 70),
+                            const SizedBox(height: 20),
+                            const Text(
+                                'วันนี้คุณได้บันทึกผลตรวจประจำวันครบ\nแล้วพรุ้งนี้อย่าลืมมาบันทึกผลกันใหม่นะ.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16)),
+                            const Expanded(child: SizedBox()),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: ElevatedButton(
+                                  onPressed: () => Navigator.of(ctx).pop(),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.green),
+                                  ),
+                                  child: const Text('ตกลง'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: const Icon(Icons.edit),
+              backgroundColor: docs.isEmpty || canAddMoreRecords(docs)
+                  ? Colors.green
+                  : Colors.grey[400],
+              tooltip: 'บันทึกผลตรวจ',
+            );
           },
-          child: const Icon(Icons.edit),
         ),
       ),
     );

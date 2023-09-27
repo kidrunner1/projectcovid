@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+                              builder: (context) => LoginScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: Center(
                         child: Text(
-                          "สร้างบัญชีผู้ใช้",
+                          "เข้าสู่ระบบ",
                           style: GoogleFonts.prompt(
                               fontSize: 24,
                               color: Colors.white,
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
+                              builder: (context) => RegisterScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
@@ -95,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: Center(
                         child: Text(
-                          "เข้าสู่ระบบ",
+                          "สร้างบัญชีผู้ใช้",
                           style: GoogleFonts.prompt(
                             fontSize: 24,
                             color: Colors.white,

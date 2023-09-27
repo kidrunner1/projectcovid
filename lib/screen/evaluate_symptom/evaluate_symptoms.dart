@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 //import 'package:tracker_covid_v1/feture/news_screen.dart';
-import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
-import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
+
+import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../model/users.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -289,7 +289,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
             // Close the dialog and navigate to DetailsCheckScreen
             Navigator.pop(context);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DetailsCheckScreen();
+              return showdata_symptom();
             }));
           },
           color: Color.fromRGBO(0, 179, 134, 1.0),
