@@ -51,7 +51,10 @@ class _DoctorScreenState extends State<DoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("หมอพยาบาล"),
+        title: Text(
+          "หมอพยาบาล",
+          style: GoogleFonts.prompt(),
+        ),
         actions: roleID == 1
             ? [
                 IconButton(

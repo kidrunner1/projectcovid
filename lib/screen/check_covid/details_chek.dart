@@ -14,11 +14,12 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
   Stream<QuerySnapshot>? _stream;
   final ValueNotifier<List<DocumentSnapshot>> docsNotifier =
       ValueNotifier<List<DocumentSnapshot>>([]);
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    userId = FirebaseAuth.instance.currentUser?.uid; // <- Change here
     if (userId != null) {
       _stream = FirebaseFirestore.instance
           .collection('checkResults')
@@ -152,6 +153,7 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                           MaterialPageRoute(
                             builder: (context) => GetDataCheckScreen(
                               data: data[0].data() as Map<String, dynamic>,
+                              userId: userId ?? '', // Use the userId here
                             ),
                           ),
                         );
@@ -215,7 +217,7 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
               },
               child: const Icon(Icons.edit),
               backgroundColor: docs.isEmpty || canAddMoreRecords(docs)
-                  ? Colors.green
+                  ? Colors.red[300]
                   : Colors.grey[400],
               tooltip: 'บันทึกผลตรวจ',
             );

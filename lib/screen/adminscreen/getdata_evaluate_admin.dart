@@ -56,9 +56,16 @@ class _DetailsEnvaluateAdminScreenState
   }
 
   Future<bool> _userHasEvaluated(String userId) async {
+    DateTime now = DateTime.now();
+
+    // Assuming the date field in your Firestore collection is in YYYY-MM-DD format
+    String todayDate =
+        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
     var evaluationSnapshot = await FirebaseFirestore.instance
         .collection('evaluate_symptoms')
         .where('userID', isEqualTo: userId)
+        .where('date', isEqualTo: todayDate)
         .get();
 
     return evaluationSnapshot.docs.isNotEmpty;

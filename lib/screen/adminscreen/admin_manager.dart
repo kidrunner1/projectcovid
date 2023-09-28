@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,7 +46,12 @@ class _AdminScreenState extends State<AdminManagerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ผู้ดูแลระบบ"),
+        title: Text(
+          "ผู้ดูแลระบบ",
+          style: GoogleFonts.prompt(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         backgroundColor: Colors.red[300],
       ),
       body: StreamBuilder<List<Users>>(
@@ -65,19 +71,19 @@ class _AdminScreenState extends State<AdminManagerScreen> {
             itemBuilder: (context, index) {
               Users u = users[index];
               return Card(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                elevation: 5.0,
+                margin: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                elevation: 6.0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0)),
+                    borderRadius: BorderRadius.circular(16.0)),
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
+                      horizontal: 20.0, vertical: 12.0),
                   title: Text(u.email ?? "No Email",
-                      style: GoogleFonts.prompt(fontSize: 16.0)),
+                      style: GoogleFonts.poppins(fontSize: 16.0)),
                   subtitle: Text(
                     "${u.firstName} ${u.lastName} - ${roleToString(u.role ?? 3)}",
-                    style: GoogleFonts.prompt(
+                    style: GoogleFonts.poppins(
                         fontSize: 14.0, color: Colors.grey[600]),
                   ),
                   trailing: Row(
@@ -85,11 +91,14 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                     children: [
                       Chip(
                         label: Text(roleToString(u.role ?? 3),
-                            style: GoogleFonts.prompt(fontSize: 12.0)),
-                        backgroundColor: roleToColor(u.role ?? 3),
+                            style: GoogleFonts.poppins(fontSize: 12.0)),
+                        backgroundColor:
+                            roleToColor(u.role ?? 3).withOpacity(0.2),
+                        side: BorderSide(color: roleToColor(u.role ?? 3)),
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon:
+                            Icon(Icons.delete_outline, color: Colors.red[400]),
                         onPressed: () {
                           // show a confirmation dialog before deletion
                           _showDeletionDialog(u);
@@ -104,9 +113,11 @@ class _AdminScreenState extends State<AdminManagerScreen> {
           );
         },
       ),
+      backgroundColor: Colors.red[50],
     );
   }
 
+  // Updated Dialogs with a modern look
   void _showRoleDialog(Users user) {
     int? selectedRole = user.role; // initial value
 
@@ -119,12 +130,18 @@ class _AdminScreenState extends State<AdminManagerScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              title: const Text(
-                'กำหนดสิทธิ์ผู้ใช้งาน',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
+              title: Row(
+                children: [
+                  Icon(Icons.person_outline, color: Colors.grey[600]),
+                  SizedBox(width: 10),
+                  Text(
+                    'กำหนดสิทธิ์ผู้ใช้งาน',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                ],
               ),
               content: Container(
                 decoration: BoxDecoration(
@@ -157,20 +174,31 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                 ),
               ),
               actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
+                ElevatedButton(
                   onPressed: () {
+                    _updateUserRole(user.uid!, selectedRole!);
                     Navigator.of(context).pop();
                   },
-                ),
-                TextButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[400],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   child: const Text('Update'),
-                  onPressed: () async {
-                    if (selectedRole != null) {
-                      await _updateUserRole(user.uid, selectedRole!);
-                      Navigator.of(context).pop();
-                    }
-                  },
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey[300],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ],
             );
@@ -185,53 +213,71 @@ class _AdminScreenState extends State<AdminManagerScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
+          title: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: Colors.red[400]),
+              SizedBox(width: 10),
+              Text(
+                'Confirm Deletion',
+                style: GoogleFonts.poppins(),
+              ),
+            ],
+          ),
           content: Text(
               'Do you want to delete ${user.email}? This action cannot be undone.'),
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Cancel',
-                style: GoogleFonts.prompt(),
-              ),
+            ElevatedButton(
               onPressed: () {
+                _deleteUser(user);
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red[400],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text('Delete'),
             ),
-            TextButton(
-              child: Text('Delete', style: GoogleFonts.prompt()),
-              onPressed: () async {
-                await _deleteUser(user);
-                Navigator.of(context).pop();
-              },
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.grey[300],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black87),
+              ),
             ),
           ],
         );
       },
     );
   }
+}
 
-  String roleToString(int role) {
-    switch (role) {
-      case 1:
-        return "Admin";
-      case 2:
-        return "Doctor/Nurse";
-      case 3:
-      default:
-        return "User";
-    }
+// Utility functions:
+Color roleToColor(int role) {
+  switch (role) {
+    case 1:
+      return Colors.blue;
+    case 2:
+      return Colors.green;
+    default:
+      return Colors.grey;
   }
+}
 
-  Color roleToColor(int role) {
-    switch (role) {
-      case 1:
-        return Colors.red.shade300;
-      case 2:
-        return Colors.green;
-      case 3:
-      default:
-        return Colors.blueAccent;
-    }
+String roleToString(int role) {
+  switch (role) {
+    case 1:
+      return "Admin";
+    case 2:
+      return "User";
+    default:
+      return "Guest";
   }
 }

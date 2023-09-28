@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/details_envaluate_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/dailys_details_admin.dart';
 
 class User {
   final String? id; // ID field
@@ -55,9 +55,24 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
   }
 
   Future<bool> _userHasDailyResults(String userId) async {
+    DateTime now = DateTime.now();
+    DateTime startOfDay = DateTime(now.year, now.month, now.day);
+    DateTime endOfDay =
+        startOfDay.add(Duration(days: 1)).subtract(Duration(microseconds: 1));
+
+    // Convert DateTime to Timestamp
+    Timestamp startTimestamp = Timestamp.fromDate(startOfDay);
+    Timestamp endTimestamp = Timestamp.fromDate(endOfDay);
+
     var resultsSnapshot = await FirebaseFirestore.instance
         .collection('checkResults')
         .where('userID', isEqualTo: userId)
+        .where('timestamp',
+            isGreaterThanOrEqualTo:
+                startTimestamp) // Replace 'timestampFieldName' with the actual field name
+        .where('timestamp',
+            isLessThanOrEqualTo:
+                endTimestamp) // Replace 'timestampFieldName' with the actual field name
         .get();
 
     return resultsSnapshot.docs.isNotEmpty;
@@ -108,7 +123,7 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => GetDataenvaluateScreen(
+                            builder: (context) => DailyDetailsAdminScreen(
                                 userId: users[index].id!),
                           ),
                         );
