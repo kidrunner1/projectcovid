@@ -78,6 +78,7 @@ dependencies:
   flutter_rounded_date_picker: ^3.0.4
   rflutter_alert: ^2.0.7
   shimmer: ^3.0.0
+  animations: ^2.0.8
   
   
   

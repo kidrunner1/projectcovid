@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:tracker_covid_v1/feture/chat.dart';
+import 'package:tracker_covid_v1/feture/news_screen.dart';
+import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
+import 'package:tracker_covid_v1/screen/profile_page.dart';
 
 class showdata_symptom extends StatefulWidget {
   const showdata_symptom({super.key});
@@ -17,54 +21,58 @@ class showdata_symptom extends StatefulWidget {
 
 class _showdata_symptomState extends State<showdata_symptom> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  // Stream<QuerySnapshot>? _stream;
   bool informationAvailable = false;
   int _currentIndex = 0;
 
-  void onTabTapped(int index) {
-    setState(() {});
+  void onTabTappedd(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
-  String _ordinal(int n) {
-    if (n == 1) return "1";
-    if (n == 2) return "2";
-    if (n == 3) return "3";
-    return "${n}";
-  }
+  final _children = [
+    const NewsScreens(),
+    ChatScreen(),
+    SettingsScreen(),
+    ProfileScreen(),
+  ];
 
   Widget buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      onTap: onTabTapped,
-      currentIndex: _currentIndex,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.home),
-          label: 'หน้าหลัก',
+    return Container(
+      height: 60.0,
+      child: BottomNavigationBar(
+        onTap: onTabTappedd,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.home),
+            label: 'หน้าหลัก',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble),
+            label: 'แชท',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.gear),
+            label: 'ตั้งค่า',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.person),
+            label: 'ข้อมูลส่วนตัว',
+          ),
+        ],
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.red[400],
+        selectedItemColor: Colors.grey[300],
+        unselectedItemColor: Colors.white70,
+        unselectedLabelStyle: GoogleFonts.prompt(
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 12,
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat_bubble),
-          label: 'แชท',
+        selectedLabelStyle: GoogleFonts.prompt(
+          color: Colors.deepPurple.shade50,
+          fontSize: 14,
         ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.gear),
-          label: 'ตั้งค่า',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.person),
-          label: 'ข้อมูลส่วนตัว',
-        ),
-      ],
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.red[400],
-      selectedItemColor: Colors.grey[300],
-      unselectedItemColor: Colors.white70,
-      unselectedLabelStyle: GoogleFonts.prompt(
-        color: Colors.white.withOpacity(0.7),
-        fontSize: 12,
-      ),
-      selectedLabelStyle: GoogleFonts.prompt(
-        color: Colors.deepPurple.shade50,
-        fontSize: 14,
       ),
     );
   }

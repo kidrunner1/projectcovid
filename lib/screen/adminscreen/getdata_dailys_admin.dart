@@ -102,8 +102,8 @@ class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
                 child: Text(
-              'No users found.',
-              style: GoogleFonts.prompt(fontSize: 16),
+              '  ยังไม่มีผู้ใช้มาทำ\nการบันทึกผลในวันนี้',
+              style: GoogleFonts.prompt(fontSize: 20),
             ));
           } else {
             List<User> users = snapshot.data!;

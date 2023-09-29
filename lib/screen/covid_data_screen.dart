@@ -53,183 +53,213 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
+        return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(25.0),
           ),
-          title: Text(
-            provinceData['province'] ?? 'Unknown Province',
-            style: GoogleFonts.prompt(
-              fontSize: 22,
-              color: Colors.deepPurpleAccent,
+          elevation: 5,
+          backgroundColor: Colors.transparent,
+          child: _buildContent(provinceData),
+        );
+      },
+    );
+  }
+
+  Widget _buildContent(dynamic provinceData) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white, // Changed from grey to white
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          const BoxShadow(
+            color: Colors.black12, // Lightened the shadow
+            offset: Offset(0, 10),
+            blurRadius: 15,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(
+              provinceData['province'] ?? 'Unknown Province',
+              style: GoogleFonts.prompt(
+                fontSize: 24,
+                color: Colors.red[300],
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.healing,
-                      color: Colors.blueAccent, size: 24.0),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'เคสผู้ป่วยใหม่: ${provinceData['new_case'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.prompt(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Icon(FontAwesomeIcons.person,
-                      color: Colors.orangeAccent, size: 24.0),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'เคสผู้ป่วยทั้งหมด: ${provinceData['total_case'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.prompt(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Icon(Icons.local_hospital_outlined,
-                      color: Colors.redAccent, size: 24.0),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'เสียชีวิตทั้งหมด: ${provinceData['total_death'] ?? 'Data Not Available'}',
-                      style: GoogleFonts.prompt(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
+          const SizedBox(height: 25),
+          _infoRow(Icons.healing, 'เคสผู้ป่วยใหม่:', provinceData['new_case']),
+          const SizedBox(height: 15),
+          _infoRow(FontAwesomeIcons.person, 'เคสผู้ป่วยทั้งหมด:',
+              provinceData['total_case']),
+          const SizedBox(height: 15),
+          _infoRow(Icons.local_hospital_outlined, 'เสียชีวิตทั้งหมด:',
+              provinceData['total_death']),
+          const SizedBox(height: 25),
+          Center(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              // ignore: sort_child_properties_last
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red[300],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+              ),
               child: Text(
                 'ปิด',
                 style: GoogleFonts.prompt(
-                  color: Colors.deepPurpleAccent,
-                  fontSize: 16,
-                ),
-              ),
-              style: TextButton.styleFrom(
-                // ignore: prefer_const_constructors
-                foregroundColor: Colors.deepPurpleAccent,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _infoRow(IconData icon, String label, dynamic data) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.redAccent, size: 28.0),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Text(
+            '$label ${data ?? 'Data Not Available'}',
+            style: GoogleFonts.prompt(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0.0,
         title: Text(
-          'Covid-19 Data by Province',
-          style: GoogleFonts.robotoCondensed(fontSize: 22, color: Colors.white),
+          'Covid-19 Data',
+          style: GoogleFonts.prompt(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.red[300],
+        centerTitle: true,
       ),
-      body: Container(
-        color: Colors.pink[50],
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 4,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  style: GoogleFonts.prompt(),
-                  decoration: InputDecoration(
-                    hintText: 'ค้นหาจังหวัด . . .',
-                    prefixIcon: Icon(Icons.search, color: Colors.red[300]),
-                    border: InputBorder.none,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white, // Changed from grey to white
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12, // Lightened the shadow
+                    offset: Offset(0, 5),
+                    blurRadius: 10,
                   ),
-                  onChanged: _searchProvince,
-                ),
+                ],
               ),
-              const SizedBox(height: 20.0),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await fetchCovidDataByProvince().then((data) {
-                      setState(() {
-                        covidData = data;
-                        filteredData = data;
-                      });
+              child: TextField(
+                style: GoogleFonts.prompt(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Search Province',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: Colors.redAccent),
+                  border: InputBorder.none,
+                ),
+                onChanged: _searchProvince,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await fetchCovidDataByProvince().then((data) {
+                    setState(() {
+                      covidData = data;
+                      filteredData = data;
                     });
-                  },
-                  child: (filteredData == null)
-                      ? const Center(child: CircularProgressIndicator())
-                      : (filteredData!.isEmpty)
-                          ? const Center(
-                              child: Text(
-                              'No data available for the selected province.',
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                          : ListView.builder(
-                              itemCount: filteredData!.length,
-                              itemBuilder: (context, index) {
-                                final provinceData = filteredData![index];
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  elevation: 5.0,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 5.0),
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                    title: Text(
-                                      provinceData['province'],
-                                      style: GoogleFonts.prompt(
-                                          fontSize: 18, color: Colors.red[300]),
-                                    ),
-                                    trailing: Icon(Icons.arrow_forward_ios,
-                                        size: 14, color: Colors.red[300]),
-                                    onTap: () {
-                                      _showProvinceDetails(provinceData);
-                                    },
-                                  ),
-                                );
-                              },
+                  });
+                },
+                color:
+                    Colors.redAccent, // Adjusted color of the RefreshIndicator
+                child: (filteredData == null)
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors
+                              .redAccent), // Adjusted color of the CircularProgressIndicator
+                        ),
+                      )
+                    : (filteredData!.isEmpty)
+                        ? Center(
+                            child: Text(
+                              'No data available.',
+                              style: GoogleFonts.prompt(
+                                fontSize: 18,
+                                color: Colors.black54,
+                              ),
                             ),
-                ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredData!.length,
+                            itemBuilder: (context, index) {
+                              final provinceData = filteredData![index];
+                              return Card(
+                                color:
+                                    Colors.white, // Changed card color to white
+                                elevation: 5, // Added elevation for depth
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  side: BorderSide(
+                                    color: Colors.redAccent.withOpacity(0.2),
+                                  ), // subtle red border
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 5.0),
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 20),
+                                  title: Text(
+                                    provinceData['province'],
+                                    style: GoogleFonts.prompt(
+                                      fontSize: 18,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                  trailing: const Icon(Icons.arrow_forward_ios,
+                                      color: Colors.redAccent),
+                                  onTap: () {
+                                    _showProvinceDetails(provinceData);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

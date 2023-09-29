@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: GoogleFonts.prompt(color: Colors.grey)),
           GestureDetector(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const ResetPassword()));

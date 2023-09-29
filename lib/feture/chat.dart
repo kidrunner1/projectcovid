@@ -1,5 +1,6 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tracker_covid_v1/feture/Messages.dart';
 
@@ -33,6 +34,17 @@ class _ChatScreenState extends State<ChatScreen> {
           dialogFlowtter = snapshot.data;
 
           return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(
+                "ChatBot",
+                style: GoogleFonts.prompt(
+                    fontSize: 24, fontWeight: FontWeight.w600),
+              ),
+              centerTitle: true,
+              elevation: 5.0,
+              backgroundColor: Colors.red[300],
+            ),
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -46,10 +58,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(child: MessagesScreen(messages: messages)),
                   const SizedBox(height: 10),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.red[300],
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
@@ -60,29 +71,37 @@ class _ChatScreenState extends State<ChatScreen> {
                         Expanded(
                           child: TextField(
                             controller: _controller,
-                            style: const TextStyle(color: Colors.white),
+                            style: GoogleFonts.prompt(
+                                fontSize: 16, color: Colors.black),
                             decoration: InputDecoration(
                               hintText: "Type a message...",
-                              hintStyle: const TextStyle(color: Colors.white38),
+                              hintStyle: GoogleFonts.prompt(
+                                  fontSize: 16, color: Colors.black),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25),
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
-                              fillColor: Colors.deepPurple.shade700,
+                              fillColor: Colors.white,
                               contentPadding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                             ),
                           ),
                         ),
                         const SizedBox(width: 10),
-                        FloatingActionButton(
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.red[500],
+                              borderRadius: BorderRadius.circular(30)),
+                          child: IconButton(
                             onPressed: () {
                               sendMessage(_controller.text);
                               _controller.clear();
                             },
-                            backgroundColor: Colors.deepPurple.shade600,
-                            child: const Icon(Icons.send)),
+                            icon: const Icon(Icons.send),
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),

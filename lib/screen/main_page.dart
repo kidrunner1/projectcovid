@@ -11,8 +11,7 @@ import '../feture/chat.dart';
 import '../feture/news_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key,  this.user})
-      : super(key: key);
+  const MyHomePage({Key? key, this.user}) : super(key: key);
   final User? user;
 
   @override
@@ -78,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         selectedItemColor: Colors.grey[300],
         unselectedItemColor: Colors.white70,
         unselectedLabelStyle: GoogleFonts.prompt(
@@ -97,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         title: Text(
-         "",
+          "",
           style: GoogleFonts.prompt(
             color: Colors.white,
             fontSize: 26,
@@ -116,8 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu,color: Colors.white
-              ,),
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -130,8 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
-              icon:
-                  const Icon(Icons.notifications, color: Colors.white))
+              icon: const Icon(Icons.notifications, color: Colors.white))
         ],
       ),
       drawer: const NavigatorScreen(),

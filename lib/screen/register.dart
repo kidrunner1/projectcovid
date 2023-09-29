@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -43,6 +44,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _lastNameController.dispose();
     _phonenumberController.dispose();
     super.dispose();
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          'ผิดพลาด',
+          style: GoogleFonts.prompt(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.red[400],
+          ),
+        ),
+        content: Text(
+          message,
+          style: GoogleFonts.prompt(
+            fontSize: 18,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text(
+              'ตกลง',
+              style: GoogleFonts.prompt(
+                fontSize: 16,
+                color: Colors.blue[400],
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.white,
+        elevation: 5,
+      ),
+    );
   }
 
   Future<void> addUserDetails(String uid, String firstName, String lastName,
@@ -230,16 +272,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           TextFormField(
                             controller: _phonenumberController,
-                            validator: RequiredValidator(
-                                errorText: "กรุณากรอก-เบอร์โทร"),
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอก-เบอร์โทร';
+                              }
+                              if (value.length != 10) {
+                                return 'กรุณากรอกเบอร์โทร 10 หลัก';
+                              }
+                              if (!value.startsWith('0')) {
+                                _showErrorDialog(
+                                    context, 'กรุณากรอกเบอร์โทรที่ถูกต้อง');
+                                return 'เบอร์โทรต้องเริ่มต้นด้วย 0';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
-                                labelText: 'เบอร์โทร',
-                                labelStyle: GoogleFonts.prompt(),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                )),
+                              labelText: 'เบอร์โทร',
+                              labelStyle: GoogleFonts.prompt(),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
                           ),
 
                           // สมัครสมาชิค

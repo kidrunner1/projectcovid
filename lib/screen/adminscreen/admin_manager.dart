@@ -176,7 +176,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
               actions: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-                    _updateUserRole(user.uid!, selectedRole!);
+                    _updateUserRole(user.uid, selectedRole!);
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
@@ -276,7 +276,7 @@ String roleToString(int role) {
     case 1:
       return "Admin";
     case 2:
-      return "User";
+      return "Doctor/Nurse";
     default:
       return "Guest";
   }

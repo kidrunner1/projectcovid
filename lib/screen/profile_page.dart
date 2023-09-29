@@ -30,7 +30,10 @@ class ProfileScreen extends StatelessWidget {
               return ProfileBox(data: data);
             }
 
-            return const CircularProgressIndicator();
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.red[300]!), // Consistent color
+            );
           },
         ),
       ),
@@ -49,61 +52,79 @@ class ProfileBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Card(
-        elevation: 5, // Shadow effect
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        elevation: 8, // Increased Shadow effect
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)), // More rounded
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               CircleAvatar(
-                radius: 60,
+                radius: 70, // Increased size
                 backgroundImage:
                     (photoURL != null) ? NetworkImage(photoURL) : null,
                 child: (photoURL == null)
-                    ? Icon(Icons.person, size: 70, color: Colors.grey[400])
+                    ? Icon(Icons.person,
+                        size: 80,
+                        color: Colors.grey[400]) // Increased icon size
                     : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               Text(
                 "${data?['firstName']} ${data?['lastName']}",
                 style: GoogleFonts.prompt(
-                    fontSize: 25, fontWeight: FontWeight.w600),
+                    fontSize: 28, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 10),
-              Text(
-                "${data?['email'] ?? 'ไม่มีข้อมูล'}", // Display email or default text if not available
-                style: GoogleFonts.prompt(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey[600]),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.email, size: 20, color: Colors.grey[600]),
+                  SizedBox(width: 5),
+                  Text(
+                    "${data?['email'] ?? 'ไม่มีข้อมูล'}",
+                    style: GoogleFonts.prompt(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey[600]),
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                "${data?['phoneNumber'] ?? 'ไม่มีข้อมูล'}", // Display phone number or default text if not available
-                style: GoogleFonts.prompt(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey[600]),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.phone, size: 20, color: Colors.grey[600]),
+                  SizedBox(width: 5),
+                  Text(
+                    "${data?['phoneNumber'] ?? 'ไม่มีข้อมูล'}",
+                    style: GoogleFonts.prompt(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey[600]),
+                  ),
+                ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 35),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditProfileScreen()));
                 },
                 style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 50, vertical: 15), // More padding
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  backgroundColor:
-                      Colors.red[300], // Consistent color with AppBar
+                      borderRadius: BorderRadius.circular(25)), // More rounded
+                  backgroundColor: Colors.red[300],
                 ),
                 child: Text(
                   'แก้ไขข้อมูล',
                   style: GoogleFonts.prompt(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 15),
+                      fontSize: 18), // Increased font size
                 ),
               ),
             ],
