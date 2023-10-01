@@ -168,7 +168,7 @@ class _showdata_symptomState extends State<showdata_symptom> {
                     onTap: () {
                       final DateTime selectedDate =
                           DateTime.parse(date); // Convert date to DateTime
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => GetData_EvaluateSymptom(

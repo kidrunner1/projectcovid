@@ -18,25 +18,17 @@ class MainPageAdmin extends StatefulWidget {
 }
 
 class _MainPageAdminState extends State<MainPageAdmin> {
-  Future<Map<String, int>> _getUserCountsForToday() async {
+  Future<int> _getResultsCountForToday() async {
     DateTime now = DateTime.now();
     DateTime startOfDay = DateTime(now.year, now.month, now.day);
     DateTime endOfDay = startOfDay
         .add(const Duration(days: 1))
         .subtract(const Duration(microseconds: 1));
 
-    // Count from evaluate_symptoms
-    QuerySnapshot evaluateSymptomsSnapshot;
+    // Count from checkResults
     QuerySnapshot checkResultsSnapshot;
 
     try {
-      evaluateSymptomsSnapshot = await FirebaseFirestore.instance
-          .collection('evaluate_symptoms')
-          .where('date', isGreaterThanOrEqualTo: startOfDay)
-          .where('date', isLessThanOrEqualTo: endOfDay)
-          .get();
-
-      // Count from checkResults
       checkResultsSnapshot = await FirebaseFirestore.instance
           .collection('checkResults')
           .where('timestamp', isGreaterThanOrEqualTo: startOfDay)
@@ -44,41 +36,25 @@ class _MainPageAdminState extends State<MainPageAdmin> {
           .get();
     } catch (e) {
       print("Error fetching data: $e");
-
-      // For this example, I'm returning a map with zero counts on error. You can handle as you see fit.
-      return {'evaluate': 0, 'results': 0};
+      return 0;
     }
-    print("Evaluate Symptoms Documents: ${evaluateSymptomsSnapshot.docs}");
 
-    return {
-      'evaluate': evaluateSymptomsSnapshot.docs.length,
-      'results': checkResultsSnapshot.docs.length
-    };
+    return checkResultsSnapshot.docs.length;
   }
 
-  Widget _buildUserCountsForToday() {
-    return FutureBuilder<Map<String, int>>(
-      future: _getUserCountsForToday(),
+  Widget _buildResultsCountForToday() {
+    return FutureBuilder<int>(
+      future: _getResultsCountForToday(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return Column(
-            children: [
-              Text(
-                'ผู้ประเมินอาการในวันนี้: ${snapshot.data?['evaluate'] ?? 0}',
-                style: GoogleFonts.prompt(
-                    fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'ผู้บันทึกผลในวันนี้: ${snapshot.data?['results'] ?? 0}',
-                style: GoogleFonts.prompt(
-                    fontSize: 18, fontWeight: FontWeight.bold),
-              )
-            ],
+          return Text(
+            'ผู้บันทึกผลในวันนี้: ${snapshot.data ?? 0}',
+            style:
+                GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
           );
         }
       },
@@ -199,7 +175,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
                 Shimmer.fromColors(
                   baseColor: Colors.white60,
                   highlightColor: Colors.white,
-                  child: _buildUserCountsForToday(),
+                  child: _buildResultsCountForToday(),
                 ),
               ],
             ),

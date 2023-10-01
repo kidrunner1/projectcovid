@@ -15,7 +15,6 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
   final ValueNotifier<List<DocumentSnapshot>> docsNotifier =
       ValueNotifier<List<DocumentSnapshot>>([]);
   String? userId;
-  // <-- Added for BottomNavigationBar
 
   @override
   void initState() {
@@ -34,25 +33,6 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
-  }
-
-  Future<void> clearOldRecords(List<DocumentSnapshot> docs) async {
-    final today = DateTime.now();
-    for (var doc in docs) {
-      final data = doc.data() as Map<String, dynamic>;
-      if (data.containsKey('createdAt')) {
-        final createdAt = (data['createdAt'] as Timestamp).toDate();
-        if (!isSameDay(createdAt, today)) {
-          await FirebaseFirestore.instance
-              .collection('checkResults')
-              .doc(doc.id)
-              .delete()
-              .catchError((error) {
-            print('Error deleting document: $error');
-          });
-        }
-      }
-    }
   }
 
   bool canAddMoreRecords(List<DocumentSnapshot> docs) {
@@ -123,7 +103,6 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
               final docs = snapshot.data?.docs ?? [];
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 docsNotifier.value = docs;
-                clearOldRecords(docs);
               });
 
               if (docs.isEmpty) {

@@ -302,9 +302,73 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         }
       } on FirebaseAuthException catch (e) {
-        // Instead of Fluttertoast, let's use a SnackBar
-        final snackBar = SnackBar(content: Text(e.message!));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // Check the specific error code
+        if (e.code == 'wrong-password' ||
+            e.code == 'invalid-email' ||
+            e.code == 'user-not-found') {
+          String errorMessage;
+          switch (e.code) {
+            case 'wrong-password':
+              errorMessage = 'กรุณาใส่รหัสผ่านที่ถูกต้อง';
+              break;
+            case 'invalid-email':
+              errorMessage = 'อีเมลไม่ถูกต้อง';
+              break;
+            case 'user-not-found':
+              errorMessage = 'ไม่มีชื่อ ผู้ใช้หรือ อีเมลไม่ถูกต้อง.';
+              break;
+            default:
+              errorMessage = e.message!;
+          }
+
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: Text(
+                    'ผิดพลาด',
+                    style:
+                        GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+                  ),
+                  content: Text(
+                    errorMessage,
+                    style:
+                        GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+                  ),
+                  actions: <Widget>[
+                    Center(
+                      child: TextButton(
+                        child: Text(
+                          'ปิด',
+                          style: GoogleFonts
+                              .prompt(), // Apply the GoogleFontPrompt font
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                  ],
+                );
+              });
+        } else {
+          // Center the SnackBar for other errors
+          final snackBar = SnackBar(
+            content: Text(
+              e.message!,
+              style: GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       } finally {
         setState(() {
           _isLoading = false; // Stop the loading spinner after processing
