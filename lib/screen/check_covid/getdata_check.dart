@@ -9,8 +9,6 @@ class GetDataCheckScreen extends StatefulWidget {
   const GetDataCheckScreen({Key? key, required this.userId, required this.data})
       : super(key: key);
 
-
-
   @override
   _GetDataCheckScreenState createState() => _GetDataCheckScreenState();
 }
@@ -21,18 +19,19 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
   @override
   void initState() {
     super.initState();
-    resultsStream = _getResultsForToday();
+    resultsStream = _getResultsForDate(
+      (widget.data['createdAt'] as Timestamp).toDate(),
+    );
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> _getResultsForToday() {
-    DateTime now = DateTime.now();
-    DateTime startOfDay = DateTime(now.year, now.month, now.day);
+  Stream<QuerySnapshot<Map<String, dynamic>>> _getResultsForDate(
+      DateTime date) {
+    DateTime startOfDay = DateTime(date.year, date.month, date.day);
     DateTime endOfDay =
         startOfDay.add(Duration(days: 1)).subtract(Duration(microseconds: 1));
 
     return FirebaseFirestore.instance
-        .collection(
-            'checkResults') // replace 'your_collection_name' with the name of your collection
+        .collection('checkResults')
         .where('userID', isEqualTo: widget.userId)
         .where('createdAt', isGreaterThanOrEqualTo: startOfDay)
         .where('createdAt', isLessThanOrEqualTo: endOfDay)
@@ -81,9 +80,9 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
   }
 
   Widget _buildRecordItem(Map<String, dynamic> data) {
-    final Timestamp? timestamp = data['timestamp'];
-    final String formattedDateTime = timestamp != null
-        ? "${timestamp.toDate().day}/${timestamp.toDate().month}/${timestamp.toDate().year} ${timestamp.toDate().hour}:${timestamp.toDate().minute}"
+    final Timestamp? createdAt = data['createdAt'];
+    final String formattedDateTime = createdAt != null
+        ? "${createdAt.toDate().day}/${createdAt.toDate().month}/${createdAt.toDate().year} ${createdAt.toDate().hour}:${createdAt.toDate().minute}"
         : 'Unknown Date and Time';
 
     return Padding(
