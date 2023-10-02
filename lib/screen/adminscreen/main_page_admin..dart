@@ -52,7 +52,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
           return Text('Error: ${snapshot.error}');
         } else {
           return Text(
-            'ผู้บันทึกผลในวันนี้: ${snapshot.data ?? 0}',
+            'ผู้ใช้งานในวันนี้: ${snapshot.data ?? 0}',
             style:
                 GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
           );

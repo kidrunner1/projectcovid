@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:tracker_covid_v1/feture/chat.dart';
-import 'package:tracker_covid_v1/feture/news_screen.dart';
-import 'package:tracker_covid_v1/feture/setting.dart';
+
 import 'package:tracker_covid_v1/screen/evaluate_symptom/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
-import 'package:tracker_covid_v1/screen/profile_page.dart';
 
 class showdata_symptom extends StatefulWidget {
   const showdata_symptom({super.key});
@@ -29,13 +26,6 @@ class _showdata_symptomState extends State<showdata_symptom> {
       _currentIndex = index;
     });
   }
-
-  final _children = [
-    const NewsScreens(),
-    ChatScreen(),
-    SettingsScreen(),
-    ProfileScreen(),
-  ];
 
   Widget buildBottomNavigationBar() {
     return Container(

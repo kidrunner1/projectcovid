@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,6 +24,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
+      // ignore: use_build_context_synchronously
       _showCustomDialog(
         context,
         AlertDialog(
