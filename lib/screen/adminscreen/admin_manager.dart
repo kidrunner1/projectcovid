@@ -80,10 +80,10 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                   contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 12.0),
                   title: Text(u.email ?? "No Email",
-                      style: GoogleFonts.poppins(fontSize: 16.0)),
+                      style: GoogleFonts.prompt(fontSize: 16.0)),
                   subtitle: Text(
                     "${u.firstName} ${u.lastName} - ${roleToString(u.role ?? 3)}",
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.prompt(
                         fontSize: 14.0, color: Colors.grey[600]),
                   ),
                   trailing: Row(
@@ -91,7 +91,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                     children: [
                       Chip(
                         label: Text(roleToString(u.role ?? 3),
-                            style: GoogleFonts.poppins(fontSize: 12.0)),
+                            style: GoogleFonts.prompt(fontSize: 12.0)),
                         backgroundColor:
                             roleToColor(u.role ?? 3).withOpacity(0.2),
                         side: BorderSide(color: roleToColor(u.role ?? 3)),
@@ -136,7 +136,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                   SizedBox(width: 10),
                   Text(
                     'กำหนดสิทธิ์ผู้ใช้งาน',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.prompt(
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,
                     ),
@@ -163,10 +163,8 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                         <int>[1, 2, 3].map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
-                        child: Text(
-                          roleToString(value),
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
+                        child: Text(roleToString(value),
+                            style: GoogleFonts.prompt()),
                       );
                     }).toList(),
                     dropdownColor: Colors.white,
@@ -185,7 +183,10 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text('Update'),
+                  child: Text(
+                    'อัพเดท',
+                    style: GoogleFonts.prompt(),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -195,9 +196,9 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.black87),
+                  child: Text(
+                    'ยกเลิก',
+                    style: GoogleFonts.prompt(color: Colors.black),
                   ),
                 ),
               ],
@@ -218,13 +219,15 @@ class _AdminScreenState extends State<AdminManagerScreen> {
               Icon(Icons.warning_amber_rounded, color: Colors.red[400]),
               SizedBox(width: 10),
               Text(
-                'Confirm Deletion',
-                style: GoogleFonts.poppins(),
+                'ยืนยันการลบ',
+                style: GoogleFonts.prompt(),
               ),
             ],
           ),
           content: Text(
-              'Do you want to delete ${user.email}? This action cannot be undone.'),
+            'คุณต้องการที่จะลบ ${user.email}? บัญชีผู้ใช้นี้หรือไม่',
+            style: GoogleFonts.prompt(color: Colors.black),
+          ),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
@@ -237,7 +240,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text('Delete'),
+              child: Text('ลบ', style: GoogleFonts.prompt()),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -247,9 +250,9 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.black87),
+              child: Text(
+                'ยกเลิก',
+                style: GoogleFonts.prompt(color: Colors.black),
               ),
             ),
           ],

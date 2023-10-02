@@ -339,17 +339,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       _phonenumberController.text.trim(),
                                     );
 
-                                    Fluttertoast.showToast(
-                                        msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
-                                        gravity: ToastGravity.TOP);
-
-                                    // Navigate to LoginScreen after successful registration
+                                    // Displaying the custom dialog after successful registration
                                     // ignore: use_build_context_synchronously
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginScreen()));
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height:
+                                                  200, // เพิ่มความสูงของกล่อง
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                      Icons
+                                                          .check_circle_outline_outlined,
+                                                      color: Colors.green[400],
+                                                      size: 70), // เพิ่มไอคอน
+                                                  SizedBox(
+                                                      height:
+                                                          20), // ระยะห่างระหว่างไอคอนและข้อความ
+                                                  Text(
+                                                    "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
+                                                    style: GoogleFonts.prompt(
+                                                      fontSize: 20,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: GoogleFonts.prompt(
+                                                    fontSize: 18,
+                                                    color: Colors.red[300],
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
                                   } on FirebaseAuthException catch (e) {
                                     var message;
 
