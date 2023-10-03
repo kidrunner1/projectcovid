@@ -161,7 +161,7 @@ class _NewsScreensState extends State<NewsScreens> {
               label: 'นัดฉีดวัคซีน',
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ScreenVaccine()));
+                    MaterialPageRoute(builder: (context) => Vaccine()));
               }),
         ],
       ),
