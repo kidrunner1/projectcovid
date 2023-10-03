@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
-import 'package:tracker_covid_v1/feture/news_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../database/appoints_db.dart';
@@ -19,6 +19,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
   final dateController = TextEditingController();
   final fristnameController = TextEditingController();
   final lastnameController = TextEditingController();
+  final hospitalNameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late Appoints_DB appointmentService;
@@ -36,6 +37,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
     dateController.clear();
     fristnameController.clear();
     lastnameController.clear();
+    hospitalNameController.clear();
     setState(() {
       selectedTime = '';
     });
@@ -43,14 +45,34 @@ class _FormAppointmentsState extends State<FormAppointments> {
 
   @override
   void initState() {
-    dateController.text = ""; // set the initial value of text field
     super.initState();
     appointmentService = Appoints_DB(
       context,
       navigateToShowDetails,
       resetFormMethod,
-      firestore: FirebaseFirestore.instance, // Pass the Firestore instance.
+      firestore: FirebaseFirestore.instance,
     );
+    _fetchUserDetails();
+  }
+
+  _fetchUserDetails() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Handle this situation, perhaps show an error or navigate to login page
+      print("No user is signed in.");
+      return;
+    }
+
+    if (user.displayName != null && user.displayName!.contains(' ')) {
+      setState(() {
+        fristnameController.text = user.displayName?.split(' ').first ?? '';
+        lastnameController.text = user.displayName?.split(' ').last ?? '';
+      });
+    } else {
+      // Handle situation where the display name is not in expected format
+      // Maybe set a default value or prompt user to provide name
+      print("User's display name is not in the expected format.");
+    }
   }
 
   @override
@@ -71,6 +93,25 @@ class _FormAppointmentsState extends State<FormAppointments> {
           child: Column(
             children: [
               const SizedBox(height: 50),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: hospitalNameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    labelText: ("Hospital Name"),
+                    labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: const BorderSide(width: 3),
+                    ),
+                  ),
+                  validator: RequiredValidator(
+                      errorText: "Please enter the hospital name"),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.all(10),
@@ -212,7 +253,9 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       borderSide: const BorderSide(width: 3),
                     ),
                   ),
-                  validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
+                  validator: (value) => value!.isEmpty ? "กรุณาใส่ชื่อ" : null,
+                  enabled:
+                      false, // Disables the field so the user cannot modify it
                 ),
               ),
               Container(
@@ -231,7 +274,9 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       borderSide: const BorderSide(width: 3),
                     ),
                   ),
-                  validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
+                  validator: (value) => value!.isEmpty ? "กรุณาใส่สกุล" : null,
+                  enabled:
+                      false, // Disables the field so the user cannot modify it
                 ),
               ),
               const SizedBox(height: 20),

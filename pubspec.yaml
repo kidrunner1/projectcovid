@@ -79,6 +79,7 @@ dependencies:
   rflutter_alert: ^2.0.7
   shimmer: ^3.0.0
   animations: ^2.0.8
+  location: ^5.0.3
   
   
   

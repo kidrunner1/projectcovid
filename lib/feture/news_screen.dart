@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
+
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
@@ -189,7 +189,7 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const FormAppointments()));
+                        builder: (context) => FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(
