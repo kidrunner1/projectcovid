@@ -5,10 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/details_medicin.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/getdata_dailys_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Appointment/details_medicin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 
-import 'package:tracker_covid_v1/screen/adminscreen/getdata_evaluate_admin.dart';
+
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
@@ -196,8 +197,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const DetailsEnvaluateAdminScreen()));
+                      builder: (context) => const GetEnvaluateAdminScreen()));
             }),
         const SizedBox(width: 25),
         _iconContainer(

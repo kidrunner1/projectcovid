@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/dailys_details_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/dailys_details_admin.dart';
 
 class User {
   final String? id; // ID field
