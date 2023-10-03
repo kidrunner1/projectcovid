@@ -1,161 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/detail_daily.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Recording {
-  final Timestamp? createdAt;
-  final String? imageUrl;
-  final String? result;
-  final String? temperature;
-  final String? userId;
-  final String? weight;
+class PatientDetailScreen extends StatelessWidget {
+  final List<DocumentSnapshot> patientDataList;
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
 
-  Recording({
-    this.createdAt,
-    this.imageUrl,
-    this.result,
-    this.temperature,
-    this.userId,
-    this.weight,
-  });
-
-  factory Recording.fromDocument(DocumentSnapshot doc) {
-    return Recording(
-      createdAt: doc['createdAt'],
-      imageUrl: doc['imageUrl'],
-      result: doc['result'],
-      temperature: doc['temperature'] as String?,
-      userId: doc['userID'],
-      weight: doc['weight'] as String?,
-    );
-  }
-}
-
-class DailyDetailsAdminScreen extends StatefulWidget {
-  final String userId;
-
-  const DailyDetailsAdminScreen({Key? key, required this.userId})
-      : super(key: key);
-
-  @override
-  _DailyDetailsScreenState createState() => _DailyDetailsScreenState();
-}
-
-class _DailyDetailsScreenState extends State<DailyDetailsAdminScreen> {
-  late Stream<List<Recording>> recordingsStream;
-
-  @override
-  void initState() {
-    super.initState();
-    recordingsStream = _getRecordingsStream();
-  }
-
-  Stream<List<Recording>> _getRecordingsStream() {
-    return FirebaseFirestore.instance
-        .collection('checkResults')
-        .where('userID', isEqualTo: widget.userId)
-        .snapshots()
-        .map((snapshot) {
-      List<Recording> recordings = [];
-      for (var doc in snapshot.docs) {
-        try {
-          recordings.add(Recording.fromDocument(doc));
-        } catch (e) {
-          print("Error parsing document: ${doc.id}, $e");
-        }
-      }
-      return recordings;
-    });
-  }
+  PatientDetailScreen({required this.patientDataList});
 
   @override
   Widget build(BuildContext context) {
+    // Set to store IDs of users we've already added to the list
+    final addedUserIds = <String>{};
+    final uniquePatients = patientDataList.where((patientData) {
+      final userId = patientData['userID'];
+      if (!addedUserIds.contains(userId)) {
+        addedUserIds.add(userId);
+        return true;
+      }
+      return false;
+    }).toList();
+
     return Scaffold(
+      backgroundColor: Colors.grey[200], // Provides a subtle background color
       appBar: AppBar(
-        backgroundColor: Colors.red[300],
         title: Text(
-          "รายละเอียดการบันทึกข้อมูล",
-          style: GoogleFonts.prompt(),
+          "รายชื่อคนไข้",
+          style: GoogleFonts.prompt(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.red[300], // Deep blue color
       ),
-      body: StreamBuilder<List<Recording>>(
-        stream: recordingsStream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: ListView.builder(
+        itemCount: uniquePatients.length,
+        itemBuilder: (context, index) {
+          final patientData = uniquePatients[index];
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error, color: Colors.red, size: 50),
-                  const SizedBox(height: 20),
-                  Text("Error fetching data: ${snapshot.error}"),
-                ],
-              ),
-            );
-          }
+          return FutureBuilder<DocumentSnapshot>(
+            future: users.doc(patientData['userID']).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return ListTile(
+                    title: Text(
+                      "Error: ${snapshot.error}",
+                      style: GoogleFonts.prompt(
+                          fontSize: 18, color: Colors.redAccent),
+                    ),
+                  );
+                }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                "ผู้ใช้นี้ยังไม่ได้ทำการบันทึกผลตรวจประจำวัน.",
-                style: GoogleFonts.prompt(fontSize: 20),
-              ),
-            );
-          }
+                final userData = snapshot.data!;
+                final name = "${userData['firstName']} ${userData['lastName']}";
 
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final recording = snapshot.data![index];
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Card(
-                  elevation: 5,
+                return Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // Rounded corners
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Column(
-                    children: [
-                      if (recording.imageUrl != null)
-                        ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(15)), // Top rounded corners
-                          child: Image.network(
-                            recording.imageUrl!,
-                            height: 150, // Larger Image
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    title: Text(
+                      name,
+                      style: GoogleFonts.prompt(
+                          fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 20),
+                    onTap: () {
+                      // Navigate to UserDetailScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              UserDetailScreen(patientData: patientData),
                         ),
-                      ListTile(
-                        contentPadding: const EdgeInsets.all(15),
-                        title: Text(
-                            'ผลตรวจ : ${recording.result ?? "Unknown result"}  อุณหภูมิปัจจุบัน : ${recording.temperature ?? "Unknown"}°C',
-                            style: GoogleFonts.prompt(fontSize: 15)),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  'น้ำหนัก: ${recording.weight ?? "Unknown"}kg',
-                                  style: GoogleFonts.prompt(fontSize: 15)),
-                              SizedBox(height: 10),
-                              Text(
-                                  'วันที่: ${recording.createdAt?.toDate().toString() ?? "Unknown date"}',
-                                  style: GoogleFonts.prompt(fontSize: 15)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                ),
-              );
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
             },
           );
         },

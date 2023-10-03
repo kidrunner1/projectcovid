@@ -6,10 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Appointment/details_medicin.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 
-
+import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
@@ -187,30 +186,30 @@ class _MainPageAdminState extends State<MainPageAdmin> {
   }
 
   Widget _buildNavigationRow1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _iconContainer(
-            iconData: Icons.assignment_outlined,
-            label: 'รายงานประเมินความเสี่ยง',
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const GetEnvaluateAdminScreen()));
-            }),
-        const SizedBox(width: 25),
-        _iconContainer(
-            iconData: FontAwesomeIcons.thermometerThreeQuarters,
-            label: 'รายละเอียดผู้ป่วยประจำวัน',
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const GetdataDailysAdminScreen()));
-            }),
-      ],
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      _iconContainer(
+          iconData: Icons.assignment_outlined,
+          label: 'รายงานประเมินความเสี่ยง',
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const GetEnvaluateAdminScreen()));
+          }),
+      const SizedBox(width: 25),
+      _iconContainer(
+        iconData: FontAwesomeIcons.thermometerThreeQuarters,
+        label: 'รายละเอียดผู้ป่วยประจำวัน',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GetDataDailysAdminScreen(),
+            ),
+          );
+        },
+      ),
+    ]);
   }
 
   Widget _buildNavigationRow2() {
@@ -234,7 +233,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const GetdataDailysAdminScreen()));
+                      builder: (context) => GetEnvaluateAdminScreen()));
             }),
       ],
     );

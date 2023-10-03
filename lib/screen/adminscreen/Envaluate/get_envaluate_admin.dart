@@ -19,13 +19,14 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Evaluations',
+          'ประเมินอาการประจำวัน',
           style: GoogleFonts.prompt(
             fontWeight: FontWeight.bold,
             fontSize: 24.0,
           ),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.red[300],
+        centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore
@@ -66,7 +67,7 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GetDataDailysAdminScreen(
+                          builder: (context) => GetDataEnvaluateAdminScreen(
                               date: date, evaluations: evaluations),
                         ),
                       );

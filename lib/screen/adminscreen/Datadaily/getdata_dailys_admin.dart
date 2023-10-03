@@ -1,169 +1,92 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/dailys_details_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/dailys_details_admin.dart'; // Ensure the path is correct
 
-class User {
-  final String? id; // ID field
-  final String? firstName;
-  final String? lastName;
-
-  User({this.id, this.firstName, this.lastName});
-
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User(
-      id: doc.id,
-      firstName: doc['firstName'],
-      lastName: doc['lastName'],
-    );
-  }
-}
-
-class GetdataDailysAdminScreen extends StatefulWidget {
-  const GetdataDailysAdminScreen({Key? key}) : super(key: key);
+class GetDataDailysAdminScreen extends StatefulWidget {
+  const GetDataDailysAdminScreen({super.key});
 
   @override
-  State<GetdataDailysAdminScreen> createState() =>
-      _GetdataDailysAdminScreenState();
+  State<GetDataDailysAdminScreen> createState() =>
+      _GetDataDailysAdminScreenState();
 }
 
-class _GetdataDailysAdminScreenState extends State<GetdataDailysAdminScreen> {
-  late Stream<List<User>> usersStream;
-
-  @override
-  void initState() {
-    super.initState();
-    usersStream = _getUsersStream();
-  }
-
-  Stream<List<User>> _getUsersStream() {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .where('role', isEqualTo: 3)
-        .snapshots()
-        .asyncMap((snapshot) async {
-      var usersWithResults = <User>[];
-      for (var doc in snapshot.docs) {
-        var user = User.fromDocument(doc);
-        var hasResults = await _userHasDailyResults(user.id!);
-        if (hasResults) {
-          usersWithResults.add(user);
-        }
-      }
-      return usersWithResults;
-    });
-  }
-
-  Future<bool> _userHasDailyResults(String userId) async {
-    DateTime now = DateTime.now();
-    DateTime startOfDay = DateTime(now.year, now.month, now.day);
-    DateTime endOfDay =
-        startOfDay.add(Duration(days: 1)).subtract(Duration(microseconds: 1));
-
-    // Convert DateTime to Timestamp
-    Timestamp startTimestamp = Timestamp.fromDate(startOfDay);
-    Timestamp endTimestamp = Timestamp.fromDate(endOfDay);
-
-    var resultsSnapshot = await FirebaseFirestore.instance
-        .collection('checkResults')
-        .where('userID', isEqualTo: userId)
-        .where('timestamp',
-            isGreaterThanOrEqualTo:
-                startTimestamp) // Replace 'timestampFieldName' with the actual field name
-        .where('timestamp',
-            isLessThanOrEqualTo:
-                endTimestamp) // Replace 'timestampFieldName' with the actual field name
-        .get();
-
-    return resultsSnapshot.docs.isNotEmpty;
-  }
+class _GetDataDailysAdminScreenState extends State<GetDataDailysAdminScreen> {
+  // Reference to Firestore collection
+  final CollectionReference checkResults =
+      FirebaseFirestore.instance.collection('checkResults');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
-          "รายละเอียดผู้ป่วยประจำวัน",
-          style: GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
+          "ข้อมูลผลตรวจประจำวัน",
+          style: GoogleFonts.prompt(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.red[300],
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.indigo[700],
       ),
-      body: StreamBuilder<List<User>>(
-        stream: usersStream,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: checkResults.snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text(
-              'Error: ${snapshot.error}',
-              style: GoogleFonts.prompt(fontSize: 16, color: Colors.redAccent),
-            ));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-                child: Text(
-              '  ยังไม่มีผู้ใช้มาทำ\nการบันทึกผลในวันนี้',
-              style: GoogleFonts.prompt(fontSize: 20),
-            ));
-          } else {
-            List<User> users = snapshot.data!;
-            return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  elevation: 5,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DailyDetailsAdminScreen(
-                                userId: users[index].id!),
-                          ),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.deepPurple[100],
-                              child: Text(
-                                '${users[index].firstName![0]}${users[index].lastName![0]}',
-                                style: GoogleFonts.prompt(color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Text(
-                              '${users[index].firstName} ${users[index].lastName}',
-                              style: GoogleFonts.prompt(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 18),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
           }
+
+          // Group by date
+          Map<DateTime, List<DocumentSnapshot>> groupedData = {};
+          for (var doc in snapshot.data!.docs) {
+            DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                    doc["timestamp"].millisecondsSinceEpoch)
+                .toLocal();
+            date = DateTime(date.year, date.month, date.day); // Removing time
+            if (!groupedData.containsKey(date)) {
+              groupedData[date] = [];
+            }
+            groupedData[date]!.add(doc);
+          }
+
+          // Sort the dates in descending order (most recent first)
+          var sortedDates = groupedData.keys.toList()
+            ..sort((a, b) => b.compareTo(a));
+
+          return ListView.builder(
+            itemCount: sortedDates.length,
+            itemBuilder: (context, index) {
+              DateTime date = sortedDates[index];
+              return Card(
+                elevation: 4,
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  title: Text(
+                    "บันทึกวันที่: ${date.day}-${date.month}-${date.year}",
+                    style: GoogleFonts.prompt(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 20),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PatientDetailScreen(
+                            patientDataList: groupedData[date]!),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
         },
       ),
-      backgroundColor: Colors.red[50],
     );
   }
 }
