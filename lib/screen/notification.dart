@@ -87,6 +87,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        centerTitle: true,
       ),
       body: StreamBuilder<List<NotificationItem>>(
         stream: notificationStream,

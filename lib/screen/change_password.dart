@@ -61,10 +61,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: const Text('กรุณาหรอกรหัสผ่านเพื่อทำการเปลี่ยน.'),
+            content: Text(
+              'กรุณาหรอกรหัสผ่านเพื่อทำการเปลี่ยน.',
+              style: GoogleFonts.prompt(),
+            ),
             actions: [
               TextButton(
-                child: const Text('OK'),
+                child: Text(
+                  'ตกลง',
+                  style: GoogleFonts.prompt(),
+                ),
                 onPressed: () => Navigator.of(context).pop(),
               )
             ],
@@ -134,8 +140,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('', style: GoogleFonts.prompt()),
+        title: Text(
+          'แก้ไขรหัสผ่าน',
+          style: GoogleFonts.prompt(),
+        ),
         backgroundColor: Colors.red[300],
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -143,9 +153,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('แก้ไขรหัสผ่าน',
-                  style: GoogleFonts.prompt(
-                      fontSize: 24, fontWeight: FontWeight.bold)),
               const SizedBox(height: 50),
               buildPasswordField('รหัสผ่านปัจจุบัน', _currentPasswordController,
                   _obscureCurrentPassword, () {

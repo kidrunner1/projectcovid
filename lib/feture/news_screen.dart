@@ -228,14 +228,6 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CovidDataScreen()));
               }),
-          SizedBox(width: 12),
-          _iconContainer(
-              iconData: FontAwesomeIcons.locationDot,
-              label: 'ประวัติบันทึกอาการ',
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
-              }),
         ],
       ),
     );

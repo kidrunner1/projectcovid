@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/change_password.dart';
 import 'package:tracker_covid_v1/screen/profile_page.dart';
+import 'package:tracker_covid_v1/screen/version_app.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -55,10 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _buildSettingButton(
                     "ตั้งค่ารหัสผ่าน", Icons.lock, ChangePasswordScreen()),
                 const SizedBox(height: 20),
-                _buildSettingButton(
-                    "รายงาน", Icons.notifications, ProfileScreen()),
-                const SizedBox(height: 20),
-                _buildSettingButton("เกี่ยวกับ", Icons.info, ProfileScreen()),
+                _buildSettingButton("เกี่ยวกับ", Icons.info, VerSionSceen()),
               ],
             ),
           ),

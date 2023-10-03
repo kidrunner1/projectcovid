@@ -184,7 +184,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
               child: TextField(
                 style: GoogleFonts.prompt(color: Colors.black),
                 decoration: const InputDecoration(
-                  hintText: 'Search Province',
+                  hintText: 'ค้นหาจังหวัด ...',
                   hintStyle: TextStyle(color: Colors.grey),
                   prefixIcon: Icon(Icons.search, color: Colors.redAccent),
                   border: InputBorder.none,
