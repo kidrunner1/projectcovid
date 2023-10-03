@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
-
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/callphone.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';

@@ -57,21 +57,9 @@ class _FormAppointmentsState extends State<FormAppointments> {
 
   _fetchUserDetails() async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Handle this situation, perhaps show an error or navigate to login page
-      print("No user is signed in.");
-      return;
-    }
-
-    if (user.displayName != null && user.displayName!.contains(' ')) {
-      setState(() {
-        fristnameController.text = user.displayName?.split(' ').first ?? '';
-        lastnameController.text = user.displayName?.split(' ').last ?? '';
-      });
-    } else {
-      // Handle situation where the display name is not in expected format
-      // Maybe set a default value or prompt user to provide name
-      print("User's display name is not in the expected format.");
+    if (user != null) {
+      fristnameController.text = user.displayName?.split(' ').first ?? '';
+      lastnameController.text = user.displayName?.split(' ').last ?? '';
     }
   }
 
@@ -279,6 +267,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       false, // Disables the field so the user cannot modify it
                 ),
               ),
+
               const SizedBox(height: 20),
               SizedBox(
                 width: 120,
