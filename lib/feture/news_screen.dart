@@ -12,6 +12,7 @@ import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
 import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
 
+
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
 
@@ -189,7 +190,7 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const FormAppointments()));
+                        builder: (context) =>  FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -205,7 +206,6 @@ class _NewsScreensState extends State<NewsScreens> {
       ),
     );
   }
-
   Widget _buildNavigationRow3() {
     return _buildNavigationRow(
       Row(

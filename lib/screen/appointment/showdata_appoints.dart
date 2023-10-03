@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
+import 'package:tracker_covid_v1/screen/appointment/getappoints.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Showdata_appoints extends StatefulWidget {
@@ -96,7 +96,7 @@ class _ShowdataState extends State<Showdata_appoints> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                GetdataAppoints(getappoints: data),
+                                GetAppoints(),
                           ),
                         );
                       },

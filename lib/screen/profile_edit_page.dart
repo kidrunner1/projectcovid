@@ -18,6 +18,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   String? _photoURL;
   bool isLoading = false;
 
@@ -26,7 +27,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     fetchInitialData();
   }
-
   Future<void> saveInformation() async {
     setState(() {
       isLoading = true;
@@ -38,6 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .update({
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
+      'phoneNumber': _phoneNumberController.text.trim(),
     });
 
     await Future.delayed(const Duration(seconds: 2));
@@ -84,6 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         documentSnapshot.data() as Map<String, dynamic>;
     _firstNameController.text = userData['firstName'];
     _lastNameController.text = userData['lastName'];
+    _phoneNumberController.text = userData['phoneNumber'] ?? ''; 
     setState(() {
       _photoURL = userData['photoURL'];
     });
@@ -180,6 +182,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       label: "นามสกุล",
                       icon: Icons.person_outline,
                     ),
+                     const SizedBox(height: 20),
+                    _buildTextField(  // Add the phone number input field
+                      controller: _phoneNumberController,
+                      label: "เบอร์โทรศัพท์",
+                      icon: Icons.phone,
+                    ),
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: saveInformation,
@@ -188,6 +196,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             borderRadius: BorderRadius.circular(20)),
                         backgroundColor: Colors.red[300],
                       ),
+                      
                       child: Text(
                         'บันทึก',
                         style: GoogleFonts.prompt(
@@ -231,6 +240,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker_covid_v1/feture/news_screen.dart';
-import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
+import 'package:tracker_covid_v1/screen/appointment/getappoints.dart';
 import '../../database/appoints_db.dart';
 
 class FormAppointments extends StatefulWidget {
@@ -16,25 +16,29 @@ class FormAppointments extends StatefulWidget {
 class _FormAppointmentsState extends State<FormAppointments> {
   String selectedTime = '';
   final dateController = TextEditingController();
-  final fristnameController = TextEditingController();
-  final lastnameController = TextEditingController();
+  final  hospital = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late Appoints_DB appointmentService;
+  
+    List<String> appointmentTimes = [
+    for (int hour = 8; hour <= 17; hour++) 
+      if (hour != 12) // Exclude 12.00 to 13.00
+        '$hour.00 น. - ${hour+1}.00 น.'
+  ];
+
 
   void navigateToShowDetails(Map<String, dynamic> data) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GetdataAppoints(getappoints: data),
+        builder: (context) => GetAppoints(),
       ),
     );
   }
 
   void resetFormMethod() {
     dateController.clear();
-    fristnameController.clear();
-    lastnameController.clear();
     setState(() {
       selectedTime = '';
     });
@@ -52,6 +56,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
     );
   }
 
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +102,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
                       context: context,
                       locale: const Locale("th", "TH"),
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
+                      firstDate: DateTime.now(),
                       lastDate: DateTime(2101),
                     );
                     if (pickedDate != null) {
@@ -120,120 +125,41 @@ class _FormAppointmentsState extends State<FormAppointments> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RadioListTile(
-                            activeColor: Colors.purple,
-                            title: Text('09.00 น.'),
-                            value: '09.00 น.',
-                            groupValue: selectedTime,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedTime = val!;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile(
-                            activeColor: Colors.purple,
-                            title: Text('10.00 น.'),
-                            value: '10.00 น.',
-                            groupValue: selectedTime,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedTime = val!;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RadioListTile(
-                            activeColor: Colors.purple,
-                            title: Text('11.00 น.'),
-                            value: '11.00 น.',
-                            groupValue: selectedTime,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedTime = val!;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile(
-                            activeColor: Colors.purple,
-                            title: Text('13.00 น.'),
-                            value: '13.00 น.',
-                            groupValue: selectedTime,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedTime = val!;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                DropdownButton<String>(
+                value: selectedTime.isEmpty ? null : selectedTime,
+                hint: Text("เลือกช่วงเวลา"),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedTime = newValue!;
+                  });
+                },
+                items: appointmentTimes.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
               const SizedBox(height: 35),
-              const Text(
-                'รายละเอียดผู้นัดรับ',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  controller: fristnameController,
+                  controller: hospital,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    labelText: ("ชื่อ"),
+                    helperText:'ใส่ชื่อโรงพยาบาล',
                     labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25.0),
                       borderSide: const BorderSide(width: 3),
                     ),
                   ),
-                  validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
+                  validator: RequiredValidator(errorText: "กรุณาใส่ชื่อโรงพยาบาล"),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: lastnameController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: ("สกุล"),
-                    labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: const BorderSide(width: 3),
-                    ),
-                  ),
-                  validator: RequiredValidator(errorText: "กรุณาใส่ชื่อ"),
-                ),
-              ),
-              const SizedBox(height: 20),
               SizedBox(
                 width: 120,
                 child: Column(
@@ -256,8 +182,7 @@ class _FormAppointmentsState extends State<FormAppointments> {
                             await appointmentService.saveToFirebaseAndShowPopup(
                               date: dateController.text,
                               time: selectedTime,
-                              firstName: fristnameController.text,
-                              lastName: lastnameController.text,
+                              hospital: hospital.text,
                             );
                           }
                         }
