@@ -89,6 +89,7 @@ class _showdata_symptomState extends State<showdata_symptom> {
           'แบบประเมินอาการประจำวัน',
           style: GoogleFonts.prompt(fontSize: 22),
         ),
+        centerTitle: true,
       ),
       backgroundColor: Colors.pink[50],
       body: StreamBuilder(
@@ -147,6 +148,11 @@ class _showdata_symptomState extends State<showdata_symptom> {
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
+                    leading: Icon(
+                      Icons.calendar_month,
+                      color: Colors.red[300],
+                      size: 50,
+                    ),
                     title: Text(
                       'บันทึกวันที่  $date',
                       style: GoogleFonts.prompt(
@@ -154,7 +160,8 @@ class _showdata_symptomState extends State<showdata_symptom> {
                         fontSize: 18,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                    trailing: Icon(Icons.arrow_forward_ios,
+                        size: 18, color: Colors.red[300]),
                     onTap: () {
                       final DateTime selectedDate =
                           DateTime.parse(date); // Convert date to DateTime

@@ -145,7 +145,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: firebase,
-      builder: ((context, snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(title: Text("Error")),
@@ -155,58 +155,84 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(70),
+              preferredSize: Size.fromHeight(55),
               child: AppBar(
                 backgroundColor: Colors.red[300],
-                title: Center(
-                  child: Text(
-                    'แบบประเมินอาการ',
-                    style: GoogleFonts.prompt(fontSize: 25),
-                  ),
+                title: Text(
+                  "แบบประเมินอาการ",
+                  style: GoogleFonts.prompt(fontSize: 24),
                 ),
+                centerTitle: true,
               ),
             ),
-            backgroundColor: Colors.pink[50],
+            backgroundColor: Colors.red[50],
             body: Form(
               key: formKey,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 30),
-                    ...symptoms.keys.map((String symptom) {
-                      return ListTile(
-                        title: Text(
-                          symptom,
-                          style: GoogleFonts.prompt(fontSize: 18),
-                        ),
-                        subtitle: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              value: 'Y',
-                              groupValue: symptoms[symptom],
-                              onChanged: (value) {
-                                setState(() {
-                                  symptoms[symptom] = value!;
-                                });
-                              },
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [Colors.red[100]!, Colors.red[300]!]),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: symptoms.keys.map((String symptom) {
+                          return ListTile(
+                            title: Text(
+                              symptom,
+                              style: GoogleFonts.prompt(
+                                  fontSize: 18, color: Colors.white),
                             ),
-                            Text('มี', style: GoogleFonts.prompt(fontSize: 18)),
-                            Radio(
-                              value: 'N',
-                              groupValue: symptoms[symptom],
-                              onChanged: (value) {
-                                setState(() {
-                                  symptoms[symptom] = value!;
-                                });
-                              },
+                            subtitle: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                  value: 'Y',
+                                  activeColor: Colors.white,
+                                  groupValue: symptoms[symptom],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      symptoms[symptom] = value!;
+                                    });
+                                  },
+                                ),
+                                Text('มี',
+                                    style: GoogleFonts.prompt(
+                                        fontSize: 18, color: Colors.white)),
+                                Radio(
+                                  value: 'N',
+                                  activeColor: Colors.white,
+                                  groupValue: symptoms[symptom],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      symptoms[symptom] = value!;
+                                    });
+                                  },
+                                ),
+                                Text('ไม่มี',
+                                    style: GoogleFonts.prompt(
+                                        fontSize: 18, color: Colors.white)),
+                              ],
                             ),
-                            Text('ไม่มี',
-                                style: GoogleFonts.prompt(fontSize: 18)),
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 20.0),
@@ -219,6 +245,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                           shape: const StadiumBorder(),
                           backgroundColor: Colors.green[300],
                           minimumSize: const Size(250, 50),
+                          shadowColor: Colors.grey,
+                          elevation: 10,
                         ),
                       ),
                     ),
@@ -233,7 +261,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
             child: CircularProgressIndicator(),
           ),
         );
-      }),
+      },
     );
   }
 
@@ -257,7 +285,6 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
     Alert(
       context: context,
       image: image,
-      title: "",
       desc: null,
       content: Column(children: [
         Text(
@@ -280,10 +307,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
       ]),
       buttons: [
         DialogButton(
-          child: Text(
-            "ใช่",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          child: Text("ใช่",
+              style: GoogleFonts.prompt(color: Colors.white, fontSize: 20)),
           onPressed: () {
             // Close the dialog and navigate to DetailsCheckScreen
             Navigator.pop(context);

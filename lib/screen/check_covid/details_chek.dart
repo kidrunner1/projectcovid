@@ -128,10 +128,19 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
+                      leading: Icon(
+                        Icons.calendar_month,
+                        size: 50,
+                        color: Colors.red[300],
+                      ),
                       title: Text('บันทึกวันที่  $date',
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 18)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Colors.red[300],
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,

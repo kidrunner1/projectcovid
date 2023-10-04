@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/callphone.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,8 +13,9 @@ class CallPhone extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "สายด่วน",
+          style: GoogleFonts.prompt(),
         ),
         centerTitle: true,
         backgroundColor: Colors.red[300],

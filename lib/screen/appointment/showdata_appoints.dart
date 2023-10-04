@@ -2,8 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker_covid_v1/screen/appointment/getappoints.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
 
 class Showdata_appoints extends StatefulWidget {
   @override
@@ -38,7 +38,10 @@ class _ShowdataState extends State<Showdata_appoints> {
       data: theme,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("การนัดหมาย"),
+          title: Text(
+            "การนัดหมาย",
+            style: GoogleFonts.prompt(),
+          ),
           elevation: 0,
           centerTitle: true,
           backgroundColor: theme.primaryColor,
@@ -56,10 +59,10 @@ class _ShowdataState extends State<Showdata_appoints> {
               }
               final docs = snapshot.data?.docs ?? [];
               if (docs.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
                     "ไม่มีรายการนัดหมาย",
-                    style: TextStyle(fontSize: 20),
+                    style: GoogleFonts.prompt(),
                   ),
                 );
               }
@@ -81,26 +84,18 @@ class _ShowdataState extends State<Showdata_appoints> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
-                      title: const Text(
-                        'การติดต่อเข้ารับยา',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
+                      title: Text('การติดต่อเข้ารับยา',
+                          style: GoogleFonts.prompt()),
                       subtitle: Text(
-                        'วันที่: ${data['date']}\nเวลา: ${data['time']}', // Date and time as subtopics
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
+                          'วันที่: ${data['date']}\nเวลา: ${data['time']}', // Date and time as subtopics
+                          style: GoogleFonts.prompt()),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                GetAppoints(),
+                                GetdataAppoints(getappoints: data),
                           ),
                         );
                       },

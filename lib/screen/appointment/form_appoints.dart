@@ -3,8 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
-import 'package:tracker_covid_v1/feture/news_screen.dart';
-import 'package:tracker_covid_v1/screen/appointment/getappoints.dart';
+import 'package:tracker_covid_v1/model/hospital.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
+
+import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../database/appoints_db.dart';
 
 class FormAppointments extends StatefulWidget {
@@ -18,8 +22,9 @@ class _FormAppointmentsState extends State<FormAppointments> {
   final dateController = TextEditingController();
   final hospital = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
   late Appoints_DB appointmentService;
+  String? selectedHospital;
+  List<String> filteredHospitals = sakonNakhonHospitals;
 
   List<String> appointmentTimes = [
     for (int hour = 8; hour <= 17; hour++)
@@ -28,10 +33,10 @@ class _FormAppointmentsState extends State<FormAppointments> {
   ];
 
   void navigateToShowDetails(Map<String, dynamic> data) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => GetAppoints(),
+        builder: (context) => GetdataAppoints(getappoints: data),
       ),
     );
   }
@@ -45,169 +50,223 @@ class _FormAppointmentsState extends State<FormAppointments> {
 
   @override
   void initState() {
-    dateController.text = ""; // set the initial value of text field
     super.initState();
+    dateController.text = "";
     appointmentService = Appoints_DB(
       context,
       navigateToShowDetails,
       resetFormMethod,
-      firestore: FirebaseFirestore.instance, // Pass the Firestore instance.
+      firestore: FirebaseFirestore.instance,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[100],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
+        elevation: 0.0,
+        title: Text(
           "ติดต่อเข้ารับยา",
-          style: TextStyle(fontSize: 20),
+          style: GoogleFonts.prompt(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.red[300],
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
         child: Form(
           key: formKey,
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: dateController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    suffixIcon: const Icon(
-                      Icons.calendar_today,
-                      color: Colors.black,
-                    ),
-                    labelText: ("วัน/เดือน/ปี"),
-                    labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: const BorderSide(width: 3),
-                    ),
-                  ),
-                  validator:
-                      RequiredValidator(errorText: "กรุณาระบุวัน/เดือน/ปี"),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      locale: const Locale("th", "TH"),
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2101),
-                    );
-                    if (pickedDate != null) {
-                      int yearInBE = pickedDate.year + 543;
-                      String formattedDate =
-                          DateFormat('d MMMM', 'th_TH').format(pickedDate) +
-                              ' $yearInBE';
-                      dateController.text = formattedDate;
-                    } else {
-                      print("Date is not selected");
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 35),
-              const Text(
-                'ช่วงเวลาเข้ารับยา',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              DropdownButton<String>(
-                value: selectedTime.isEmpty ? null : selectedTime,
-                hint: Text("เลือกช่วงเวลา"),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedTime = newValue!;
-                  });
-                },
-                items: appointmentTimes
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 35),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: hospital,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    helperText: 'ใส่ชื่อโรงพยาบาล',
-                    labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: const BorderSide(width: 3),
-                    ),
-                  ),
-                  validator:
-                      RequiredValidator(errorText: "กรุณาใส่ชื่อโรงพยาบาล"),
-                ),
-              ),
-              SizedBox(
-                width: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    AnimatedButton(
-                      text: 'บันทึก',
-                      color: Colors.green,
-                      pressEvent: () async {
-                        if (formKey.currentState!.validate()) {
-                          if (selectedTime.isEmpty) {
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.warning,
-                              title: 'กรอกข้อมูลไม่ครบ',
-                              desc: 'กรุณาเลือกช่วงเวลาเข้ารับยา',
-                              btnOkOnPress: () {},
-                            ).show();
-                          } else {
-                            await appointmentService.saveToFirebaseAndShowPopup(
-                              date: dateController.text,
-                              time: selectedTime,
-                              hospital: hospital.text,
-                            );
-                          }
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    AnimatedButton(
-                      text: 'ยกเลิก',
-                      color: Colors.red,
-                      pressEvent: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewsScreens(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          child: ListView.builder(
+            itemCount: 1,
+            itemBuilder: (context, index) => Column(
+              children: [
+                buildDateTimeField(),
+                const SizedBox(height: 35),
+                buildDropdownMenu(),
+                const SizedBox(height: 35),
+                buildHospitalField(),
+                const SizedBox(height: 50),
+                buildButtons(),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildDateTimeField() {
+    return TextFormField(
+      controller: dateController,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        prefixIcon: Icon(
+          Icons.calendar_today,
+          color: Colors.blueGrey[700],
+        ),
+        labelText: ("วัน/เดือน/ปี"),
+        labelStyle: GoogleFonts.prompt(color: Colors.blueGrey[700]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+      validator: RequiredValidator(errorText: "กรุณาระบุวัน/เดือน/ปี"),
+      readOnly: true,
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          locale: const Locale("th", "TH"),
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2101),
+        );
+        if (pickedDate != null) {
+          int yearInBE = pickedDate.year + 543;
+          String formattedDate =
+              DateFormat('d MMMM', 'th_TH').format(pickedDate) + ' $yearInBE';
+          dateController.text = formattedDate;
+        } else {
+          print("Date is not selected");
+        }
+      },
+    );
+  }
+
+  Widget buildDropdownMenu() {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        labelText: "เลือกช่วงเวลา",
+        labelStyle: GoogleFonts.prompt(color: Colors.blueGrey[700]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+      value: selectedTime.isEmpty ? null : selectedTime,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedTime = newValue!;
+        });
+      },
+      items: appointmentTimes.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value, style: GoogleFonts.prompt()),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildHospitalField() {
+    return Column(
+      children: [
+        TextFormField(
+          onChanged: (value) {
+            setState(() {
+              filteredHospitals = sakonNakhonHospitals
+                  .where((hospital) => hospital.contains(value))
+                  .toList();
+              if (!filteredHospitals.contains(selectedHospital)) {
+                // If selected hospital doesn't exist in filtered list, reset it
+                selectedHospital = null;
+              }
+            });
+          },
+        ),
+        SizedBox(height: 20),
+        Container(
+          width: MediaQuery.of(context).size.width -
+              40, // Assuming 20 padding on each side,
+          child: DropdownButtonFormField<String>(
+            isExpanded: true,
+            value: selectedHospital,
+            hint: Text("เลือกโรงพยาบาลใกล้คุณ ",
+                style: GoogleFonts.prompt(
+                    fontSize: 15)), // This will show when no item is selected
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              labelText: "เลือกโรงพยาบาล",
+              labelStyle:
+                  GoogleFonts.prompt(color: Colors.blueGrey[700], fontSize: 18),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedHospital = newValue!;
+                hospital.text = selectedHospital!;
+              });
+            },
+            items:
+                filteredHospitals.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: GoogleFonts.prompt()),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildButtons() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+          onPressed: () async {
+            if (formKey.currentState!.validate()) {
+              if (selectedTime.isEmpty) {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.warning,
+                  title: 'กรอกข้อมูลไม่ครบ',
+                  desc: 'กรุณาเลือกช่วงเวลาเข้ารับยา',
+                  btnOkOnPress: () {},
+                ).show();
+              } else {
+                await appointmentService.saveToFirebaseAndShowPopup(
+                  date: dateController.text,
+                  time: selectedTime,
+                  hospital: hospital.text,
+                );
+              }
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            primary: Colors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: Text("บันทึก", style: GoogleFonts.prompt(color: Colors.white)),
+        ),
+        SizedBox(height: 15), // Add some space between the buttons.
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            primary: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: Text("ยกเลิก", style: GoogleFonts.prompt(color: Colors.white)),
+        ),
+      ],
     );
   }
 }

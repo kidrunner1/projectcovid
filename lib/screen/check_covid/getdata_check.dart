@@ -41,16 +41,29 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(
-      textTheme: GoogleFonts.promptTextTheme(Theme.of(context).textTheme),
+      primaryColor: Colors.white,
+      hintColor: Colors.amberAccent,
+      cardTheme: CardTheme(
+        color: Colors.white,
+      ),
+      textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme).apply(
+        bodyColor: Colors.amberAccent,
+        displayColor: Colors.amberAccent,
+      ),
+      iconTheme: IconThemeData(color: Colors.amberAccent),
     );
 
     return Theme(
       data: theme,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("รายละเอียดการบันทึกผล"),
+          title: Text(
+            "รายละเอียดการบันทึกผล",
+            style: GoogleFonts.prompt(),
+          ),
           elevation: 0,
           backgroundColor: Colors.red[300],
+          centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: resultsStream,
@@ -62,7 +75,11 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(child: Text('No records found for today.'));
+              return Center(
+                  child: Text(
+                'No records found for today.',
+                style: GoogleFonts.prompt(),
+              ));
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
@@ -92,11 +109,7 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
         children: <Widget>[
           Text(
             "วันและเวลาที่บันทึก : $formattedDateTime",
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: GoogleFonts.prompt(fontSize: 20, color: Colors.black),
           ),
           const SizedBox(height: 20),
           Card(
@@ -111,39 +124,36 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
                 children: [
                   Text(
                     "น้ำหนักปุจจุบัน : ${data['weight'] ?? 'Not available'}",
-                    style: const TextStyle(fontSize: 18),
+                    style:
+                        GoogleFonts.prompt(fontSize: 20, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
                   Text(
                     "อุณหภูมิปัจจุบัน : ${data['temperature'] ?? 'Not available'}",
-                    style: const TextStyle(fontSize: 18),
+                    style:
+                        GoogleFonts.prompt(fontSize: 20, color: Colors.black),
                   ),
                   const SizedBox(height: 20),
                   Text(
                     "ผลตรวจ ATK วันนี้ : ${data['result'] != null && data['result'].isNotEmpty ? data['result'] : 'No result available'}",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style:
+                        GoogleFonts.prompt(fontSize: 20, color: Colors.black),
                   ),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 20),
-          const Text(
+          Text(
             "แนบผลการตรวจ ATK(รูปภาพ) : ",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: GoogleFonts.prompt(fontSize: 20, color: Colors.black),
           ),
           const SizedBox(height: 20),
           data['imageUrl'] != null && data['imageUrl'].isNotEmpty
               ? Card(
-                  elevation: 5,
+                  elevation: 4,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Image.network(
@@ -171,10 +181,11 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
                     },
                   ),
                 )
-              : const Center(
+              : Center(
                   child: Text(
                     "No image available",
-                    style: TextStyle(color: Colors.grey),
+                    style: GoogleFonts.prompt(
+                        fontSize: 20, color: Colors.red[300]),
                   ),
                 ),
         ],
