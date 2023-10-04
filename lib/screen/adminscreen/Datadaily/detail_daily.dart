@@ -3,17 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart'; // Import this at the top of your file
 
-class UserDetailScreen extends StatefulWidget {
+class DailyUserDetailAdminScreen extends StatefulWidget {
   final DocumentSnapshot patientData;
 
-  UserDetailScreen({required this.patientData});
+  DailyUserDetailAdminScreen({required this.patientData});
 
   @override
-  _UserDetailScreenState createState() => _UserDetailScreenState();
+  _DailyUserDetailAdminScreenState createState() =>
+      _DailyUserDetailAdminScreenState();
 }
 
-class _UserDetailScreenState extends State<UserDetailScreen> {
+class _DailyUserDetailAdminScreenState
+    extends State<DailyUserDetailAdminScreen> {
   late Stream<QuerySnapshot<Map<String, dynamic>>> resultsStream;
+
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
@@ -55,11 +60,17 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(child: Text('No records found for the user.'));
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
+            return AnimatedList(
+              initialItemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index, animation) {
                 final data = snapshot.data!.docs[index].data();
-                return _buildRecordItem(data);
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(-1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: _buildRecordItem(data),
+                );
               },
             );
           }
@@ -70,72 +81,112 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
 
   Widget _buildRecordItem(Map<String, dynamic> data) {
     Timestamp timestamp = data['timestamp'];
-    DateTime dateTime = timestamp.toDate();
+    DateTime dateTime = timestamp.toDate().toLocal();
 
-    // Convert to Thai Buddhist year by adding 543 years
-    DateTime thaiDate = dateTime.add(Duration(days: (543 * 365.25).round()));
+    // Convert only the year to Thai Buddhist year
+    DateTime thaiDate = DateTime(dateTime.year + 543, dateTime.month,
+        dateTime.day, dateTime.hour, dateTime.minute, dateTime.second);
 
-    String formattedDate = DateFormat.yMMMMd('th_TH').add_jm().format(thaiDate);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (data['imageUrl'] != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    data['imageUrl'],
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              SizedBox(height: 20),
-              Text(
-                "Temperature: ${data['temperature']}°C",
-                style: GoogleFonts.prompt(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+    String formattedDate = DateFormat.yMd('th_TH').add_jm().format(thaiDate);
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(data['userID']).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          }
+
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          final name = "${userData['firstName']} ${userData['lastName']}";
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Card(
+              elevation: 5,
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (data['imageUrl'] != null)
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.network(
+                            data['imageUrl'],
+                            height: 250,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "ชื่อ : $name",
+                      style: GoogleFonts.prompt(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "อุณหภูมิ : ${data['temperature']}°C",
+                      style: GoogleFonts.prompt(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "น้ำหนัก : ${data['weight']}kg",
+                      style: GoogleFonts.prompt(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "ผลตรวจ : ${data['result']}",
+                      style: GoogleFonts.prompt(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "เวลาที่บันทึก : $formattedDate",
+                      style: GoogleFonts.prompt(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
-                "Weight: ${data['weight']}kg",
-                style: GoogleFonts.prompt(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Result: ${data['result']}",
-                style: GoogleFonts.prompt(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "เวลาที่บันทึก : $formattedDate",
-                style: GoogleFonts.prompt(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

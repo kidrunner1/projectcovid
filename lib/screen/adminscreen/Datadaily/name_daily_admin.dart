@@ -32,9 +32,10 @@ class PatientDetailScreen extends StatelessWidget {
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.red[300], // Deep blue color
+        elevation: 4.0, // Slight elevation
+        backgroundColor: Colors.red[300],
       ),
+
       body: ListView.builder(
         itemCount: uniquePatients.length,
         itemBuilder: (context, index) {
@@ -46,6 +47,8 @@ class PatientDetailScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
                   return ListTile(
+                    leading: const Icon(Icons.error_outline,
+                        color: Colors.redAccent, size: 24),
                     title: Text(
                       "Error: ${snapshot.error}",
                       style: GoogleFonts.prompt(
@@ -59,33 +62,52 @@ class PatientDetailScreen extends StatelessWidget {
 
                 return Card(
                   elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 15),
+                    leading: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.red[300],
+                      child: Text(
+                        name.split(" ").map((str) => str[0]).join(),
+                        style: GoogleFonts.prompt(
+                            color: Colors.white, fontSize: 20),
+                      ),
+                    ),
                     title: Text(
                       name,
                       style: GoogleFonts.prompt(
                           fontSize: 20, fontWeight: FontWeight.w600),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 20),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20,
+                          color: Colors.red[300],
+                        ),
+                      ],
+                    ),
                     onTap: () {
-                      // Navigate to UserDetailScreen
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              UserDetailScreen(patientData: patientData),
+                          builder: (context) => DailyUserDetailAdminScreen(
+                            patientData: patientData,
+                          ),
                         ),
                       );
                     },
                   ),
                 );
               } else {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             },
           );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/envaluate_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/name_envalute_admin.dart';
 
 class GetEnvaluateAdminScreen extends StatefulWidget {
   const GetEnvaluateAdminScreen({super.key});
@@ -53,32 +53,54 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
             child: ListView.builder(
               itemCount: groupedData.keys.length,
               itemBuilder: (context, index) {
-                String date = groupedData.keys.elementAt(index);
-                var evaluations = groupedData[date]!;
+                String dateStr = groupedData.keys.elementAt(index);
+                var evaluations = groupedData[dateStr]!;
+
+                DateTime? dateObj =
+                    tryParseDate(dateStr); // Use the new function here
+                if (dateObj == null) {
+                  print("Unable to parse date: $dateStr");
+                  return Text("Invalid date format: $dateStr");
+                }
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  elevation: 10,
-                  child: InkWell(
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    leading: Icon(Icons.calendar_today,
+                        size: 50,
+                        color: Colors.red[300]), // Adding calendar icon here
+                    title: Text(
+                      "บันทึกวันที่",
+                      style: GoogleFonts.prompt(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600]),
+                    ),
+                    subtitle: Text(
+                      "${dateObj.day}/${dateObj.month}/${dateObj.year}",
+                      style: GoogleFonts.prompt(
+                          fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: Colors.red[300],
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => GetDataEnvaluateAdminScreen(
-                              date: date, evaluations: evaluations),
+                              date: dateStr, evaluations: evaluations),
                         ),
                       );
                     },
-                    borderRadius: BorderRadius.circular(25.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text('บันทึกวันที่: $date',
-                          style: GoogleFonts.prompt(
-                              fontWeight: FontWeight.w600, fontSize: 20.0)),
-                    ),
                   ),
                 );
               },
@@ -87,5 +109,26 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
         },
       ),
     );
+  }
+
+  DateTime? tryParseDate(String dateStr) {
+    // Try parsing in the 'yyyy-mm-dd' format
+    try {
+      return DateTime.parse(dateStr);
+    } catch (e) {
+      // If the above parsing fails, try parsing in the 'dd-mm-yyyy' format
+      List<String> dateComponents = dateStr.split('-');
+      if (dateComponents.length == 3) {
+        String formattedDateStr =
+            '${dateComponents[2]}-${dateComponents[1]}-${dateComponents[0]}';
+        try {
+          return DateTime.parse(formattedDateStr);
+        } catch (e) {
+          print("Failed to parse date: $dateStr in both formats. Error: $e");
+          return null;
+        }
+      }
+    }
+    return null;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/dailys_details_admin.dart'; // Ensure the path is correct
+import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/name_daily_admin.dart'; // Ensure the path is correct
 
 class GetDataDailysAdminScreen extends StatefulWidget {
   const GetDataDailysAdminScreen({super.key});
@@ -27,7 +27,7 @@ class _GetDataDailysAdminScreenState extends State<GetDataDailysAdminScreen> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.indigo[700],
+        backgroundColor: Colors.red[300],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: checkResults.snapshots(),
@@ -65,13 +65,27 @@ class _GetDataDailysAdminScreenState extends State<GetDataDailysAdminScreen> {
                 ),
                 child: ListTile(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  leading: Icon(Icons.calendar_today,
+                      size: 50,
+                      color: Colors.red[300]), // Adding calendar icon here
                   title: Text(
-                    "บันทึกวันที่: ${date.day}-${date.month}-${date.year}",
+                    "บันทึกวันที่",
+                    style: GoogleFonts.prompt(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600]),
+                  ),
+                  subtitle: Text(
+                    "${date.day}/${date.month}/${date.year}",
                     style: GoogleFonts.prompt(
                         fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios, size: 20),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                    color: Colors.red[300],
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,

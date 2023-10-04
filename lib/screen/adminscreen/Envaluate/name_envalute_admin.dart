@@ -20,13 +20,14 @@ class GetDataEnvaluateAdminScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'ข้อมูลของอาการวันที่ $date',
+          'รายชื่อคนไข้ที่ประเมินอาการ',
           style: GoogleFonts.prompt(
             fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+            fontSize: 24.0,
           ),
         ),
         backgroundColor: Colors.red[300],
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -47,18 +48,21 @@ class GetDataEnvaluateAdminScreen extends StatelessWidget {
                 var lastName = snapshot.data!['lastName'];
 
                 return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
-                  elevation: 10,
+                  elevation: 4,
                   child: ListTile(
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     leading: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.red[100],
-                      child:
-                          Icon(Icons.person, color: Colors.red[300], size: 35),
+                      radius: 25,
+                      backgroundColor: Colors.red[300],
+                      child: Text(
+                          '${firstName[0]}${lastName[0]}', // Extract the first letters of the names here
+                          style: GoogleFonts.prompt(
+                              color: Colors.white, fontSize: 20)),
                     ),
                     title: Text(
                       '$firstName $lastName',
@@ -66,6 +70,16 @@ class GetDataEnvaluateAdminScreen extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20,
+                          color: Colors.red[300],
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.push(
