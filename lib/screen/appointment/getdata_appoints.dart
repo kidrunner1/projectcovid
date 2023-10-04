@@ -86,6 +86,11 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
                         ),
                         const SizedBox(height: 20),
                         Text(
+                          "เบอร์โทร : ${userData?['phoneNumber'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
                           "สถานที่ : ${widget.getappoints['hospital'] ?? 'Not available'}",
                           style: GoogleFonts.prompt(fontSize: 16),
                         ),
