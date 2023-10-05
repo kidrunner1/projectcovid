@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/users.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class AdminManagerScreen extends StatefulWidget {
   AdminManagerScreen({
@@ -66,50 +68,62 @@ class _AdminScreenState extends State<AdminManagerScreen> {
           }
 
           List<Users> users = snapshot.data!;
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              Users u = users[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 10.0),
-                elevation: 6.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0)),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 12.0),
-                  title: Text(u.email ?? "No Email",
-                      style: GoogleFonts.prompt(fontSize: 16.0)),
-                  subtitle: Text(
-                    "${u.firstName} ${u.lastName} - ${roleToString(u.role ?? 3)}",
-                    style: GoogleFonts.prompt(
-                        fontSize: 14.0, color: Colors.grey[600]),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Chip(
-                        label: Text(roleToString(u.role ?? 3),
-                            style: GoogleFonts.prompt(fontSize: 12.0)),
-                        backgroundColor:
-                            roleToColor(u.role ?? 3).withOpacity(0.2),
-                        side: BorderSide(color: roleToColor(u.role ?? 3)),
+          return AnimationLimiter(
+            child: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                Users u = users[index];
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10.0),
+                        elevation: 6.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0)),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 12.0),
+                          title: Text(u.email ?? "No Email",
+                              style: GoogleFonts.prompt(fontSize: 16.0)),
+                          subtitle: Text(
+                            "${u.firstName} ${u.lastName} - ${roleToString(u.role ?? 3)}",
+                            style: GoogleFonts.prompt(
+                                fontSize: 14.0, color: Colors.grey[600]),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Chip(
+                                label: Text(roleToString(u.role ?? 3),
+                                    style: GoogleFonts.prompt(fontSize: 12.0)),
+                                backgroundColor:
+                                    roleToColor(u.role ?? 3).withOpacity(0.2),
+                                side:
+                                    BorderSide(color: roleToColor(u.role ?? 3)),
+                              ),
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.trashAlt,
+                                    color: Colors.red[400]),
+                                onPressed: () {
+                                  // show a confirmation dialog before deletion
+                                  _showDeletionDialog(u);
+                                },
+                              ),
+                            ],
+                          ),
+                          onTap: () => _showRoleDialog(u),
+                        ),
                       ),
-                      IconButton(
-                        icon:
-                            Icon(Icons.delete_outline, color: Colors.red[400]),
-                        onPressed: () {
-                          // show a confirmation dialog before deletion
-                          _showDeletionDialog(u);
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                  onTap: () => _showRoleDialog(u),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
@@ -117,7 +131,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
     );
   }
 
-  // Updated Dialogs with a modern look
+  // Updated Dialogs with FontAwesome icons
   void _showRoleDialog(Users user) {
     int? selectedRole = user.role; // initial value
 
@@ -132,7 +146,7 @@ class _AdminScreenState extends State<AdminManagerScreen> {
               ),
               title: Row(
                 children: [
-                  Icon(Icons.person_outline, color: Colors.grey[600]),
+                  FaIcon(FontAwesomeIcons.userCircle, color: Colors.grey[600]),
                   SizedBox(width: 10),
                   Text(
                     'กำหนดสิทธิ์ผู้ใช้งาน',
@@ -216,7 +230,8 @@ class _AdminScreenState extends State<AdminManagerScreen> {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(Icons.warning_amber_rounded, color: Colors.red[400]),
+              FaIcon(FontAwesomeIcons.exclamationTriangle,
+                  color: Colors.red[400]),
               SizedBox(width: 10),
               Text(
                 'ยืนยันการลบ',
@@ -225,8 +240,8 @@ class _AdminScreenState extends State<AdminManagerScreen> {
             ],
           ),
           content: Text(
-            'คุณต้องการที่จะลบ ${user.email}? บัญชีผู้ใช้นี้หรือไม่',
-            style: GoogleFonts.prompt(color: Colors.black),
+            'คุณต้องการที่จะลบ ${user.email}? บัญชีนี้จะถูกลบอย่างถาวร',
+            style: GoogleFonts.prompt(),
           ),
           actions: <Widget>[
             ElevatedButton(
@@ -240,7 +255,10 @@ class _AdminScreenState extends State<AdminManagerScreen> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: Text('ลบ', style: GoogleFonts.prompt()),
+              child: Text(
+                'ยืนยัน',
+                style: GoogleFonts.prompt(),
+              ),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -260,27 +278,30 @@ class _AdminScreenState extends State<AdminManagerScreen> {
       },
     );
   }
-}
 
-// Utility functions:
-Color roleToColor(int role) {
-  switch (role) {
-    case 1:
-      return Colors.blue;
-    case 2:
-      return Colors.green;
-    default:
-      return Colors.grey;
+  Color roleToColor(int role) {
+    switch (role) {
+      case 1:
+        return Colors.red;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
   }
-}
 
-String roleToString(int role) {
-  switch (role) {
-    case 1:
-      return "Admin";
-    case 2:
-      return "Doctor/Nurse";
-    default:
-      return "Guest";
+  String roleToString(int role) {
+    switch (role) {
+      case 1:
+        return 'Admin';
+      case 2:
+        return 'Doctor/Nurse';
+      case 3:
+        return 'User';
+      default:
+        return 'Unknown';
+    }
   }
 }

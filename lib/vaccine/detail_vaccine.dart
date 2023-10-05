@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/users.dart';
+import 'package:tracker_covid_v1/vaccine/page__vac.dart';
 
 class ShowDetail_Location extends StatefulWidget {
   const ShowDetail_Location({super.key});
@@ -15,6 +16,9 @@ class ShowDetail_Location extends StatefulWidget {
 class _ShowDetail_LocationState extends State<ShowDetail_Location> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _IDcardController = TextEditingController();
+  final _PhoneNumberController = TextEditingController();
   User? currentUser = FirebaseAuth.instance.currentUser;
   Users user = Users(uid: "gg");
 
@@ -22,10 +26,6 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
   String vaccineDate = '';
   String vaccineTime = '';
   String vaccineLocation = '';
-
-  String _name = '';
-  String _idNumber = '';
-  String _phoneNumber = '';
 
   @override
   void initState() {
@@ -37,23 +37,33 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
   // Function to handle sending data to Firestore
   void sendDataToFirestore() {
     if (_formKey.currentState!.validate()) {
-      print('_name: $_name');
-      print('_idNumber: $_idNumber');
-      print('_phoneNumber: $_phoneNumber');
+      // Retrieve values from TextEditingController
+      String name = _firstNameController.text;
+      String idNumber = _IDcardController.text;
+      String phoneNumber = _PhoneNumberController.text;
 
+      UserData userData = UserData(
+        name: name,
+        idCard: idNumber,
+        phoneNumber: phoneNumber,
+      );
+
+      // Your Firestore code here to add the data
       FirebaseFirestore.instance.collection('vaccine_detail').add({
         'userID': currentUser?.uid,
-        'username': _name,
-        'ID card': _idNumber,
-        'telephone number': _phoneNumber,
+        'username': name,
+        'ID card': idNumber,
+        'telephone number': phoneNumber,
         'vaccineName': vaccineName,
         'vaccineDate': vaccineDate,
         'vaccineTime': vaccineTime,
         'vaccineLocation': vaccineLocation,
       }).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Registration successful!'),
+        // Navigate to Vaccine_page and pass the user data
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Vaccine_page(userData: userData),
           ),
         );
       }).catchError((error) {
@@ -173,6 +183,7 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextFormField(
+              controller: _firstNameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text("ชื่อ-สกุล",
@@ -189,13 +200,14 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
                 return null;
               },
               onSaved: (value) {
-                _name = value!;
+                _firstNameController.text = value!;
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextFormField(
+                controller: _IDcardController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text("เลขประจำตัวประจำตัวประชาชน",
@@ -217,13 +229,14 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
                   return null;
                 },
                 onSaved: (value) {
-                  _idNumber = value!;
+                  _IDcardController.text = value!;
                 },
                 keyboardType: TextInputType.number),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextFormField(
+                controller: _PhoneNumberController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text("เบอร์โทรศัพท์",
@@ -245,7 +258,7 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
                   return null;
                 },
                 onSaved: (value) {
-                  _phoneNumber = value!;
+                  _PhoneNumberController.text = value!;
                 },
                 keyboardType: TextInputType.phone),
           ),

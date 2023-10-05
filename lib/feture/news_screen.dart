@@ -9,7 +9,8 @@ import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
-import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
+
+import 'package:tracker_covid_v1/vaccine/detail_vaccine.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -160,8 +161,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: FontAwesomeIcons.syringe,
               label: 'นัดฉีดวัคซีน',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Vaccine()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowDetail_Location()));
               }),
         ],
       ),

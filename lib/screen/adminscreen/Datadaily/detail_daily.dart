@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart'; // Import this at the top of your file
+import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class DailyUserDetailAdminScreen extends StatefulWidget {
   final DocumentSnapshot patientData;
@@ -60,16 +62,19 @@ class _DailyUserDetailAdminScreenState
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(child: Text('No records found for the user.'));
           } else {
-            return AnimatedList(
-              initialItemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index, animation) {
-                final data = snapshot.data!.docs[index].data();
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(-1, 0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: _buildRecordItem(data),
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child:
+                          _buildRecordItem(snapshot.data!.docs[index].data()),
+                    ),
+                  ),
                 );
               },
             );

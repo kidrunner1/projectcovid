@@ -1,11 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/Appointment/details_medicin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 
 import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
@@ -217,13 +216,13 @@ class _MainPageAdminState extends State<MainPageAdmin> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _iconContainer(
-            iconData: FontAwesomeIcons.hospitalSymbol,
-            label: 'รายงานผู้ป่วย',
+            iconData: FontAwesomeIcons.pills,
+            label: 'รายงานนัดรับยา',
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const MedicinAdminScreen()));
+                      builder: (context) => const GetDataAppointsAdmin()));
             }),
         const SizedBox(width: 25),
         _iconContainer(

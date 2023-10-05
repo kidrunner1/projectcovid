@@ -15,7 +15,7 @@ class CallPhone extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "สายด่วน",
-          style: GoogleFonts.prompt(),
+          style: GoogleFonts.prompt(fontSize: 20),
         ),
         centerTitle: true,
         backgroundColor: Colors.red[300],
@@ -35,23 +35,12 @@ class CallPhone extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    EmergencyNumbers.numbers[index]['name']!,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  title: Text(EmergencyNumbers.numbers[index]['name']!,
+                      style: GoogleFonts.prompt(fontSize: 16)),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      numbers[index]['number']!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
+                    child: Text(numbers[index]['number']!,
+                        style: GoogleFonts.prompt(fontSize: 16)),
                   ),
                   leading: CircleAvatar(
                     radius: 30,
@@ -65,7 +54,7 @@ class CallPhone extends StatelessWidget {
                       ),
                     ),
                     icon: Icon(Icons.call),
-                    label: Text('โทร'),
+                    label: Text('โทร', style: GoogleFonts.prompt()),
                     onPressed: () async {
                       String num = numbers[index]['number']!;
                       await FlutterPhoneDirectCaller.callNumber(num);
