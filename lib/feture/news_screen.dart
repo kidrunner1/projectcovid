@@ -215,8 +215,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: Icons.calendar_month,
               label: 'การนัดของคุณ',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Showdata_appoints()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Showdata_appoints()));
               }),
           SizedBox(width: 12),
           _iconContainer(

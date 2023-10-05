@@ -74,12 +74,16 @@ class _ShowdataState extends State<Showdata_appoints> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ListTile(
-                      leading: Icon(Icons.calendar_month,size: 40,color: Colors.black,),
+                      leading: const Icon(
+                        Icons.calendar_month,
+                        size: 40,
+                        color: Colors.black,
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
-                      title: Text(
+                      title: const Text(
                         'การติดต่อเข้ารับยา',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         ),
@@ -92,7 +96,7 @@ class _ShowdataState extends State<Showdata_appoints> {
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
@@ -107,7 +111,7 @@ class _ShowdataState extends State<Showdata_appoints> {
             },
           ),
         ),
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.colorScheme.background,
       ),
     );
   }
