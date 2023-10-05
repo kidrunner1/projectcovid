@@ -53,7 +53,7 @@ class Appoints_DB {
         dialogType: DialogType.success,
         title: 'ยืนยันการนัดหมาย',
         desc:
-            ' วันที่: ${savedData['date']} \n เวลา: ${savedData['time']} \n สถานที่: ${savedData['hospital']}',
+            ' วันที่: ${savedData['date']} \n เวลา: ${savedData['time']} \n สถานที่: ${savedData['hospital']} \n ชื่อ: $firstName $lastName \n เบอร์โทร: $phoneNumber',
         btnCancelOnPress: resetForm,
         btnCancelText: 'ปิด',
         btnOkText: 'แสดงรายละเอียด',
@@ -62,9 +62,10 @@ class Appoints_DB {
             'date': savedData['date'],
             'time': savedData['time'],
             'hospital': savedData['hospital'],
-            'firstName': firstName, // include firstName
-            'lastName': lastName, // include lastName
-            'phoneNumber': phoneNumber, // include phoneNumber
+            'firstName': firstName,
+            'lastName': lastName,
+            'phoneNumber': phoneNumber,
+            'userID': userId, // ensure this line is there
           });
         },
       ).show();

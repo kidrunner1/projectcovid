@@ -104,7 +104,7 @@ class _FormAppointmentsState extends State<FormAppointments>
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          backgroundColor: Colors.blueGrey[700],
+          backgroundColor: Colors.red[300],
         ),
         body: FadeTransition(
           opacity: _animationController,

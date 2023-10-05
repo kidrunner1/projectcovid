@@ -103,6 +103,7 @@ class _FormCheckState extends State<FormCheck> {
             style: GoogleFonts.prompt(),
           ),
           backgroundColor: Colors.red[300],
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),

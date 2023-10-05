@@ -30,10 +30,13 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
           .collection('users')
           .doc(userID)
           .get();
-
+      print("Fetched user data: ${userDoc.data()}"); // Check the fetched data
       setState(() {
         userData = userDoc.data() as Map<String, dynamic>;
       });
+    } else {
+      print(
+          "No userID found in getappoints."); // This will let you know if the userID isn't passed correctly
     }
   }
 
