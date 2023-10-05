@@ -111,6 +111,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/logo_hospital.png
+    - assets/images/vaccine.jpg
     - assets/images/icons/check.png
     - assets/images/icons/warning.png
     - assets/krit-hgyk-f9e8ca580c2b.json
