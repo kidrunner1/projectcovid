@@ -41,7 +41,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
       case 1:
         return SettingsScreen();
       case 2:
-        return ProfileScreen();
+        return ProfileBox();
       default:
         return MainPageAdmin();
     }

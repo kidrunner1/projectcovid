@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-//import 'package:tracker_covid_v1/feture/news_screen.dart';
-
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 import '../../model/users.dart';
@@ -26,7 +24,6 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUSer();
   }
@@ -67,8 +64,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
       );
       return;
     }
-    // Create a map to store the selected symptoms
-    // Map<String, String> selectedSymptoms = {};
+
     bool hasCovidSymptoms = false;
     bool hasOtherSymptoms = false;
 
@@ -127,15 +123,6 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
           'date': dateFormat.format(now), // Separate date field
           'time': timeFormat.format(now), // Separate time field
         });
-        // var data;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => GetData_EvaluateSymptom(
-        //             symptomData: data,
-        //             selectedDate: data,
-        //           )),
-        // );
       } catch (e) {
         print('Error adding data to Firestore: $e');
       }

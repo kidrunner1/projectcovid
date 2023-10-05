@@ -91,7 +91,7 @@ class _NewsScreensState extends State<NewsScreens> {
               CarouselSlider(
                 options: CarouselOptions(
                   height: 200,
-                  autoPlay: false,
+                  autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 3),
                   viewportFraction: 1.0,
                   onPageChanged: (index, reason) {

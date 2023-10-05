@@ -50,6 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         isLoading = false;
       });
 
+      // ignore: use_build_context_synchronously
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -129,6 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
+          centerTitle: true,
           backgroundColor:
               Colors.red[300], // Made the color slightly deeper for contrast.
           elevation: 0,
@@ -175,7 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               radius:
                                   25, // Increased radius to make the camera icon more visible.
                               child: IconButton(
-                                icon: Icon(Icons.camera_alt,
+                                icon: Icon(FontAwesomeIcons.edit,
                                     size: 25,
                                     color: Colors
                                         .white), // Increased icon size for better visibility.
@@ -189,19 +191,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _buildTextField(
                         controller: _firstNameController,
                         label: "ชื่อ",
-                        icon: Icons.person,
+                        icon: FontAwesomeIcons.person,
                       ),
                       const SizedBox(height: 20),
                       _buildTextField(
                         controller: _lastNameController,
                         label: "นามสกุล",
-                        icon: Icons.person_outline,
+                        icon: FontAwesomeIcons.person,
                       ),
                       const SizedBox(height: 20),
                       _buildTextField(
                         controller: _phoneNumberController,
                         label: "เบอร์โทรศัพท์",
-                        icon: Icons.phone,
+                        icon: FontAwesomeIcons.phone,
                         inputType: TextInputType.number,
                         validator: (value) {
                           if (!RegExp(r'^0\d{9}$').hasMatch(value!)) {
