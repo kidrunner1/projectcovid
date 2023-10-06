@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tracker_covid_v1/model/users.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/admin_screen.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
@@ -52,14 +54,53 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                   key: fromKey,
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildTitle(),
-                        _combinedEmailPasswordResetWidgets(), // Combined widgets
-                        _buildLoginButton(),
-                        _buildRegisterLink(),
-                      ],
+                    child: AnimationLimiter(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AnimationConfiguration.staggeredList(
+                            position: 0,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildIcon(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 0,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildTitle(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 1,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _combinedEmailPasswordResetWidgets(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 2,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildLoginButton(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 3,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildRegisterLink(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -69,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
 
-        // ignore: prefer_const_constructors
+        // If the Future is still running, show a loading indicator
         return Scaffold(
           body: const Center(
             child: CircularProgressIndicator(),
@@ -111,6 +152,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildIcon() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/login_screen.json',
+              width: 200, height: 200)
+        ],
+      ),
+    );
+  }
+
   Widget _buildTitle() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -139,17 +193,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ]),
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          labelText: 'อีเมล',
-          labelStyle: GoogleFonts.prompt(),
-          hintText: 'อีเมล',
-          hintStyle: GoogleFonts.prompt(),
-          prefixIcon: const Icon(Icons.mail),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+            labelText: 'อีเมล',
+            labelStyle: GoogleFonts.prompt(),
+            hintText: 'อีเมล',
+            hintStyle: GoogleFonts.prompt(),
+            prefixIcon: const Icon(Icons.mail),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorStyle: GoogleFonts.prompt()),
       ),
     );
   }
@@ -162,17 +216,17 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: RequiredValidator(errorText: "กรุณากรอก-รหัสผ่าน"),
         obscureText: true,
         decoration: InputDecoration(
-          labelText: 'รหัสผ่าน',
-          labelStyle: GoogleFonts.prompt(),
-          hintText: 'รหัสผ่าน',
-          hintStyle: GoogleFonts.prompt(),
-          prefixIcon: const Icon(Icons.key),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+            labelText: 'รหัสผ่าน',
+            labelStyle: GoogleFonts.prompt(),
+            hintText: 'รหัสผ่าน',
+            hintStyle: GoogleFonts.prompt(),
+            prefixIcon: const Icon(Icons.key),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorStyle: GoogleFonts.prompt()),
       ),
     );
   }
@@ -195,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'รีเซ็ตรหัสผ่าน',
               style: GoogleFonts.prompt(
-                color: Colors.blue[700],
+                color: Colors.red[300],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
@@ -249,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'ลงทะเบียน',
               style: GoogleFonts.prompt(
-                color: Colors.blue[700],
+                color: Colors.red[300],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),

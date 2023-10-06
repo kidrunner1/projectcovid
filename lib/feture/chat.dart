@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.white10, Colors.blue.shade200],
+                  colors: [Colors.blueAccent, Colors.blueAccent],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

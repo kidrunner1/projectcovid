@@ -157,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Column(
                                 children: [
@@ -185,7 +185,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           //password textfield
@@ -204,7 +206,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                             // ปิดรหัสผ่าน
                           ),
                           const SizedBox(height: 15),
@@ -222,7 +226,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                             // ปิดรหัสผ่าน
                           ),
 
@@ -241,7 +247,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // lastname textfield
@@ -260,7 +268,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                )),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // phone textfield
@@ -288,14 +297,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              labelText: 'เบอร์โทร',
-                              labelStyle: GoogleFonts.prompt(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+                                labelText: 'เบอร์โทร',
+                                labelStyle: GoogleFonts.prompt(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // สมัครสมาชิค
@@ -357,7 +366,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                           .check_circle_outline_outlined,
                                                       color: Colors.green[400],
                                                       size: 70), // เพิ่มไอคอน
-                                                  SizedBox(
+                                                  const SizedBox(
                                                       height:
                                                           20), // ระยะห่างระหว่างไอคอนและข้อความ
                                                   Text(
@@ -420,7 +429,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   shape: const StadiumBorder(),
                                   backgroundColor: Colors.red.shade300),
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text("สร้างบัญชีผู้ใช้",
                                     style: GoogleFonts.prompt(
                                         fontSize: 25, color: Colors.white)),
@@ -435,23 +444,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('กลับหน้าเข้าสู่ระบบ  ',
-                                    style: GoogleFonts.prompt(fontSize: 20)),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return LoginScreen();
-                                          }));
-                                        },
-                                        child: Text('กดตรงนี้ ',
-                                            style: GoogleFonts.prompt(
-                                                fontSize: 20,
-                                                color: Colors.blue))),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return LoginScreen();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        '   กลับหน้าเข้าสู่ระบบ   ',
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 20,
+                                            color: Colors.red[300]),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],

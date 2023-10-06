@@ -19,7 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final _formKey = GlobalKey<FormState>(); // Added GlobalKey for Form
+  final _formKey = GlobalKey<FormState>();
   String? _photoURL;
   bool isLoading = false;
 
@@ -50,7 +50,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         isLoading = false;
       });
 
-      // ignore: use_build_context_synchronously
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -119,121 +118,103 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlay(
-      isLoading: isLoading,
-      child: Scaffold(
-        backgroundColor:
-            const Color(0xFFf6f6f6), // Changed background color to a soft gray.
-        appBar: AppBar(
-          title: Text("ข้อมูลส่วนตัว",
-              style: GoogleFonts.prompt(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-          centerTitle: true,
-          backgroundColor:
-              Colors.red[300], // Made the color slightly deeper for contrast.
-          elevation: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+    return SafeArea(
+      child: LoadingOverlay(
+        isLoading: isLoading,
+        child: Scaffold(
+          backgroundColor: Colors.red[50],
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.red[50]!,
+                  Colors.red[50]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'แก้ไขข้อมูลส่วนตัว',
-                        style: GoogleFonts.prompt(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 30),
-                      Stack(
+                child: Card(
+                  elevation: 8,
+                  shadowColor: Colors.blueGrey.shade600,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircleAvatar(
-                            radius:
-                                60, // Increased radius to make the profile picture bigger and more prominent.
-                            backgroundColor: Colors.grey,
-                            backgroundImage: _photoURL != null
-                                ? NetworkImage(_photoURL!)
-                                : null,
-                            child: _photoURL == null
-                                ? Icon(FontAwesomeIcons.camera,
-                                    color: Colors.white, size: 50)
-                                : null,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.red[300],
+                                  ))
+                            ],
                           ),
-                          Positioned(
-                            bottom: 5,
-                            right: 5,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.red[300],
-                              radius:
-                                  25, // Increased radius to make the camera icon more visible.
-                              child: IconButton(
-                                icon: Icon(FontAwesomeIcons.edit,
-                                    size: 25,
-                                    color: Colors
-                                        .white), // Increased icon size for better visibility.
-                                onPressed: selectImage,
-                              ),
+                          Text(
+                            'แก้ไขข้อมูลส่วนตัว',
+                            style: GoogleFonts.prompt(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey.shade800),
+                          ),
+                          const SizedBox(height: 30),
+                          _buildProfilePicture(),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _firstNameController,
+                            label: "ชื่อ",
+                            icon: FontAwesomeIcons.userAlt,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _lastNameController,
+                            label: "นามสกุล",
+                            icon: FontAwesomeIcons.userAlt,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _phoneNumberController,
+                            label: "เบอร์โทรศัพท์",
+                            icon: FontAwesomeIcons.phone,
+                            inputType: TextInputType.number,
+                            validator: (value) {
+                              if (!RegExp(r'^0\d{9}$').hasMatch(value!)) {
+                                return 'กรุณาใส่หมายเลขโทรศัพท์ที่ถูกต้อง';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          ElevatedButton(
+                            onPressed: saveInformation,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red[300],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                            ),
+                            child: Text(
+                              'บันทึก',
+                              style: GoogleFonts.prompt(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      _buildTextField(
-                        controller: _firstNameController,
-                        label: "ชื่อ",
-                        icon: FontAwesomeIcons.person,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildTextField(
-                        controller: _lastNameController,
-                        label: "นามสกุล",
-                        icon: FontAwesomeIcons.person,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildTextField(
-                        controller: _phoneNumberController,
-                        label: "เบอร์โทรศัพท์",
-                        icon: FontAwesomeIcons.phone,
-                        inputType: TextInputType.number,
-                        validator: (value) {
-                          if (!RegExp(r'^0\d{9}$').hasMatch(value!)) {
-                            return 'กรุณาใส่หมายเลขโทรศัพท์ที่ถูกต้อง';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      ElevatedButton(
-                        onPressed: saveInformation,
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red[
-                              300], // Match the color with the AppBar for consistency.
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical:
-                                  15), // Increase padding for a larger button.
-                        ),
-                        child: Text(
-                          'บันทึก',
-                          style: GoogleFonts.prompt(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18), // Increase font size for emphasis.
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -244,28 +225,68 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  Widget _buildProfilePicture() {
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: 70,
+          backgroundColor: Colors.grey[300],
+          backgroundImage: _photoURL != null ? NetworkImage(_photoURL!) : null,
+          child: _photoURL == null
+              ? Icon(FontAwesomeIcons.userCircle,
+                  color: Colors.red[300], size: 70)
+              : null,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.red[300],
+            ),
+            child: IconButton(
+              icon:
+                  Icon(FontAwesomeIcons.camera, size: 25, color: Colors.white),
+              onPressed: selectImage,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
     required IconData icon,
-    TextInputType? inputType,
+    TextInputType inputType = TextInputType.text,
     String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: inputType,
       validator: validator,
-      style: GoogleFonts.prompt(fontSize: 16), // Apply the Google font here.
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: GoogleFonts.prompt(), // Apply the Google font here too.
-        prefixIcon: Icon(icon,
-            color:
-                Colors.red[300]), // Use the same color as AppBar for the icon.
+        labelStyle: GoogleFonts.prompt(fontSize: 18),
+        prefixIcon: Icon(icon, color: Colors.blueGrey.shade600),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.blueGrey.shade600),
+        ),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Colors.red[300]!)), // Color the border when focused.
-        border: OutlineInputBorder(),
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.blueGrey.shade800, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.red.shade600),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.red.shade800),
+        ),
       ),
     );
   }

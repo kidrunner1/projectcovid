@@ -92,7 +92,7 @@ class _ProfileBoxState extends State<ProfileBox>
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.white!, Colors.white!],
+                colors: [Colors.white, Colors.white],
               ),
               borderRadius: BorderRadius.circular(15),
             ),

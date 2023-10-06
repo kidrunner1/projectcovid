@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -19,53 +19,6 @@ class showdata_symptom extends StatefulWidget {
 class _showdata_symptomState extends State<showdata_symptom> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   bool informationAvailable = false;
-  int _currentIndex = 0;
-
-  void onTabTappedd(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  Widget buildBottomNavigationBar() {
-    return Container(
-      height: 60.0,
-      child: BottomNavigationBar(
-        onTap: onTabTappedd,
-        currentIndex: _currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.home),
-            label: 'หน้าหลัก',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'แชท',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.gear),
-            label: 'ตั้งค่า',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.person),
-            label: 'ข้อมูลส่วนตัว',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red[400],
-        selectedItemColor: Colors.grey[300],
-        unselectedItemColor: Colors.white70,
-        unselectedLabelStyle: GoogleFonts.prompt(
-          color: Colors.white.withOpacity(0.7),
-          fontSize: 12,
-        ),
-        selectedLabelStyle: GoogleFonts.prompt(
-          color: Colors.deepPurple.shade50,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
 
   Future<int> getAssessmentCountToday() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -220,18 +173,17 @@ class _showdata_symptomState extends State<showdata_symptom> {
             // Check if the user can assess symptoms
             if (assessmentCountToday < 3) {
               // Navigate to the symptom assessment page
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => Evaluate_Symptoms()),
               );
             }
           }
         },
-        backgroundColor: Colors.red[500],
+        backgroundColor: Colors.red[300],
         child: Icon(Icons.edit),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 }
