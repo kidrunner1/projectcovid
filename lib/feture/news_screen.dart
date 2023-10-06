@@ -9,8 +9,13 @@ import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
+<<<<<<< HEAD
 
 import 'package:tracker_covid_v1/vaccine/detail_vaccine.dart';
+=======
+import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
+import '../screen/evaluate_symptom/showdata_symptom.dart';
+>>>>>>> origin/pim01
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -164,7 +169,7 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ShowDetail_Location()));
+                        builder: (context) => ShowData_VaccineLocation()));
               }),
         ],
       ),

@@ -7,7 +7,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 
+<<<<<<< HEAD
 import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
+=======
+import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
+import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
+>>>>>>> origin/pim01
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
@@ -185,6 +190,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
   }
 
   Widget _buildNavigationRow1() {
+<<<<<<< HEAD
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       _iconContainer(
           iconData: Icons.assignment_outlined,
@@ -207,6 +213,34 @@ class _MainPageAdminState extends State<MainPageAdmin> {
             ),
           );
         },
+=======
+    return _buildNavigationRow(
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(width: 12),
+          _iconContainer(
+              iconData: Icons.assignment_outlined,
+              label: 'รายงานประเมินความเสี่ยง',
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const DetailsEnvaluateAdminScreen()));
+              }),
+          const SizedBox(width: 12),
+          _iconContainer(
+              iconData: FontAwesomeIcons.syringe,
+              label: 'นัดฉีดวัคซีน',
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowData_VaccineLocation()));
+              }),
+        ],
+>>>>>>> origin/pim01
       ),
     ]);
   }
