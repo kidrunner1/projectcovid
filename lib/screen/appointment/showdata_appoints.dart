@@ -4,10 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/appointment/getdata_appoints.dart';
-<<<<<<< HEAD
-=======
 import 'package:tracker_covid_v1/screen/vaccine/getdata_vaccine.dart';
->>>>>>> origin/pim01
 
 class Showdata_appoints extends StatefulWidget {
   @override
@@ -58,86 +55,61 @@ class _ShowdataState extends State<Showdata_appoints> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-          child: StreamBuilder<QuerySnapshot>(
-            stream: _stream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(child: Text("มีบางอย่างผิดพลาด"));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-<<<<<<< HEAD
-              final docs = snapshot.data?.docs ?? [];
-              if (docs.isEmpty) {
-                return Center(
-                  child: Text(
-                    "ไม่มีรายการนัดหมาย",
-                    style: GoogleFonts.prompt(),
-                  ),
-                );
-              }
-              return ListView.builder(
-                itemCount: docs.length,
-                itemBuilder: (context, index) {
-                  final data = docs[index].data() as Map<String, dynamic>;
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.calendar_month,
-                        size: 40,
-                        color: Colors.black,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      title: Text('การติดต่อเข้ารับยา',
-                          style: GoogleFonts.prompt()),
-                      subtitle: Text(
-                          'วันที่: ${data['date']}\nเวลา: ${data['time']}', // Date and time as subtopics
-                          style: GoogleFonts.prompt()),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                GetdataAppoints(getappoints: data),
-                          ),
-                        );
-                      },
-                    ),
-=======
-              final appointmentDocs = snapshot.data?.docs ?? [];
-
-              return StreamBuilder<QuerySnapshot>(
-                stream: _vaccineDetailStream,
-                builder: (context, vaccineDetailSnapshot) {
-                  final vaccineDocs = vaccineDetailSnapshot.data?.docs ?? [];
-                  final allDocs = [...appointmentDocs, ...vaccineDocs];
-
+          child: ListView(
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                stream: _stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: Text("มีบางอย่างผิดพลาด"));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final docs = snapshot.data?.docs ?? [];
                   return ListView.builder(
-                    itemCount: allDocs.length,
+                    shrinkWrap:
+                        true, // allow it to size itself based on content
+                    physics:
+                        NeverScrollableScrollPhysics(), // disable scrolling
+                    itemCount: docs.length,
                     itemBuilder: (context, index) {
-                      final data =
-                          allDocs[index].data() as Map<String, dynamic>;
-                      if (index < appointmentDocs.length) {
-                        // This is an appointment doc
-                        return _buildAppointmentCard(context, data);
-                      } else {
-                        // This is a vaccine detail doc
-                        return _buildVaccineDetailCard(context, data);
-                      }
+                      final data = docs[index].data() as Map<String, dynamic>;
+                      return _buildAppointmentCard(context, data);
                     },
->>>>>>> origin/pim01
                   );
                 },
-              );
-            },
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: _vaccineDetailStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: Text("มีบางอย่างผิดพลาด"));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final docs = snapshot.data?.docs ?? [];
+                  if (docs.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "ไม่มีรายการนัดหมายวัคซีน",
+                        style: GoogleFonts.prompt(),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) {
+                      final data = docs[index].data() as Map<String, dynamic>;
+                      return _buildVaccineDetailCard(context, data);
+                    },
+                  );
+                },
+              ),
+            ],
           ),
         ),
         backgroundColor: Colors.red[50],
@@ -197,12 +169,13 @@ Widget _buildVaccineDetailCard(
           style: GoogleFonts.prompt()),
       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
       onTap: () {
+        print(data);
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => GetData_Vaccine(
               getappoints: data,
-            ), // Pushing to the VaccineDetailsPage
+            ),
           ),
         );
       },

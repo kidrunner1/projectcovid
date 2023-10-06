@@ -20,7 +20,7 @@ class ShowData_VaccineLocation extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Card(
               elevation: 3, // Add elevation for a shadow effect
-              margin: EdgeInsets.all(10), // Adjust margin as needed
+              margin: const EdgeInsets.all(10), // Adjust margin as needed
               child: ListTile(
                 leading: Image.asset('assets/images/logo_hospital.png'),
                 title: Text(
@@ -40,14 +40,14 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         )),
-                    SizedBox(height: 3),
+                    const SizedBox(height: 3),
                     Text('Sinavac(เข็มที่ 1) + Sinavac(เข็มที่ 2)',
                         style: GoogleFonts.prompt(
                           fontSize: 17,
                           //fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 48, 110, 50),
+                          color: const Color.fromARGB(255, 48, 110, 50),
                         )),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text('จำกัดสิทธิ์แค่ 120 คน/รอบ',
                         style: GoogleFonts.prompt(
                           fontSize: 16,
@@ -62,14 +62,14 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ShowDetail_Location(),
+                              builder: (context) => const ShowDetail_Location(),
                             ),
                           );
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 54, 221,
+                          backgroundColor: const Color.fromARGB(255, 54, 221,
                               157), // Background color of the button
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 5), // Button padding
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
@@ -94,7 +94,7 @@ class ShowData_VaccineLocation extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Card(
               elevation: 3, // Add elevation for a shadow effect
-              margin: EdgeInsets.all(10), // Adjust margin as needed
+              margin: const EdgeInsets.all(10), // Adjust margin as needed
               child: ListTile(
                 leading: Image.asset('assets/images/logo_hospital.png'),
                 title: Text(
@@ -114,14 +114,14 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         )),
-                    SizedBox(height: 3),
+                    const SizedBox(height: 3),
                     Text('Sinavac(เข็มที่ 1) + AstraZeneca(เข็มที่ 2)',
                         style: GoogleFonts.prompt(
                           fontSize: 17,
                           //fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 48, 110, 50),
+                          color: const Color.fromARGB(255, 48, 110, 50),
                         )),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text('จำกัดสิทธิ์แค่ 120 คน/รอบ',
                         style: GoogleFonts.prompt(
                           fontSize: 16,
@@ -136,14 +136,15 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ShowDetail_Location2(),
+                              builder: (context) =>
+                                  const ShowDetail_Location2(),
                             ),
                           );
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 54, 221,
+                          backgroundColor: const Color.fromARGB(255, 54, 221,
                               157), // Background color of the button
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 5), // Button padding
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(

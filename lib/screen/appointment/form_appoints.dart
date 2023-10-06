@@ -4,10 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
-<<<<<<< HEAD
 import 'package:lottie/lottie.dart';
-=======
->>>>>>> origin/pim01
 import 'package:tracker_covid_v1/model/hospital.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -127,10 +124,7 @@ class _FormAppointmentsState extends State<FormAppointments>
                       padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: [
-<<<<<<< HEAD
                           _buildIcon(),
-=======
->>>>>>> origin/pim01
                           buildDateTimeField(),
                           const SizedBox(height: 35),
                           buildDropdownMenu(),
@@ -160,7 +154,6 @@ class _FormAppointmentsState extends State<FormAppointments>
     );
   }
 
-<<<<<<< HEAD
   Widget _buildIcon() {
     return Padding(
       padding: EdgeInsets.all(10),
@@ -174,8 +167,6 @@ class _FormAppointmentsState extends State<FormAppointments>
     );
   }
 
-=======
->>>>>>> origin/pim01
   Widget buildDateTimeField() {
     return TextFormField(
       controller: dateController,

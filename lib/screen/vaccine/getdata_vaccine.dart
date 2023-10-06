@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GetData_Vaccine extends StatefulWidget {
   final Map<String, dynamic> getappoints;
+
   const GetData_Vaccine({Key? key, required this.getappoints})
       : super(key: key);
 
@@ -14,9 +14,7 @@ class GetData_Vaccine extends StatefulWidget {
 
 class GetData_VaccineState extends State<GetData_Vaccine> {
   final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   Map<String, dynamic>? userData;
-  Map<String, dynamic>? appointmentData;
 
   @override
   void initState() {
@@ -27,68 +25,69 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
   Future<void> fetchData() async {
     final userID = widget.getappoints['userID'];
     if (userID != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userID)
+      // Fetching documents based on the 'userID' field
+      QuerySnapshot vaccineDetailSnapshot = await _firestore
+          .collection('vaccine_detail')
+          .where('userID', isEqualTo: userID)
           .get();
-      print("Fetched user data: ${userDoc.data()}"); // Check the fetched data
-      setState(() {
-        userData = userDoc.data() as Map<String, dynamic>;
-      });
+
+      if (vaccineDetailSnapshot.docs.isNotEmpty) {
+        DocumentSnapshot vaccineDetailDoc = vaccineDetailSnapshot.docs.first;
+        print("Fetched vaccine details: ${vaccineDetailDoc.data()}");
+        setState(() {
+          userData = vaccineDetailDoc.data() as Map<String, dynamic>;
+        });
+      } else {
+        print(
+            "No document found for userID: $userID in vaccine_detail collection");
+      }
     } else {
-      print(
-          "No userID found in getappoints."); // This will let you know if the userID isn't passed correctly
+      print("No userID found in getappoints.");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red[300],
-        title: Text(
-          'รายละเอียดการนัดฉีดวัคซีน',
-          style: GoogleFonts.prompt(fontSize: 22),
+        appBar: AppBar(
+          backgroundColor: Colors.red[300],
+          title: Text(
+            'รายละเอียดการนัดฉีดวัคซีน',
+            style: GoogleFonts.prompt(fontSize: 22),
+          ),
         ),
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: _firestore
-            .collection('vaccine_detail')
-            .doc(_auth.currentUser?.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data?.data() == null) {
-            return Center(child: Text('No vaccination details found'));
-          }
-
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-
-          return Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${data['vaccineRound']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-                Text("${data['username']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-                Text("ชื่อวัคซีน : ${data['vaccineName']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-                Text("วันที่ : ${data['vaccineDate']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-                Text("เวลา : ${data['vaccineTime']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-                Text("Location: ${data['vaccineLocation']}",
-                    style: GoogleFonts.prompt(fontSize: 18)),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+        body: userData == null
+            ? Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("รอบ: ${userData!['vaccineRound'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "ชื่อ - นามสกุล: ${userData!['username'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "รหัสประจำตัวประชาชน: ${userData!['ID card'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "เบอร์โทรศัพท์: ${userData!['telephone number'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "Vaccine Name: ${userData!['vaccineName'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "Vaccine Date: ${userData!['vaccineDate'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "Vaccine Time: ${userData!['vaccineTime'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                    Text(
+                        "Location: ${userData!['vaccineLocation'] ?? 'Not available'}",
+                        style: GoogleFonts.prompt(fontSize: 18)),
+                  ],
+                ),
+              ));
   }
 }

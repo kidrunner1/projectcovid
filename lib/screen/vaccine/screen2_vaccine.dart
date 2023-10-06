@@ -4,12 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/users.dart';
-<<<<<<< HEAD:lib/vaccine/detail_vaccine.dart
-import 'package:tracker_covid_v1/vaccine/page__vac.dart';
-=======
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/vaccine/getdata_vaccine.dart';
->>>>>>> origin/pim01:lib/screen/vaccine/screen2_vaccine.dart
 
 class ShowDetail_Location2 extends StatefulWidget {
   const ShowDetail_Location2({super.key});
@@ -33,14 +29,10 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
   String vaccineTime = '';
   String vaccineLocation = '';
 
-<<<<<<< HEAD:lib/vaccine/detail_vaccine.dart
-=======
   bool isRegistered = false; // Track registration status
 
->>>>>>> origin/pim01:lib/screen/vaccine/screen2_vaccine.dart
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getRegistrationStatus(); // Check registration status when the page loads
     getUSer();
@@ -60,61 +52,88 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
     }
   }
 
-  // Function to handle sending data to Firestore
-  void sendDataToFirestore() {
+  Future<void> getUSer() async {
+    final auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid;
+    Users? tempData = await Users.getUser(uid);
+    if (tempData != null) {
+      setState(() {
+        user = tempData;
+      });
+    }
+  }
+
+  void showRegistrationDialog(
+      {required BuildContext dialogContext,
+      required Map<String, dynamic> data}) {
+    showDialog(
+      context: dialogContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          elevation: 5.0,
+          title: Text(
+            'ลงทะเบียนรับวัคซีน',
+            style: GoogleFonts.prompt(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          ),
+          content: const Text(
+            'คุณได้ทำการลงทะเบียนรับวัคซีนเรียบร้อย',
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'แสดงรายละเอียด',
+                style: GoogleFonts.prompt(
+                  color: const Color.fromARGB(255, 48, 110, 50),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GetData_Vaccine(
+                      getappoints: data,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<DocumentReference?> sendDataToFirestore() async {
     if (_formKey.currentState!.validate()) {
-<<<<<<< HEAD:lib/vaccine/detail_vaccine.dart
-      // Retrieve values from TextEditingController
-=======
->>>>>>> origin/pim01:lib/screen/vaccine/screen2_vaccine.dart
       String name = _firstNameController.text;
       String idNumber = _IDcardController.text;
       String phoneNumber = _PhoneNumberController.text;
 
-<<<<<<< HEAD:lib/vaccine/detail_vaccine.dart
-      UserData userData = UserData(
-        name: name,
-        idCard: idNumber,
-        phoneNumber: phoneNumber,
-      );
-
-      // Your Firestore code here to add the data
-      FirebaseFirestore.instance.collection('vaccine_detail').add({
-        'userID': currentUser?.uid,
-        'username': name,
-        'ID card': idNumber,
-        'telephone number': phoneNumber,
-        'vaccineName': vaccineName,
-        'vaccineDate': vaccineDate,
-        'vaccineTime': vaccineTime,
-        'vaccineLocation': vaccineLocation,
-      }).then((_) {
-        // Navigate to Vaccine_page and pass the user data
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Vaccine_page(userData: userData),
-          ),
-=======
       if (isRegistered) {
-        // User is already registered, show a message or take appropriate action
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('ลงทะเบียนรับวัคซีน'),
-              content: Text(
+              title: const Text('ลงทะเบียนรับวัคซีน'),
+              content: const Text(
                   'คุณได้ลงทะเบียนเรียบร้อยแล้ว ไม่สามารถลงทะเบียนซ้ำได้อีก'),
               actions: <Widget>[
                 TextButton(
-                  child: Text('OK'),
+                  child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            Showdata_appoints(), // Replace 'YourAppointmentPage' with your actual appointment page
+                        builder: (context) => Showdata_appoints(),
                       ),
                     );
                   },
@@ -122,126 +141,87 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
               ],
             );
           },
->>>>>>> origin/pim01:lib/screen/vaccine/screen2_vaccine.dart
         );
+        return null;
       } else {
-        // Your Firestore code here to add the data
-        FirebaseFirestore.instance.collection('vaccine_detail').add({
-          'userID': currentUser?.uid,
-          'username': name,
-          'ID card': idNumber,
-          'telephone number': phoneNumber,
-          'vaccineRound': vaccineRound,
-          'vaccineName': vaccineName,
-          'vaccineDate': vaccineDate,
-          'vaccineTime': vaccineTime,
-          'vaccineLocation': vaccineLocation,
-        }).then((_) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  // Custom shape
-                  borderRadius: BorderRadius.circular(20.0),
+        try {
+          DocumentReference docRef = await FirebaseFirestore.instance
+              .collection('vaccine_detail')
+              .add({
+            'userID': currentUser?.uid,
+            'username': name,
+            'ID card': idNumber,
+            'telephone number': phoneNumber,
+            'vaccineRound': vaccineRound,
+            'vaccineName': vaccineName,
+            'vaccineDate': vaccineDate,
+            'vaccineTime': vaccineTime,
+            'vaccineLocation': vaccineLocation,
+          });
+
+          DocumentSnapshot docSnapshot = await docRef.get();
+
+          if (docSnapshot.exists) {
+            Map<String, dynamic>? docData =
+                docSnapshot.data() as Map<String, dynamic>?;
+            if (docData != null) {
+              showRegistrationDialog(dialogContext: context, data: docData);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Document is empty.'),
                 ),
-                elevation: 5.0, // Elevation for a shadow effect
-                title: Text(
-                  'ลงทะเบียนรับวัคซีน',
-                  style: GoogleFonts.prompt(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ),
-                content: Text(
-                  'คุณได้ทำการลงทะเบียนรับวัคซีนเรียบร้อย',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(
-                      'แสดงรายละเอียด',
-                      style: GoogleFonts.prompt(
-                          color: Color.fromARGB(255, 48, 110,
-                              50) // Give some color to your action text
-                          ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GetData_Vaccine(
-                            getappoints: {},
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors
-                            .red // Background color for the primary button
-                        ),
-                    child: Text(
-                      'ปิด',
-                      style: GoogleFonts.prompt(
-                        color:
-                            Colors.white, // Give some color to your action text
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Showdata_appoints(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
               );
-            },
-          );
-        }).catchError((error) {
+            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Document not found.'),
+              ),
+            );
+          }
+
+          return docRef;
+        } catch (error) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Error: $error'),
             ),
           );
-        });
+          return null;
+        }
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill in the information completely.'),
         ),
       );
+      return null;
     }
   }
+
+  // Function to handle sending data to Firestore
 
   // Function to build the header section
   Widget buildHeader() {
     return Column(
       children: [
         Image.asset('assets/images/logo_hospital.png', height: 150),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text("โรงพยาบาลสกลนคร",
             style: GoogleFonts.prompt(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 48, 110, 50),
+              color: const Color.fromARGB(255, 48, 110, 50),
             )),
         Text("SAKON NAKHON HOSPITAL",
             style: GoogleFonts.prompt(
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 48, 110, 50),
+              color: const Color.fromARGB(255, 48, 110, 50),
             )),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Add other header elements here
       ],
     );
@@ -274,7 +254,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
               fontWeight: FontWeight.bold,
               color: Colors.black,
             )),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text("Sinavac(เข็มที่ 1) + AstraZeneca(เข็มที่ 2)",
             style: GoogleFonts.prompt(
               fontSize: 18,
@@ -295,16 +275,16 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
               fontSize: 18,
               color: Colors.black,
             )),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text("***** จำกัดสิทธิ์แค่ 150 คน *****",
             style: GoogleFonts.prompt(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.red,
             )),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Image.asset('assets/images/vaccine.jpg', height: 150),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         Text("กรอกข้อมูลเพื่อลงทะเบียน",
             style: GoogleFonts.prompt(
               fontSize: 20,
@@ -327,7 +307,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
             child: TextFormField(
               controller: _firstNameController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 label: Text("ชื่อ-สกุล",
                     style: GoogleFonts.prompt(
                       fontSize: 16,
@@ -351,7 +331,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
             child: TextFormField(
                 controller: _IDcardController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   label: Text("เลขประจำตัวประจำตัวประชาชน",
                       style: GoogleFonts.prompt(
                         fontSize: 16,
@@ -380,7 +360,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
             child: TextFormField(
                 controller: _PhoneNumberController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   label: Text("เบอร์โทรศัพท์",
                       style: GoogleFonts.prompt(
                         fontSize: 16,
@@ -411,7 +391,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
                 sendDataToFirestore();
               },
               label: Text('ลงทะเบียน', style: GoogleFonts.prompt(fontSize: 23)),
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
                 backgroundColor: Colors.green[300],
@@ -447,16 +427,5 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
         ),
       ),
     );
-  }
-
-  void getUSer() async {
-    final auth = FirebaseAuth.instance;
-    String uid = auth.currentUser!.uid;
-    Users? tempData = await Users.getUser(uid);
-    if (tempData != null) {
-      setState(() {
-        user = tempData;
-      });
-    }
   }
 }
