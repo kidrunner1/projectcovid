@@ -6,6 +6,7 @@ import 'package:tracker_covid_v1/screen/adminscreen/details_medicin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/getdata_evaluate_admin.dart';
 
 import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
+import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
@@ -100,8 +101,10 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               iconData: FontAwesomeIcons.syringe,
               label: 'นัดฉีดวัคซีน',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ScreenVaccine()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowData_VaccineLocation()));
               }),
         ],
       ),
