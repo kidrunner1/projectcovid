@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class GetData_Vaccine extends StatefulWidget {
   final Map<String, dynamic> getappoints;
@@ -49,45 +51,100 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red[300],
-          title: Text(
-            'รายละเอียดการนัดฉีดวัคซีน',
-            style: GoogleFonts.prompt(fontSize: 22),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.deepPurpleAccent[700],
+        title: Text(
+          'รายละเอียดวัคซีน',
+          style: GoogleFonts.prompt(
+            textStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        body: userData == null
-            ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("รอบ: ${userData!['vaccineRound'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "ชื่อ - นามสกุล: ${userData!['username'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "รหัสประจำตัวประชาชน: ${userData!['ID card'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "เบอร์โทรศัพท์: ${userData!['telephone number'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "Vaccine Name: ${userData!['vaccineName'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "Vaccine Date: ${userData!['vaccineDate'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "Vaccine Time: ${userData!['vaccineTime'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                    Text(
-                        "Location: ${userData!['vaccineLocation'] ?? 'Not available'}",
-                        style: GoogleFonts.prompt(fontSize: 18)),
-                  ],
-                ),
-              ));
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Lottie.asset(
+                'assets/animations/vaccine.json',
+                repeat: true,
+                animate: true,
+              ),
+            ),
+            Expanded(
+              child: userData == null
+                  ? Center(child: CircularProgressIndicator())
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: ListView(
+                        children: [
+                          _dataCard('รอบ', userData!['vaccineRound']),
+                          _dataCard('ชื่อ - นามสกุล', userData!['username']),
+                          _dataCard(
+                              'รหัสประจำตัวประชาชน', userData!['ID card']),
+                          _dataCard(
+                              'เบอร์โทรศัพท์', userData!['telephone number']),
+                          _dataCard('ชื่อวัคซีน', userData!['vaccineName']),
+                          _dataCard('วันที่', userData!['vaccineDate']),
+                          _dataCard('เวลา', userData!['vaccineTime']),
+                          _dataCard('สถานที่', userData!['vaccineLocation']),
+                        ],
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _dataCard(String title, dynamic data) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.deepPurpleAccent[100]?.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurpleAccent.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.prompt(
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.deepPurpleAccent[700],
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            data ?? 'Not available',
+            style: GoogleFonts.prompt(
+              textStyle: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[800],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
