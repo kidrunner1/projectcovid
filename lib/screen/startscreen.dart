@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:lottie/lottie.dart'; // <- Import the Lottie package here
 import 'home.dart';
 
 class StartScreen extends StatefulWidget {
@@ -20,10 +19,9 @@ class _StartScreenState extends State<StartScreen> {
     return Scaffold(
       body: isLoading
           ? Center(
-              child: SpinKitThreeBounce(
-                color: Colors.red.shade300,
-                size: 50.0,
-              ),
+              // Use the Lottie animation instead of the SpinKit
+              child: Lottie.asset('assets/animations/loading.json',
+                  width: 300, height: 300),
             )
           : Center(
               child: Padding(
@@ -42,7 +40,7 @@ class _StartScreenState extends State<StartScreen> {
                       height: 30,
                     ),
                     Text(
-                      " COVID-19\nSave Health",
+                      "  COVID-19\nSave Health",
                       style: GoogleFonts.prompt(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

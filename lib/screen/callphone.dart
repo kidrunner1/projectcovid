@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/model/callphone.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,8 +13,9 @@ class CallPhone extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "สายด่วน",
+          style: GoogleFonts.prompt(fontSize: 20),
         ),
         centerTitle: true,
         backgroundColor: Colors.red[300],
@@ -33,23 +35,12 @@ class CallPhone extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    EmergencyNumbers.numbers[index]['name']!,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  title: Text(EmergencyNumbers.numbers[index]['name']!,
+                      style: GoogleFonts.prompt(fontSize: 16)),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      numbers[index]['number']!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
+                    child: Text(numbers[index]['number']!,
+                        style: GoogleFonts.prompt(fontSize: 16)),
                   ),
                   leading: CircleAvatar(
                     radius: 30,
@@ -63,7 +54,7 @@ class CallPhone extends StatelessWidget {
                       ),
                     ),
                     icon: Icon(Icons.call),
-                    label: Text('โทร'),
+                    label: Text('โทร', style: GoogleFonts.prompt()),
                     onPressed: () async {
                       String num = numbers[index]['number']!;
                       await FlutterPhoneDirectCaller.callNumber(num);

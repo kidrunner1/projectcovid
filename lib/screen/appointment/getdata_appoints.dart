@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GetdataAppoints extends StatefulWidget {
   final Map<String, dynamic> getappoints;
@@ -13,6 +14,32 @@ class GetdataAppoints extends StatefulWidget {
 }
 
 class _GetdataAppointsState extends State<GetdataAppoints> {
+  Map<String, dynamic>? userData;
+  Map<String, dynamic>? appointmentData;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final userID = widget.getappoints['userID'];
+    if (userID != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .get();
+      print("Fetched user data: ${userDoc.data()}"); // Check the fetched data
+      setState(() {
+        userData = userDoc.data() as Map<String, dynamic>;
+      });
+    } else {
+      print(
+          "No userID found in getappoints."); // This will let you know if the userID isn't passed correctly
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(
@@ -25,12 +52,10 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("รายละเอียดการนัดรับยา"),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.red[300],
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
         ),
         body: Center(
           child: Padding(
@@ -59,18 +84,41 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
                         ),
                         const SizedBox(height: 20),
                         Text(
+<<<<<<< HEAD
                           "ชื่อ : ${widget.getappoints['first_name'] ?? 'Not available'}  ${widget.getappoints['last_name'] ?? 'Not available'}",
                           style: _textStyle,
                         ),
+=======
+                          "ชื่อ : ${userData?['firstName'] ?? 'Not available'}  ${userData?['lastName'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "เบอร์โทร : ${userData?['phoneNumber'] ?? 'Not available'}",
+                          style: _textStyle,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "สถานที่ : ${widget.getappoints['hospital'] ?? 'Not available'}",
+                          style: GoogleFonts.prompt(fontSize: 16),
+                        ),
+>>>>>>> main
                         const SizedBox(height: 40),
                         AnimatedButton(
                           text: 'ปิด',
                           color: Colors.blueGrey,
                           pressEvent: () {
                             Navigator.pushReplacement(
+<<<<<<< HEAD
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Showdata_appoints()));
+=======
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Showdata_appoints()),
+                            );
+>>>>>>> main
                           },
                         ),
                       ],

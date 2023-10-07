@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/screen/notification.dart';
 
 import 'package:tracker_covid_v1/screen/profile_page.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
@@ -11,8 +12,7 @@ import '../feture/chat.dart';
 import '../feture/news_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key,  this.user})
-      : super(key: key);
+  const MyHomePage({Key? key, this.user}) : super(key: key);
   final User? user;
 
   @override
@@ -21,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
+  ValueNotifier<int> notificationCount = ValueNotifier<int>(1);
 
   void onTabTapped(int index) {
     setState(() {
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         selectedItemColor: Colors.grey[300],
         unselectedItemColor: Colors.white70,
         unselectedLabelStyle: GoogleFonts.prompt(
@@ -97,9 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         title: Text(
-         "",
+          "",
           style: GoogleFonts.prompt(
             color: Colors.white,
             fontSize: 26,
@@ -116,8 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu,color: Colors.white
-              ,),
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -125,13 +128,40 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
-              },
-              icon:
-                  const Icon(Icons.notifications, color: Colors.white))
+          ValueListenableBuilder<int>(
+            valueListenable: notificationCount,
+            builder: (context, count, child) {
+              return Stack(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NotificationScreen()),
+                        );
+                        notificationCount.value =
+                            0; // Resetting notification count after viewing
+                      },
+                      icon:
+                          const Icon(Icons.notifications, color: Colors.white)),
+                  if (count > 0)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.red,
+                        child: Text(
+                          count.toString(),
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
         ],
       ),
       drawer: const NavigatorScreen(),

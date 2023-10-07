@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:tracker_covid_v1/screen/appointment/form_appoints.dart';
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/callphone.dart';
@@ -10,8 +9,7 @@ import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:tracker_covid_v1/screen/covid_data_screen.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/showdata_symptom.dart';
 import 'package:tracker_covid_v1/screen/track_covid.dart';
-import 'package:tracker_covid_v1/screen/vaccine/screen_vaccine.dart';
-
+import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
 
 class NewsScreens extends StatefulWidget {
   const NewsScreens({Key? key}) : super(key: key);
@@ -23,9 +21,9 @@ class NewsScreens extends StatefulWidget {
 class _NewsScreensState extends State<NewsScreens> {
   int _currentPage = 0;
   List<String> _imageUrls = [
-    "https://ecobnb.com/blog/app/uploads/sites/3/2020/01/nature.jpg",
-    'https://w1.med.cmu.ac.th/family/wp-content/uploads/2020/09/Covid-19-scaled.jpg',
-    'https://www.klonghaecity.go.th/files/com_networknews/2020-12_56ff228cf695781.jpg',
+    'https://www.mutchalin.go.th/wp-content/uploads/2021/05/2021-04_c5a140210afb093.jpg',
+    'https://seanphudat.chachoengsao.police.go.th/SPDPOLICE/wp-content/uploads/2023/01/%E0%B8%A3%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%87-%E0%B8%AB%E0%B8%A5%E0%B8%AD%E0%B8%81%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%AB%E0%B8%B2%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%95%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%97%E0%B8%A8-%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%97%E0%B8%B1%E0%B9%88%E0%B8%A7%E0%B9%82%E0%B8%A5%E0%B8%81-%E0%B9%80%E0%B8%9B%E0%B8%B4%E0%B8%94%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%97%E0%B8%A8-%E0%B8%9B%E0%B8%A5%E0%B8%94%E0%B8%A5%E0%B9%87%E0%B8%AD%E0%B8%81%E0%B9%82%E0%B8%84%E0%B8%A7%E0%B8%B4%E0%B8%94-19_Website.png',
+    'https://vichaivej-nongkhaem.com/wp-content/uploads/2021/08/%E0%B8%A3%E0%B8%B9%E0%B9%89%E0%B8%88%E0%B8%B1%E0%B8%81%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%82%E0%B8%84%E0%B8%A7%E0%B8%B4%E0%B8%94-1024x538.jpg'
   ];
 
   Widget _buildCarouselIndicator() {
@@ -85,14 +83,14 @@ class _NewsScreensState extends State<NewsScreens> {
     return Scaffold(
       backgroundColor: Colors.pink.shade50,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               CarouselSlider(
                 options: CarouselOptions(
                   height: 200,
-                  autoPlay: false,
+                  autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 3),
                   viewportFraction: 1.0,
                   onPageChanged: (index, reason) {
@@ -162,8 +160,10 @@ class _NewsScreensState extends State<NewsScreens> {
               iconData: FontAwesomeIcons.syringe,
               label: 'นัดฉีดวัคซีน',
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ScreenVaccine()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowData_VaccineLocation()));
               }),
         ],
       ),
@@ -190,7 +190,7 @@ class _NewsScreensState extends State<NewsScreens> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>  FormAppointments()));
+                        builder: (context) => FormAppointments()));
               }),
           SizedBox(width: 12),
           _iconContainer(
@@ -206,6 +206,7 @@ class _NewsScreensState extends State<NewsScreens> {
       ),
     );
   }
+
   Widget _buildNavigationRow3() {
     return _buildNavigationRow(
       Row(
@@ -224,14 +225,6 @@ class _NewsScreensState extends State<NewsScreens> {
           _iconContainer(
               iconData: FontAwesomeIcons.locationDot,
               label: 'ภายในจังหวัด',
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CovidDataScreen()));
-              }),
-          SizedBox(width: 12),
-          _iconContainer(
-              iconData: FontAwesomeIcons.locationDot,
-              label: 'ประวัติบันทึกอาการ',
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CovidDataScreen()));

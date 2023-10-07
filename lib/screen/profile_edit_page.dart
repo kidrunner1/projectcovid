@@ -19,6 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   String? _photoURL;
   bool isLoading = false;
 
@@ -27,53 +28,59 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     fetchInitialData();
   }
+
   Future<void> saveInformation() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_auth.currentUser?.uid)
-        .update({
-      'firstName': _firstNameController.text.trim(),
-      'lastName': _lastNameController.text.trim(),
-      'phoneNumber': _phoneNumberController.text.trim(),
-    });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser?.uid)
+          .update({
+        'firstName': _firstNameController.text.trim(),
+        'lastName': _lastNameController.text.trim(),
+        'phoneNumber': _phoneNumberController.text.trim(),
+      });
 
-    await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      isLoading = false;
-    });
+      setState(() {
+        isLoading = false;
+      });
 
-    // ignore: use_build_context_synchronously
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "แจ้งเตือน ",
-              style: GoogleFonts.prompt(fontSize: 20),
-            ),
-            content: Text(
-              "แก้ไขข้อมูลเรียบร้อย",
-              style: GoogleFonts.prompt(fontSize: 16),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "OK",
-                  style: GoogleFonts.prompt(fontSize: 16),
-                ),
-              )
-            ],
-          );
-        });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "แจ้งเตือน ",
+                style: GoogleFonts.prompt(fontSize: 20),
+              ),
+              content: Text(
+                "แก้ไขข้อมูลเรียบร้อย",
+                style: GoogleFonts.prompt(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "ตกลง",
+                    style: GoogleFonts.prompt(fontSize: 16),
+                  ),
+                )
+              ],
+            );
+          });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('กรุณาตรวจสอบข้อมูล')),
+      );
+    }
   }
 
   Future<void> fetchInitialData() async {
@@ -85,7 +92,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         documentSnapshot.data() as Map<String, dynamic>;
     _firstNameController.text = userData['firstName'];
     _lastNameController.text = userData['lastName'];
-    _phoneNumberController.text = userData['phoneNumber'] ?? ''; 
+    _phoneNumberController.text = userData['phoneNumber'] ?? '';
     setState(() {
       _photoURL = userData['photoURL'];
     });
@@ -111,101 +118,104 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlay(
-      isLoading: isLoading,
-      child: Scaffold(
-        backgroundColor: Colors.grey[100],
-        appBar: AppBar(
-          title: Text(
-            "ข้อมูลส่วนตัว",
-            style: GoogleFonts.prompt(color: Colors.white),
-          ),
-          backgroundColor: Colors.red[300],
-          elevation: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+    return SafeArea(
+      child: LoadingOverlay(
+        isLoading: isLoading,
+        child: Scaffold(
+          backgroundColor: Colors.red[50],
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.red[50]!,
+                  Colors.red[50]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'แก้ไขข้อมูลส่วนตัว',
-                      style: GoogleFonts.prompt(
-                          fontSize: 25, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 30),
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey,
-                          backgroundImage: _photoURL != null
-                              ? NetworkImage(_photoURL!)
-                              : null,
-                          child: _photoURL == null
-                              ? Icon(FontAwesomeIcons.camera,
-                                  color: Colors.white, size: 50)
-                              : null,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.red[300],
-                            radius: 20,
-                            child: IconButton(
-                              // ignore: prefer_const_constructors
-                              icon: Icon(Icons.camera_alt,
-                                  size: 20, color: Colors.white),
-                              onPressed: selectImage,
+                child: Card(
+                  elevation: 8,
+                  shadowColor: Colors.blueGrey.shade600,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.red[300],
+                                  ))
+                            ],
+                          ),
+                          Text(
+                            'แก้ไขข้อมูลส่วนตัว',
+                            style: GoogleFonts.prompt(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey.shade800),
+                          ),
+                          const SizedBox(height: 30),
+                          _buildProfilePicture(),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _firstNameController,
+                            label: "ชื่อ",
+                            icon: FontAwesomeIcons.userAlt,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _lastNameController,
+                            label: "นามสกุล",
+                            icon: FontAwesomeIcons.userAlt,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _phoneNumberController,
+                            label: "เบอร์โทรศัพท์",
+                            icon: FontAwesomeIcons.phone,
+                            inputType: TextInputType.number,
+                            validator: (value) {
+                              if (!RegExp(r'^0\d{9}$').hasMatch(value!)) {
+                                return 'กรุณาใส่หมายเลขโทรศัพท์ที่ถูกต้อง';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          ElevatedButton(
+                            onPressed: saveInformation,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red[300],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                            ),
+                            child: Text(
+                              'บันทึก',
+                              style: GoogleFonts.prompt(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    _buildTextField(
-                      controller: _firstNameController,
-                      label: "ชื่อ",
-                      icon: Icons.person,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildTextField(
-                      controller: _lastNameController,
-                      label: "นามสกุล",
-                      icon: Icons.person_outline,
-                    ),
-                     const SizedBox(height: 20),
-                    _buildTextField(  // Add the phone number input field
-                      controller: _phoneNumberController,
-                      label: "เบอร์โทรศัพท์",
-                      icon: Icons.phone,
-                    ),
-                    const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: saveInformation,
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        backgroundColor: Colors.red[300],
-                      ),
-                      
-                      child: Text(
-                        'บันทึก',
-                        style: GoogleFonts.prompt(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -215,32 +225,69 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  Widget _buildProfilePicture() {
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: 70,
+          backgroundColor: Colors.grey[300],
+          backgroundImage: _photoURL != null ? NetworkImage(_photoURL!) : null,
+          child: _photoURL == null
+              ? Icon(FontAwesomeIcons.userCircle,
+                  color: Colors.red[300], size: 70)
+              : null,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.red[300],
+            ),
+            child: IconButton(
+              icon:
+                  Icon(FontAwesomeIcons.camera, size: 25, color: Colors.white),
+              onPressed: selectImage,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
     required IconData icon,
+    TextInputType inputType = TextInputType.text,
+    String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
+      keyboardType: inputType,
+      validator: validator,
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        prefixIcon: Icon(icon, color: Colors.blueGrey[800]),
         labelText: label,
-        labelStyle: GoogleFonts.prompt(
-            fontWeight: FontWeight.w500, color: Colors.blueGrey[800]),
+        labelStyle: GoogleFonts.prompt(fontSize: 18),
+        prefixIcon: Icon(icon, color: Colors.blueGrey.shade600),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.blueGrey.shade600),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.blueGrey.shade800, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.red.shade600),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.red.shade800),
+        ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneNumberController.dispose();
-    super.dispose();
   }
 }

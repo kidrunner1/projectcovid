@@ -14,11 +14,12 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
   Stream<QuerySnapshot>? _stream;
   final ValueNotifier<List<DocumentSnapshot>> docsNotifier =
       ValueNotifier<List<DocumentSnapshot>>([]);
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
       _stream = FirebaseFirestore.instance
           .collection('checkResults')
@@ -28,22 +29,10 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
     }
   }
 
-  Future<void> clearOldRecords(List<DocumentSnapshot> docs) async {
-    final today = DateTime.now();
-    for (var doc in docs) {
-      final data = doc.data() as Map<String, dynamic>;
-      if (data.containsKey('createdAt')) {
-        final createdAt = (data['createdAt'] as Timestamp).toDate();
-        if (createdAt.year != today.year ||
-            createdAt.month != today.month ||
-            createdAt.day != today.day) {
-          await FirebaseFirestore.instance
-              .collection('checkResults')
-              .doc(doc.id)
-              .delete();
-        }
-      }
-    }
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   bool canAddMoreRecords(List<DocumentSnapshot> docs) {
@@ -53,9 +42,7 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
       final data = doc.data() as Map<String, dynamic>;
       if (data.containsKey('createdAt')) {
         final createdAt = (data['createdAt'] as Timestamp).toDate();
-        if (createdAt.year == today.year &&
-            createdAt.month == today.month &&
-            createdAt.day == today.day) {
+        if (isSameDay(createdAt, today)) {
           count++;
         }
       }
@@ -116,7 +103,6 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
               final docs = snapshot.data?.docs ?? [];
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 docsNotifier.value = docs;
-                clearOldRecords(docs);
               });
 
               if (docs.isEmpty) {
@@ -142,16 +128,26 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 20),
+                      leading: Icon(
+                        Icons.calendar_month,
+                        size: 50,
+                        color: Colors.red[300],
+                      ),
                       title: Text('บันทึกวันที่  $date',
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 18)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Colors.red[300],
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => GetDataCheckScreen(
                               data: data[0].data() as Map<String, dynamic>,
+                              userId: userId ?? '',
                             ),
                           ),
                         );
@@ -181,43 +177,38 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                       ),
                       content: Container(
                         height: 250,
-                        child: Column(
+                        child: const Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.error_outline,
+                            Icon(Icons.error_outline,
                                 color: Colors.yellow, size: 70),
-                            const SizedBox(height: 20),
-                            const Text(
+                            SizedBox(height: 20),
+                            Text(
                                 'วันนี้คุณได้บันทึกผลตรวจประจำวันครบ\nแล้วพรุ้งนี้อย่าลืมมาบันทึกผลกันใหม่นะ.',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16)),
-                            const Expanded(child: SizedBox()),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: ElevatedButton(
-                                  onPressed: () => Navigator.of(ctx).pop(),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.green),
-                                  ),
-                                  child: const Text('ตกลง'),
-                                ),
-                              ),
-                            ),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                )),
                           ],
                         ),
                       ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: const Text("ตกลง",
+                              style: TextStyle(
+                                color: Colors.blue,
+                              )),
+                        ),
+                      ],
                     ),
                   );
                 }
               },
+              tooltip: 'บันทึกผลตรวจโควิด-19',
               child: const Icon(Icons.edit),
-              backgroundColor: docs.isEmpty || canAddMoreRecords(docs)
-                  ? Colors.green
-                  : Colors.grey[400],
-              tooltip: 'บันทึกผลตรวจ',
             );
           },
         ),

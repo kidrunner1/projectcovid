@@ -51,7 +51,10 @@ class _DoctorScreenState extends State<DoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("หมอพยาบาล"),
+        title: Text(
+          "หมอพยาบาล",
+          style: GoogleFonts.prompt(),
+        ),
         actions: roleID == 1
             ? [
                 IconButton(
@@ -89,7 +92,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         selectedItemColor: Colors.grey[300],
         unselectedItemColor: Colors.white70,
         unselectedLabelStyle: GoogleFonts.prompt(

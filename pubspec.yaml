@@ -57,7 +57,6 @@ dependencies:
   intl: ^0.18.1
   dialog_flowtter: ^0.3.3
 
-
   flutter_localizations:
     sdk: flutter
   android_intent: ^2.0.2
@@ -77,11 +76,15 @@ dependencies:
   provider: ^6.0.5
   flutter_rounded_date_picker: ^3.0.4
   rflutter_alert: ^2.0.7
-  
-  
-  
-  
-  
+  shimmer: ^3.0.0
+  animations: ^2.0.8
+  location: ^5.0.3
+  flutter_neumorphic: ^3.2.0
+  flare_flutter: ^3.0.2
+  flutter_staggered_animations: ^1.1.1
+  flutter_hooks: ^0.20.2
+  animated_text_kit: ^4.2.2
+  lottie: ^2.6.0
 
 flutter_icons:
   android: true
@@ -103,11 +106,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/logo_hospital.png
+    - assets/images/vaccine.jpg
     - assets/images/icons/check.png
     - assets/images/icons/warning.png
     - assets/krit-hgyk-f9e8ca580c2b.json
-  
+    - assets/animations/animation_icon.json
+    - assets/animations/profile.json
+    - assets/animations/error.json
+    - assets/animations/reset_password.json
+    - assets/animations/login_screen.json
+    - assets/animations/hospital.json
+    - assets/animations/loading.json
+    - assets/animations/vaccine.json

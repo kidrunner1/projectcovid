@@ -13,7 +13,7 @@
 
    <application
     
-        android:label="tracker_covid_v1"
+        android:label="CovidSaveHelp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         

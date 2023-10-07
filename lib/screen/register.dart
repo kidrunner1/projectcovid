@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -43,6 +44,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _lastNameController.dispose();
     _phonenumberController.dispose();
     super.dispose();
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          'ผิดพลาด',
+          style: GoogleFonts.prompt(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.red[400],
+          ),
+        ),
+        content: Text(
+          message,
+          style: GoogleFonts.prompt(
+            fontSize: 18,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text(
+              'ตกลง',
+              style: GoogleFonts.prompt(
+                fontSize: 16,
+                color: Colors.blue[400],
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.white,
+        elevation: 5,
+      ),
+    );
   }
 
   Future<void> addUserDetails(String uid, String firstName, String lastName,
@@ -115,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Column(
                                 children: [
@@ -143,7 +185,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           //password textfield
@@ -162,7 +206,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                             // ปิดรหัสผ่าน
                           ),
                           const SizedBox(height: 15),
@@ -180,7 +226,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                             // ปิดรหัสผ่าน
                           ),
 
@@ -199,7 +247,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // lastname textfield
@@ -218,7 +268,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                )),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // phone textfield
@@ -230,8 +281,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           TextFormField(
                             controller: _phonenumberController,
-                            validator: RequiredValidator(
-                                errorText: "กรุณากรอก-เบอร์โทร"),
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอก-เบอร์โทร';
+                              }
+                              if (value.length != 10) {
+                                return 'กรุณากรอกเบอร์โทร 10 หลัก';
+                              }
+                              if (!value.startsWith('0')) {
+                                _showErrorDialog(
+                                    context, 'กรุณากรอกเบอร์โทรที่ถูกต้อง');
+                                return 'เบอร์โทรต้องเริ่มต้นด้วย 0';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                                 labelText: 'เบอร์โทร',
                                 labelStyle: GoogleFonts.prompt(),
@@ -239,7 +303,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                )),
+                                ),
+                                errorStyle: GoogleFonts.prompt()),
                           ),
 
                           // สมัครสมาชิค
@@ -283,17 +348,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       _phonenumberController.text.trim(),
                                     );
 
-                                    Fluttertoast.showToast(
-                                        msg: "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
-                                        gravity: ToastGravity.TOP);
-
-                                    // Navigate to LoginScreen after successful registration
+                                    // Displaying the custom dialog after successful registration
                                     // ignore: use_build_context_synchronously
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginScreen()));
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height:
+                                                  200, // เพิ่มความสูงของกล่อง
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                      Icons
+                                                          .check_circle_outline_outlined,
+                                                      color: Colors.green[400],
+                                                      size: 70), // เพิ่มไอคอน
+                                                  const SizedBox(
+                                                      height:
+                                                          20), // ระยะห่างระหว่างไอคอนและข้อความ
+                                                  Text(
+                                                    "สร้างบัญชีผู้ใช้เรียบร้อยแล้ว",
+                                                    style: GoogleFonts.prompt(
+                                                      fontSize: 20,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: GoogleFonts.prompt(
+                                                    fontSize: 18,
+                                                    color: Colors.red[300],
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
                                   } on FirebaseAuthException catch (e) {
                                     var message;
 
@@ -317,7 +429,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   shape: const StadiumBorder(),
                                   backgroundColor: Colors.red.shade300),
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text("สร้างบัญชีผู้ใช้",
                                     style: GoogleFonts.prompt(
                                         fontSize: 25, color: Colors.white)),
@@ -332,23 +444,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('กลับหน้าเข้าสู่ระบบ  ',
-                                    style: GoogleFonts.prompt(fontSize: 20)),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return LoginScreen();
-                                          }));
-                                        },
-                                        child: Text('กดตรงนี้ ',
-                                            style: GoogleFonts.prompt(
-                                                fontSize: 20,
-                                                color: Colors.blue))),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return LoginScreen();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        '   กลับหน้าเข้าสู่ระบบ   ',
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 20,
+                                            color: Colors.red[300]),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],

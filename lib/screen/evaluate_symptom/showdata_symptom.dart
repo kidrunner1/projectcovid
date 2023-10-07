@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
 import 'package:tracker_covid_v1/screen/evaluate_symptom/evaluate_symptoms.dart';
 import 'package:tracker_covid_v1/screen/evaluate_symptom/get_symptom.dart';
 
@@ -17,57 +18,7 @@ class showdata_symptom extends StatefulWidget {
 
 class _showdata_symptomState extends State<showdata_symptom> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  // Stream<QuerySnapshot>? _stream;
   bool informationAvailable = false;
-  int _currentIndex = 0;
-
-  void onTabTapped(int index) {
-    setState(() {});
-  }
-
-  String _ordinal(int n) {
-    if (n == 1) return "1";
-    if (n == 2) return "2";
-    if (n == 3) return "3";
-    return "${n}";
-  }
-
-  Widget buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      onTap: onTabTapped,
-      currentIndex: _currentIndex,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.home),
-          label: 'หน้าหลัก',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat_bubble),
-          label: 'แชท',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.gear),
-          label: 'ตั้งค่า',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FontAwesomeIcons.person),
-          label: 'ข้อมูลส่วนตัว',
-        ),
-      ],
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.red[400],
-      selectedItemColor: Colors.grey[300],
-      unselectedItemColor: Colors.white70,
-      unselectedLabelStyle: GoogleFonts.prompt(
-        color: Colors.white.withOpacity(0.7),
-        fontSize: 12,
-      ),
-      selectedLabelStyle: GoogleFonts.prompt(
-        color: Colors.deepPurple.shade50,
-        fontSize: 14,
-      ),
-    );
-  }
 
   Future<int> getAssessmentCountToday() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -91,6 +42,7 @@ class _showdata_symptomState extends State<showdata_symptom> {
           'แบบประเมินอาการประจำวัน',
           style: GoogleFonts.prompt(fontSize: 22),
         ),
+        centerTitle: true,
       ),
       backgroundColor: Colors.pink[50],
       body: StreamBuilder(
@@ -149,6 +101,11 @@ class _showdata_symptomState extends State<showdata_symptom> {
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 20),
+                    leading: Icon(
+                      Icons.calendar_month,
+                      color: Colors.red[300],
+                      size: 50,
+                    ),
                     title: Text(
                       'บันทึกวันที่  $date',
                       style: GoogleFonts.prompt(
@@ -156,7 +113,8 @@ class _showdata_symptomState extends State<showdata_symptom> {
                         fontSize: 18,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                    trailing: Icon(Icons.arrow_forward_ios,
+                        size: 18, color: Colors.red[300]),
                     onTap: () {
                       final DateTime selectedDate =
                           DateTime.parse(date); // Convert date to DateTime
@@ -215,18 +173,17 @@ class _showdata_symptomState extends State<showdata_symptom> {
             // Check if the user can assess symptoms
             if (assessmentCountToday < 3) {
               // Navigate to the symptom assessment page
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => Evaluate_Symptoms()),
               );
             }
           }
         },
-        backgroundColor: Colors.red[500],
+        backgroundColor: Colors.red[300],
         child: Icon(Icons.edit),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
 }

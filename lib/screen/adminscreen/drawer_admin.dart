@@ -19,6 +19,7 @@ class _NavigatorScreenState extends State<NavigationAdmin> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        padding: EdgeInsets.zero, // Remove any padding from the ListView.
         children: [
           StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
@@ -39,15 +40,31 @@ class _NavigatorScreenState extends State<NavigationAdmin> {
                 return DrawerHeader(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.red[200]!, Colors.red[400]!],
+                      colors: [Colors.red[300]!, Colors.red[400]!],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                   ),
-                  child: Text(
-                    '${data?['firstName'] ?? ''} ${data?['lastName'] ?? ''}',
-                    style:
-                        GoogleFonts.prompt(fontSize: 20, color: Colors.white),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          FontAwesomeIcons.userCog,
+                          size: 24,
+                          color: Colors.red[300],
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Text(
+                        '${data?['firstName'] ?? ''} ${data?['lastName'] ?? ''}',
+                        style: GoogleFonts.montserrat(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -61,20 +78,25 @@ class _NavigatorScreenState extends State<NavigationAdmin> {
           ListTile(
             leading: const Icon(
               FontAwesomeIcons.signOut,
-              color: Colors.black,
+              color: Colors.red,
             ),
             title: Text(
               'ออกจากระบบ',
-              style: GoogleFonts.prompt(),
+              style: GoogleFonts.prompt(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
             ),
             onTap: () async {
               try {
                 await _auth.signOut();
-                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               } catch (e) {
-                // Show an error message to the user
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to sign out!')),
+                );
               }
             },
           )

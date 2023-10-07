@@ -16,26 +16,33 @@ class Appoints_DB {
   Future<void> saveToFirebaseAndShowPopup({
     required String date,
     required String time,
-    required String hospital
+    required String hospital,
   }) async {
-    CollectionReference getdata =
-        FirebaseFirestore.instance.collection('appointments');
+    CollectionReference getdata = firestore.collection('appointments');
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) {
-      throw Exception("User ID is null");
-    }
-    DocumentSnapshot userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
-   final data = userDoc.data() as Map<String, dynamic>?;
-final username = data?['username'] ;
 
+    if (userId == null) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error',
+        desc: 'User is not logged in.',
+      ).show();
+      return;
+    }
+
+    DocumentSnapshot userDoc =
+        await firestore.collection('users').doc(userId).get();
+    final data = userDoc.data() as Map<String, dynamic>?;
+    final firstName = data?['firstName'];
+    final lastName = data?['lastName'];
+    final phoneNumber = data?['phoneNumber'];
 
     try {
       DocumentReference docRef = await getdata.add({
         'date': date,
         'time': time,
-        'userID': FirebaseAuth.instance.currentUser?.uid,
-        'username': username,
+        'userID': userId,
         'hospital': hospital,
       });
 
@@ -44,9 +51,9 @@ final username = data?['username'] ;
       AwesomeDialog(
         context: context,
         dialogType: DialogType.success,
-        title:
-            'ยืนยันการนัดหมาย',
-        desc: ' วันที่: ${savedData['date']} \n เวลา: ${savedData['time']} \n สถานที่: ${savedData['hospital']}',
+        title: 'ยืนยันการนัดหมาย',
+        desc:
+            ' วันที่: ${savedData['date']} \n เวลา: ${savedData['time']} \n สถานที่: ${savedData['hospital']} \n ชื่อ: $firstName $lastName \n เบอร์โทร: $phoneNumber',
         btnCancelOnPress: resetForm,
         btnCancelText: 'ปิด',
         btnOkText: 'แสดงรายละเอียด',
@@ -54,7 +61,11 @@ final username = data?['username'] ;
           navigateToShowDetails({
             'date': savedData['date'],
             'time': savedData['time'],
-            'hospital': savedData['hospital']
+            'hospital': savedData['hospital'],
+            'firstName': firstName,
+            'lastName': lastName,
+            'phoneNumber': phoneNumber,
+            'userID': userId, // ensure this line is there
           });
         },
       ).show();

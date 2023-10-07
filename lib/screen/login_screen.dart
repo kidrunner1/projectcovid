@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tracker_covid_v1/model/users.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/admin_screen.dart';
 import 'package:tracker_covid_v1/screen/register.dart';
@@ -52,14 +54,53 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                   key: fromKey,
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildTitle(),
-                        _combinedEmailPasswordResetWidgets(), // Combined widgets
-                        _buildLoginButton(),
-                        _buildRegisterLink(),
-                      ],
+                    child: AnimationLimiter(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AnimationConfiguration.staggeredList(
+                            position: 0,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildIcon(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 0,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildTitle(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 1,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _combinedEmailPasswordResetWidgets(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 2,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildLoginButton(),
+                            ),
+                          ),
+                          AnimationConfiguration.staggeredList(
+                            position: 3,
+                            duration: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: _buildRegisterLink(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -69,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
 
-        // ignore: prefer_const_constructors
+        // If the Future is still running, show a loading indicator
         return Scaffold(
           body: const Center(
             child: CircularProgressIndicator(),
@@ -111,6 +152,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildIcon() {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/login_screen.json',
+              width: 200, height: 200)
+        ],
+      ),
+    );
+  }
+
   Widget _buildTitle() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -139,17 +193,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ]),
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          labelText: 'อีเมล',
-          labelStyle: GoogleFonts.prompt(),
-          hintText: 'อีเมล',
-          hintStyle: GoogleFonts.prompt(),
-          prefixIcon: const Icon(Icons.mail),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+            labelText: 'อีเมล',
+            labelStyle: GoogleFonts.prompt(),
+            hintText: 'อีเมล',
+            hintStyle: GoogleFonts.prompt(),
+            prefixIcon: const Icon(Icons.mail),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorStyle: GoogleFonts.prompt()),
       ),
     );
   }
@@ -162,17 +216,17 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: RequiredValidator(errorText: "กรุณากรอก-รหัสผ่าน"),
         obscureText: true,
         decoration: InputDecoration(
-          labelText: 'รหัสผ่าน',
-          labelStyle: GoogleFonts.prompt(),
-          hintText: 'รหัสผ่าน',
-          hintStyle: GoogleFonts.prompt(),
-          prefixIcon: const Icon(Icons.key),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+            labelText: 'รหัสผ่าน',
+            labelStyle: GoogleFonts.prompt(),
+            hintText: 'รหัสผ่าน',
+            hintStyle: GoogleFonts.prompt(),
+            prefixIcon: const Icon(Icons.key),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorStyle: GoogleFonts.prompt()),
       ),
     );
   }
@@ -187,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: GoogleFonts.prompt(color: Colors.grey)),
           GestureDetector(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const ResetPassword()));
@@ -195,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'รีเซ็ตรหัสผ่าน',
               style: GoogleFonts.prompt(
-                color: Colors.blue[700],
+                color: Colors.red[300],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
@@ -249,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'ลงทะเบียน',
               style: GoogleFonts.prompt(
-                color: Colors.blue[700],
+                color: Colors.red[300],
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
@@ -302,9 +356,73 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         }
       } on FirebaseAuthException catch (e) {
-        // Instead of Fluttertoast, let's use a SnackBar
-        final snackBar = SnackBar(content: Text(e.message!));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // Check the specific error code
+        if (e.code == 'wrong-password' ||
+            e.code == 'invalid-email' ||
+            e.code == 'user-not-found') {
+          String errorMessage;
+          switch (e.code) {
+            case 'wrong-password':
+              errorMessage = 'กรุณาใส่รหัสผ่านที่ถูกต้อง';
+              break;
+            case 'invalid-email':
+              errorMessage = 'อีเมลไม่ถูกต้อง';
+              break;
+            case 'user-not-found':
+              errorMessage = 'ไม่มีชื่อ ผู้ใช้หรือ อีเมลไม่ถูกต้อง.';
+              break;
+            default:
+              errorMessage = e.message!;
+          }
+
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: Text(
+                    'ผิดพลาด',
+                    style:
+                        GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+                  ),
+                  content: Text(
+                    errorMessage,
+                    style:
+                        GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+                  ),
+                  actions: <Widget>[
+                    Center(
+                      child: TextButton(
+                        child: Text(
+                          'ปิด',
+                          style: GoogleFonts
+                              .prompt(), // Apply the GoogleFontPrompt font
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                  ],
+                );
+              });
+        } else {
+          // Center the SnackBar for other errors
+          final snackBar = SnackBar(
+            content: Text(
+              e.message!,
+              style: GoogleFonts.prompt(), // Apply the GoogleFontPrompt font
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       } finally {
         setState(() {
           _isLoading = false; // Stop the loading spinner after processing
