@@ -92,7 +92,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.red[300],
         selectedItemColor: Colors.grey[300],
         unselectedItemColor: Colors.white70,
         unselectedLabelStyle: GoogleFonts.prompt(

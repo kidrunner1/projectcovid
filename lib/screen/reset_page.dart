@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/login_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             borderRadius: BorderRadius.circular(15.0),
           ),
           title: Text(
-            'Success',
+            'ส่งเรียบร้อย',
             style: GoogleFonts.prompt(
               fontSize: 22.0,
               fontWeight: FontWeight.w600,
@@ -46,7 +46,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
-                'OK',
+                'ตกลง',
                 style: GoogleFonts.prompt(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -58,7 +58,9 @@ class _ResetPasswordState extends State<ResetPassword> {
         ),
       );
     } on FirebaseException catch (e) {
+      // ignore: avoid_print
       print(e);
+      // ignore: use_build_context_synchronously
       _showCustomDialog(
         context,
         AlertDialog(
@@ -75,7 +77,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               SizedBox(width: 10.0),
               Text(
-                'Alert',
+                'แจ้งเตือน',
                 style: GoogleFonts.prompt(
                   fontSize: 22.0,
                   fontWeight: FontWeight.w600,
@@ -109,7 +111,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
-                'OK',
+                'ตกลง',
                 style: GoogleFonts.prompt(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -170,15 +172,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                         MaterialPageRoute(builder: (context) => LoginScreen())),
                   ),
                 ),
-                const SizedBox(
-                  height: 100,
-                ),
-                Icon(
-                  FontAwesomeIcons.mailchimp,
-                  size: 100,
-                  color: Colors.red[300],
-                ),
-                const SizedBox(height: 20),
+                Lottie.asset('assets/animations/reset_password.json',
+                    width: 300, height: 300),
+                const SizedBox(height: 10),
                 Text(
                   'ลืมรหัสผ่าน',
                   style: GoogleFonts.prompt(
