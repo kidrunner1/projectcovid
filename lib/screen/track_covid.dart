@@ -51,7 +51,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
     final TextStyle headStyle = GoogleFonts.prompt(
       fontSize: width * 0.06,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: Colors.red[300],
     );
     final TextStyle subHeadStyle = GoogleFonts.prompt(
       fontSize: width * 0.045,
@@ -65,11 +65,11 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.deepPurple.shade400,
+        backgroundColor: Colors.red[300],
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.deepPurple.shade200, Colors.deepPurple.shade700],
+              colors: [Colors.red[50]!, Colors.red[50]!],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -82,7 +82,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white70),
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.red[300]),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const MyHomePage()));
@@ -124,8 +124,8 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
           future: _thailandCovidData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator(
-                color: Colors.deepPurple,
+              return CircularProgressIndicator(
+                color: Colors.red[300],
               );
             } else if (snapshot.hasError) {
               return Text(
@@ -144,7 +144,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                   Text(
                     'Thailand',
                     style: subHeadStyle.copyWith(
-                      color: Colors.deepPurple.shade700,
+                      color: Colors.red[300],
                       fontSize: 24,
                     ),
                   ),
@@ -226,8 +226,8 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                     decoration: BoxDecoration(
                       // New decoration
                       color: index % 2 == 0
-                          ? Colors.deepPurple.shade100
-                          : Colors.deepPurple.shade100, // Zebra-striping
+                          ? Colors.red[200]
+                          : Colors.red[200], // Zebra-striping
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
@@ -243,8 +243,7 @@ class _CovidTrackerScreenState extends State<CovidTrackerScreen> {
                           : null,
                       title: Text(countryData.country,
                           style: subHeadStyle.copyWith(
-                              color: Colors
-                                  .deepPurple.shade700)), // Adjusted color
+                              color: Colors.white)), // Adjusted color
                       subtitle: Text(
                         'จำนวนผู้ป่วย: ${NumberFormat("#,###").format(countryData.cases)}',
                         style: dataStyle,

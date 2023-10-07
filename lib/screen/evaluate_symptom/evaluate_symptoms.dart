@@ -167,7 +167,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
-                            colors: [Colors.red[100]!, Colors.red[300]!]),
+                            colors: [Colors.red[300]!, Colors.red[300]!]),
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(

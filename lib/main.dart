@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         Locale('th', 'TH'), // Thai
       ],
       home: StartScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
