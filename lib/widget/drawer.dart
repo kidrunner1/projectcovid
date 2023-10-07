@@ -7,6 +7,7 @@ import 'package:tracker_covid_v1/screen/profile_page.dart';
 import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/login_screen.dart';
 import 'package:tracker_covid_v1/screen/profile_setting.dart';
+import 'package:tracker_covid_v1/screen/setting_drawer.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -175,7 +176,7 @@ Widget buildMenuItems(BuildContext context) => Container(
         ),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SettingsScreen(),
+            builder: (context) => SettingDrawer(),
           ));
         },
       ),
