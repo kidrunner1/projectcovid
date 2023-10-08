@@ -148,7 +148,7 @@ class _NewsScreensState extends State<NewsScreens> {
           SizedBox(width: 12),
           _iconContainer(
               iconData: Icons.trending_up,
-              label: 'จำนวนผู้ติดเชือ',
+              label: 'สถิติผู้ติดเชื้อในทั่วโลก',
               onTap: () {
                 Navigator.push(
                     context,
@@ -224,7 +224,7 @@ class _NewsScreensState extends State<NewsScreens> {
           SizedBox(width: 12),
           _iconContainer(
               iconData: FontAwesomeIcons.locationDot,
-              label: 'ภายในจังหวัด',
+              label: 'สถิติผู้ติดเชื้อแต่ละจังหวัด',
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CovidDataScreen()));

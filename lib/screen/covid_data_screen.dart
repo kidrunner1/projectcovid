@@ -154,7 +154,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
       appBar: AppBar(
         elevation: 0.0,
         title: Text(
-          'Covid-19 Data',
+          'ข้อมูลโควิดแต่ละจังหวัด',
           style: GoogleFonts.prompt(
             fontSize: 24,
             fontWeight: FontWeight.bold,

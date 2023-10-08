@@ -46,6 +46,9 @@ class Appoints_DB {
         'hospital': hospital,
       });
 
+      // Update the document with the id
+      await docRef.update({'id': docRef.id});
+
       DocumentSnapshot savedData = await docRef.get();
 
       AwesomeDialog(
@@ -65,7 +68,9 @@ class Appoints_DB {
             'firstName': firstName,
             'lastName': lastName,
             'phoneNumber': phoneNumber,
-            'userID': userId, // ensure this line is there
+            'userID': userId,
+            'id': docRef
+                .id, // เพิ่มบรรทัดนี้เพื่อส่ง id ไปในฟังก์ชัน navigateToShowDetails
           });
         },
       ).show();

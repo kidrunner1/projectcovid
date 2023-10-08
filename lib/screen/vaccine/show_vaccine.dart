@@ -13,14 +13,19 @@ class ShowData_VaccineLocation extends StatelessWidget {
           'สถานที่รับวัคซีน',
           style: GoogleFonts.prompt(fontSize: 22),
         ),
+        centerTitle: true,
       ),
       body: ListView(
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Card(
-              elevation: 3, // Add elevation for a shadow effect
-              margin: const EdgeInsets.all(10), // Adjust margin as needed
+              elevation: 3,
+              margin: const EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(20), // Adjusted borderRadius to 20
+              ),
               child: ListTile(
                 leading: Image.asset('assets/images/logo_hospital.png'),
                 title: Text(
@@ -44,7 +49,6 @@ class ShowData_VaccineLocation extends StatelessWidget {
                     Text('Sinavac(เข็มที่ 1) + Sinavac(เข็มที่ 2)',
                         style: GoogleFonts.prompt(
                           fontSize: 17,
-                          //fontWeight: FontWeight.bold,
                           color: const Color.fromARGB(255, 48, 110, 50),
                         )),
                     const SizedBox(height: 5),
@@ -58,7 +62,6 @@ class ShowData_VaccineLocation extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       child: TextButton(
                         onPressed: () {
-                          // Navigate to the ShowDetail_Location page when the button is pressed
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -67,20 +70,19 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           );
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 54, 221,
-                              157), // Background color of the button
+                          backgroundColor:
+                              const Color.fromARGB(255, 54, 221, 157),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 5), // Button padding
+                              horizontal: 15, vertical: 5),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                20), // Rounded button shape
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         child: Text(
                           'รายละเอียด',
                           style: GoogleFonts.prompt(
                             fontSize: 16,
-                            color: Colors.white, // Text color
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -93,8 +95,12 @@ class ShowData_VaccineLocation extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Card(
-              elevation: 3, // Add elevation for a shadow effect
-              margin: const EdgeInsets.all(10), // Adjust margin as needed
+              elevation: 3,
+              margin: const EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(20), // Adjusted borderRadius to 20
+              ),
               child: ListTile(
                 leading: Image.asset('assets/images/logo_hospital.png'),
                 title: Text(
@@ -118,7 +124,6 @@ class ShowData_VaccineLocation extends StatelessWidget {
                     Text('Sinavac(เข็มที่ 1) + AstraZeneca(เข็มที่ 2)',
                         style: GoogleFonts.prompt(
                           fontSize: 17,
-                          //fontWeight: FontWeight.bold,
                           color: const Color.fromARGB(255, 48, 110, 50),
                         )),
                     const SizedBox(height: 5),
@@ -132,7 +137,6 @@ class ShowData_VaccineLocation extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       child: TextButton(
                         onPressed: () {
-                          // Navigate to the ShowDetail_Location page when the button is pressed
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -142,20 +146,19 @@ class ShowData_VaccineLocation extends StatelessWidget {
                           );
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 54, 221,
-                              157), // Background color of the button
+                          backgroundColor:
+                              const Color.fromARGB(255, 54, 221, 157),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 5), // Button padding
+                              horizontal: 15, vertical: 5),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                20), // Rounded button shape
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         child: Text(
                           'รายละเอียด',
                           style: GoogleFonts.prompt(
                             fontSize: 16,
-                            color: Colors.white, // Text color
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -165,8 +168,6 @@ class ShowData_VaccineLocation extends StatelessWidget {
               ),
             ),
           ),
-
-          // Add more Card/ListTile combinations as needed
         ],
       ),
     );

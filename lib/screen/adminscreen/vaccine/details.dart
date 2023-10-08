@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/vaccine/historyr_vaccine.dart';
 
 class VaccineDetailsPage extends StatefulWidget {
   final Map<String, dynamic> vaccineData;
@@ -13,35 +14,6 @@ class VaccineDetailsPage extends StatefulWidget {
 
 class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
   final _firestore = FirebaseFirestore.instance;
-  Map<String, dynamic>? userData;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
-    final userID = widget.vaccineData['userID'];
-    if (userID != null) {
-      QuerySnapshot vaccineDetailSnapshot = await _firestore
-          .collection('vaccine_detail')
-          .where('userID', isEqualTo: userID)
-          .get();
-
-      if (vaccineDetailSnapshot.docs.isNotEmpty) {
-        DocumentSnapshot vaccineDetailDoc = vaccineDetailSnapshot.docs.first;
-        setState(() {
-          userData = vaccineDetailDoc.data() as Map<String, dynamic>;
-        });
-      } else {
-        print(
-            "No document found for userID: $userID in vaccine_detail collection");
-      }
-    } else {
-      print("No userID found in vaccineData.");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +29,47 @@ class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
-        child: AnimatedOpacity(
-          opacity: userData == null ? 0.0 : 1.0,
-          duration: Duration(seconds: 2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (userData == null)
-                Center(child: CircularProgressIndicator())
-              else ...[
-                buildHeader(),
-                const SizedBox(height: 20),
-                buildCard(buildVaccineDetails()),
-                const SizedBox(height: 20),
-                buildCard(buildUserDetails(userData!)),
-              ]
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(),
+            const SizedBox(height: 20),
+            buildCard(buildVaccineDetails()),
+            const SizedBox(height: 20),
+            buildCard(buildUserDetails(widget.vaccineData)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: confirmAppointment,
+              child: Text('ยืนยันการฉีดวัคซีน',
+                  style: GoogleFonts.prompt(fontSize: 20)),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.red[300], shape: StadiumBorder()),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> confirmAppointment() async {
+    try {
+      // Add the appointment to the vaccineHistory collection
+      await _firestore.collection('vaccineHistory').add(widget.vaccineData);
+
+      // Remove the appointment from the vaccine_detail collection
+      await _firestore
+          .collection('vaccine_detail')
+          .doc(widget.vaccineData['id'])
+          .delete();
+
+      // Navigate to the HisToryVaccineAdmin page
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => HisToryVaccineAdmin()));
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error confirming appointment: $error')),
+      );
+    }
   }
 
   Widget buildHeader() {
@@ -117,7 +110,7 @@ class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
   Widget buildVaccineDetails() {
     return Column(
       children: [
-        Text("รอบ: ${userData!['vaccineRound'] ?? 'Not available'}",
+        Text("รอบ: ${widget.vaccineData['vaccineRound'] ?? 'Not available'}",
             style: GoogleFonts.prompt(fontSize: 18)),
         Text("------------------------------",
             style: GoogleFonts.prompt(
@@ -164,19 +157,20 @@ class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
     );
   }
 
-  Widget buildUserDetails(Map<String, dynamic> userData) {
+  Widget buildUserDetails(Map<String, dynamic> vaccineData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        dataRow("รอบ   :", userData['vaccineRound'] ?? 'Not available'),
-        dataRow("ชื่อ - นามสกุล:", userData['username'] ?? 'Not available'),
-        dataRow("รหัสประจำตัวประชาชน:", userData['ID card'] ?? 'Not available'),
+        dataRow("รอบ   :", vaccineData['vaccineRound'] ?? 'Not available'),
+        dataRow("ชื่อ - นามสกุล:", vaccineData['username'] ?? 'Not available'),
         dataRow(
-            "เบอร์โทรศัพท์:", userData['telephone number'] ?? 'Not available'),
-        dataRow("ชื่อวัคซีน:", userData['vaccineName'] ?? 'Not available'),
-        dataRow("วันที่:", userData['vaccineDate'] ?? 'Not available'),
-        dataRow("เวลา:", userData['vaccineTime'] ?? 'Not available'),
-        dataRow("สถานที่:", userData['vaccineLocation'] ?? 'Not available'),
+            "รหัสประจำตัวประชาชน:", vaccineData['ID card'] ?? 'Not available'),
+        dataRow("เบอร์โทรศัพท์:",
+            vaccineData['telephone number'] ?? 'Not available'),
+        dataRow("ชื่อวัคซีน:", vaccineData['vaccineName'] ?? 'Not available'),
+        dataRow("วันที่:", vaccineData['vaccineDate'] ?? 'Not available'),
+        dataRow("เวลา:", vaccineData['vaccineTime'] ?? 'Not available'),
+        dataRow("สถานที่:", vaccineData['vaccineLocation'] ?? 'Not available'),
       ],
     );
   }

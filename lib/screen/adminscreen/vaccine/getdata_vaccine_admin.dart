@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/vaccine/details.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/vaccine/historyr_vaccine.dart';
 
 class GetDataVaccineAdmin extends StatefulWidget {
   const GetDataVaccineAdmin({Key? key}) : super(key: key);
@@ -34,6 +36,20 @@ class _GetDataVaccineAdminState extends State<GetDataVaccineAdmin> {
         ),
         centerTitle: true,
         backgroundColor: Colors.red[300],
+        actions: [
+          IconButton(
+            icon: Icon(FontAwesomeIcons.history), // <-- FontAwesome Icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      HisToryVaccineAdmin(), // <-- Your new page route
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: vaccineStream,
@@ -49,7 +65,7 @@ class _GetDataVaccineAdminState extends State<GetDataVaccineAdmin> {
 
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: Lottie.asset('assets/lottie/loading.json'),
+              child: Lottie.asset('assets/animations/loading.json'),
             );
           }
 
