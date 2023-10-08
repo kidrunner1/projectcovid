@@ -122,3 +122,4 @@ flutter:
     - assets/animations/hospital.json
     - assets/animations/loading.json
     - assets/animations/vaccine.json
+    - assets/animations/login2.json

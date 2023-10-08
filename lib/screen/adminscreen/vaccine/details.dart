@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class GetData_Vaccine extends StatefulWidget {
-  final Map<String, dynamic> getappoints;
+class VaccineDetailsPage extends StatefulWidget {
+  final Map<String, dynamic> vaccineData;
 
-  const GetData_Vaccine({Key? key, required this.getappoints})
-      : super(key: key);
+  VaccineDetailsPage({required this.vaccineData});
 
   @override
-  GetData_VaccineState createState() => GetData_VaccineState();
+  _VaccineDetailsPageState createState() => _VaccineDetailsPageState();
 }
 
-class GetData_VaccineState extends State<GetData_Vaccine> {
+class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
   final _firestore = FirebaseFirestore.instance;
   Map<String, dynamic>? userData;
 
@@ -23,7 +22,7 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
   }
 
   Future<void> fetchData() async {
-    final userID = widget.getappoints['userID'];
+    final userID = widget.vaccineData['userID'];
     if (userID != null) {
       QuerySnapshot vaccineDetailSnapshot = await _firestore
           .collection('vaccine_detail')
@@ -32,7 +31,6 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
 
       if (vaccineDetailSnapshot.docs.isNotEmpty) {
         DocumentSnapshot vaccineDetailDoc = vaccineDetailSnapshot.docs.first;
-        print("Fetched vaccine details: ${vaccineDetailDoc.data()}");
         setState(() {
           userData = vaccineDetailDoc.data() as Map<String, dynamic>;
         });
@@ -41,7 +39,7 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
             "No document found for userID: $userID in vaccine_detail collection");
       }
     } else {
-      print("No userID found in getappoints.");
+      print("No userID found in vaccineData.");
     }
   }
 
@@ -55,28 +53,26 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
           'รายละเอียดการนัดฉีดวัคซีน',
           style: GoogleFonts.prompt(fontSize: 22),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: AnimatedOpacity(
           opacity: userData == null ? 0.0 : 1.0,
           duration: Duration(seconds: 2),
-          child: Container(
-            child: userData == null
-                ? Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        buildHeader(),
-                        const SizedBox(height: 20),
-                        buildCard(buildVaccineDetails()),
-                        const SizedBox(height: 20),
-                        buildCard(buildUserDetails(userData!)),
-                      ],
-                    ),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (userData == null)
+                Center(child: CircularProgressIndicator())
+              else ...[
+                buildHeader(),
+                const SizedBox(height: 20),
+                buildCard(buildVaccineDetails()),
+                const SizedBox(height: 20),
+                buildCard(buildUserDetails(userData!)),
+              ]
+            ],
           ),
         ),
       ),

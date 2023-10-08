@@ -154,12 +154,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildIcon() {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/animations/login_screen.json',
-              width: 200, height: 200)
+          Lottie.asset('assets/animations/login2.json', width: 250, height: 250)
         ],
       ),
     );

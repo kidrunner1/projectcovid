@@ -8,6 +8,7 @@ import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dar
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 
 import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/vaccine/getdata_vaccine_admin.dart';
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
@@ -232,7 +233,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GetEnvaluateAdminScreen()));
+                      builder: (context) => GetDataVaccineAdmin()));
             }),
       ],
     );
