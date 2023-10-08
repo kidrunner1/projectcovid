@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Card(
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.red[300],
-        selectedItemColor: Colors.grey[300],
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         unselectedLabelStyle: GoogleFonts.prompt(
           color: Colors.white.withOpacity(0.7),

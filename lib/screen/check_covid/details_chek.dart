@@ -159,7 +159,7 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
             },
           ),
         ),
-        backgroundColor: Colors.red[50],
+        //backgroundColor: Colors.red[50],
         floatingActionButton: ValueListenableBuilder<List<DocumentSnapshot>>(
           valueListenable: docsNotifier,
           builder: (context, docs, child) {

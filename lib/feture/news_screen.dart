@@ -55,7 +55,7 @@ class _NewsScreensState extends State<NewsScreens> {
         width: 120,
         height: 100,
         decoration: BoxDecoration(
-          color: Colors.red[100],
+          color: Colors.red[50],
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -81,7 +81,7 @@ class _NewsScreensState extends State<NewsScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink.shade50,
+      backgroundColor: Colors.grey[50],
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
         child: SingleChildScrollView(

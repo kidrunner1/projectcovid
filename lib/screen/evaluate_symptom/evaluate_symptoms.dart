@@ -98,7 +98,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         topicMessage: 'ผลการประเมินอาการ',
         title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
         content:
-            '   แต่อาจจะเสี่ยงเป็นโรคร้ายแรงอื่นๆ\nคำแนะนำจากการประเมินอาการ : \n ***ถ้าหากมีอาการข้างเคียงที่รุนแรง ***\n       แนะนำให้รีบเข้าพบแพทย์ทันที!! ',
+            '  แต่อาจจะเสี่ยงเป็นโรคร้ายแรงอื่นๆ\nคำแนะนำจากการประเมินอาการ : \n 1) เลือกรับประทานอาหารที่ดีต่อการดูแลสุขภาพ\n2) นอนหลับพักผ่อนให้เพียงพอ\n3) การออกกำลังกายอย่างสม่ำเสมอ\n4) ใส่หน้ากากอนามัย ล้างมือบ่อยๆ เมื่อออกไปที่สาธารณะ\n***ถ้าหากมีอาการข้างเคียงที่รุนแรง ***\n       แนะนำให้รีบเข้าพบแพทย์ทันที!! \n\nคุณต้องการไปยังหน้าบันทึกอาการหรือไม่ ?',
         image: Image.asset("assets/images/icons/warning.png", height: 100),
       );
     } else {
@@ -106,7 +106,8 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         topicMessage: 'ผลการประเมินอาการ',
         context,
         title: 'ยินดีด้วย!! ตอนนี้คุณสุขภาพร่างกายแข็งแรงดี',
-        content: null,
+        content:
+            'คำแนะนำจากการประเมินอาการ: \n1) เลือกรับประทานอาหารที่ดีต่อการดูแลสุขภาพ\n2) นอนหลับพักผ่อนให้เพียงพอ\n3) การออกกำลังกายอย่างสม่ำเสมอ\n4) ใส่หน้ากากอนามัย ล้างมือบ่อยๆ เมื่อออกไปที่สาธารณะ\n\nคุณต้องการไปยังหน้าบันทึกอาการหรือไม่ ?',
         image: Image.asset("assets/images/icons/check.png", height: 100),
       );
     }
@@ -167,7 +168,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
-                            colors: [Colors.red[300]!, Colors.red[300]!]),
+                            colors: [Colors.green[50]!, Colors.green[50]!]),
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
@@ -184,14 +185,14 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                             title: Text(
                               symptom,
                               style: GoogleFonts.prompt(
-                                  fontSize: 18, color: Colors.white),
+                                  fontSize: 18, color: Colors.black),
                             ),
                             subtitle: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Radio(
                                   value: 'Y',
-                                  activeColor: Colors.white,
+                                  activeColor: Colors.black,
                                   groupValue: symptoms[symptom],
                                   onChanged: (value) {
                                     setState(() {
@@ -201,10 +202,10 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                                 ),
                                 Text('มี',
                                     style: GoogleFonts.prompt(
-                                        fontSize: 18, color: Colors.white)),
+                                        fontSize: 18, color: Colors.black)),
                                 Radio(
                                   value: 'N',
-                                  activeColor: Colors.white,
+                                  activeColor: Colors.black,
                                   groupValue: symptoms[symptom],
                                   onChanged: (value) {
                                     setState(() {
@@ -214,7 +215,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                                 ),
                                 Text('ไม่มี',
                                     style: GoogleFonts.prompt(
-                                        fontSize: 18, color: Colors.white)),
+                                        fontSize: 18, color: Colors.black)),
                               ],
                             ),
                           );

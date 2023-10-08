@@ -139,7 +139,7 @@ class _ProfileBoxState extends State<ProfileBox>
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "--------------- รายละเอียดข้อมูล ----------------",
+                  "รายละเอียดข้อมูล",
                   style: GoogleFonts.prompt(
                       fontWeight: FontWeight.w300, color: Colors.grey),
                 ),

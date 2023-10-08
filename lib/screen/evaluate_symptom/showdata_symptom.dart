@@ -44,7 +44,7 @@ class _showdata_symptomState extends State<showdata_symptom> {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.pink[50],
+      //backgroundColor: Colors.pink[50],
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("evaluate_symptoms")

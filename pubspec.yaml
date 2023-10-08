@@ -88,7 +88,7 @@ dependencies:
 
 flutter_icons:
   android: true
-  image_path: "assets/images/icons/page2.jpg"
+  image_path: "assets/images/logo.png"
 
 dev_dependencies:
   flutter_test:

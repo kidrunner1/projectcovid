@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
-
 import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/vaccine/getdata_vaccine_admin.dart';
 
@@ -69,24 +68,32 @@ class _MainPageAdminState extends State<MainPageAdmin> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 120,
-        height: 100,
+        width: 140,
+        height: 120,
         decoration: BoxDecoration(
-          color: Colors.red[100],
+          color: Colors.red[50],
           borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 7,
+              offset: Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               iconData,
-              size: 45,
+              size: 60,
               color: Colors.brown[800],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               label,
-              style: GoogleFonts.prompt(fontSize: 14, color: Colors.black),
+              style: GoogleFonts.prompt(fontSize: 16, color: Colors.black),
               textAlign: TextAlign.center,
             ),
           ],
@@ -98,9 +105,12 @@ class _MainPageAdminState extends State<MainPageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink.shade50,
+      //backgroundColor: Colors.pink.shade50,
       body: Column(
         children: [
+          SizedBox(
+              height:
+                  40), // <-- Added this SizedBox for some spacing from the top
           Expanded(
             flex: 2,
             child: _floatingUserCountDisplay(),

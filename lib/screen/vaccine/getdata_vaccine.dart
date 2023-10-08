@@ -48,7 +48,7 @@ class GetData_VaccineState extends State<GetData_Vaccine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink[50],
+      //backgroundColor: Colors.pink[50],
       appBar: AppBar(
         backgroundColor: Colors.red[300],
         title: Text(
