@@ -102,15 +102,16 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         topicMessage: 'ผลการประเมินอาการ',
         title: 'คุณไม่มีอาการเสี่ยงติดเชื้อโควิด',
         content:
-            '   แต่อาจจะเสี่ยงเป็นโรคร้ายแรงอื่นๆ\nคำแนะนำจากการประเมินอาการ : \n ***ถ้าหากมีอาการข้างเคียงที่รุนแรง ***\n       แนะนำให้รีบเข้าพบแพทย์ทันที!! ',
+            '  แต่อาจจะเสี่ยงเป็นโรคร้ายแรงอื่นๆ\nคำแนะนำจากการประเมินอาการ : \n 1) เลือกรับประทานอาหารที่ดีต่อการดูแลสุขภาพ\n2) นอนหลับพักผ่อนให้เพียงพอ\n3) การออกกำลังกายอย่างสม่ำเสมอ\n4) ใส่หน้ากากอนามัย ล้างมือบ่อยๆ เมื่อออกไปที่สาธารณะ\n***ถ้าหากมีอาการข้างเคียงที่รุนแรง ***\n       แนะนำให้รีบเข้าพบแพทย์ทันที!! \n\nคุณต้องการไปยังหน้าบันทึกอาการหรือไม่ ?',
         image: Image.asset("assets/images/icons/warning.png", height: 100),
       );
     } else {
       _showAlert(
         topicMessage: 'ผลการประเมินอาการ',
         context,
-        title: 'ยินดีด้วย!! ตอนนี้คุณสุขภาพร่างกายแข็งแรงดี',
-        content: null,
+        title: 'ยินดีด้วย คุณสุขภาพร่างกายแข็งแรงดี',
+        content:
+            'คำแนะนำจากการประเมินอาการ: \n1) เลือกรับประทานอาหารที่ดีต่อการดูแลสุขภาพ\n2) นอนหลับพักผ่อนให้เพียงพอ\n3) การออกกำลังกายอย่างสม่ำเสมอ\n4) ใส่หน้ากากอนามัย ล้างมือบ่อยๆ เมื่อออกไปที่สาธารณะ\n\nคุณต้องการไปยังหน้าบันทึกอาการหรือไม่ ?',
         image: Image.asset("assets/images/icons/check.png", height: 100),
       );
     }
@@ -167,7 +168,6 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
                 ),
               ),
             ),
-            backgroundColor: Colors.pink[50],
             body: Form(
               key: formKey,
               child: SingleChildScrollView(
@@ -283,7 +283,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         DialogButton(
           child: Text(
             "ใช่",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: GoogleFonts.prompt(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {
             // Close the dialog and navigate to DetailsCheckScreen
@@ -297,7 +297,7 @@ class _Evaluate_SymptomsState extends State<Evaluate_Symptoms> {
         DialogButton(
           child: Text(
             "ไม่",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: GoogleFonts.prompt(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {
             // Close the dialog and navigate to NewsScreens
