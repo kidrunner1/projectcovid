@@ -89,7 +89,7 @@ class _GetAppointHistoryAdminState extends State<GetAppointHistoryAdmin> {
                                   color: Colors.white,
                                 ),
                               ),
-                              trailing: Icon(Icons.check_circle,
+                              trailing: Icon(Icons.verified,
                                   color: Colors.green,
                                   size: 30.0), // Added checkmark icon here
                             ),

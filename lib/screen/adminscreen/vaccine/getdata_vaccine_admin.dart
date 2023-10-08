@@ -99,15 +99,28 @@ class _GetDataVaccineAdminState extends State<GetDataVaccineAdmin> {
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                       title: Text(
-                        vaccineData['vaccineName'] ?? 'Unknown Vaccine',
+                        vaccineData['username'] ?? 'Unknown Vaccine',
                         style: GoogleFonts.prompt(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      subtitle: Text(
-                        vaccineData['vaccineDate'] ?? 'No date provided',
-                        style: GoogleFonts.prompt(fontSize: 18),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            vaccineData['vaccineName'] ?? 'No date provided',
+                            style: GoogleFonts.prompt(fontSize: 18),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            vaccineData['vaccineDate'] ?? 'No date provided',
+                            style: GoogleFonts.prompt(fontSize: 16),
+                          ),
+                        ],
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
