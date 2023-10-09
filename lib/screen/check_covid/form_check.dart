@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracker_covid_v1/screen/check_covid/details_chek.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,47 +47,69 @@ class _FormCheckState extends State<FormCheck> {
   } //
 
   Future<void> _saveToFirebase() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        animType: AnimType.TOPSLIDE,
-        title: 'Error!',
-        desc: 'No user found. Please login again.',
-        btnOkOnPress: () {},
-      ).show();
-      return;
-    }
-
-    String? imageUrl = await _uploadImageToFirebase(_image);
-    await FirebaseFirestore.instance.collection('checkResults').add({
-      'userID': currentUser.uid,
-      'createdAt': Timestamp.now(),
-      'weight': weightinput.text,
-      'temperature': tempinput.text,
-      'result': typeinput,
-      'timestamp': FieldValue.serverTimestamp(),
-      if (imageUrl != null) 'imageUrl': imageUrl,
-    });
-
-    // ignore: use_build_context_synchronously
-    AwesomeDialog(
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) {
+    Alert(
       context: context,
-      dialogType: DialogType.SUCCES,
-      animType: AnimType.TOPSLIDE,
-      title: 'Success!',
-      desc:
-          'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\nคำแนะนำ!!!\n\n1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น',
-      btnOkOnPress: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => DetailsCheckScreen(),
+      type: AlertType.error,
+      title: "Error!",
+      desc: "No user found. Please login again.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-        );
-      },
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
     ).show();
+    return;
   }
+
+  String? imageUrl = await _uploadImageToFirebase(_image);
+  await FirebaseFirestore.instance.collection('checkResults').add({
+    'userID': currentUser.uid,
+    'createdAt': Timestamp.now(),
+    'weight': weightinput.text,
+    'temperature': tempinput.text,
+    'result': typeinput,
+    'timestamp': FieldValue.serverTimestamp(),
+    if (imageUrl != null) 'imageUrl': imageUrl,
+  });
+
+  Alert(
+    context: context,
+    type: AlertType.success,
+    title: "บันทึกข้อมูลสำเร็จ",
+     desc: 'พรุ่งนี้อย่าลืมมาบันทึกผลนะ\n คำแนะนำ!!!\n',
+         style: AlertStyle(
+        titleStyle: GoogleFonts.prompt(fontSize: 20.0, fontWeight: FontWeight.bold), // adjust the size as required
+        descStyle: GoogleFonts.prompt(fontSize: 18.0), // adjust the size as required
+    ),
+    content: Text('1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น',
+    style: GoogleFonts.prompt(fontSize: 14),),
+    buttons: [
+      DialogButton(
+        child: Text(
+          "ตกลง",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        color: Colors.green,
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => DetailsCheckScreen(),
+            ),
+          );
+        },
+        width: 120,
+      )
+    ],
+  ).show();
+}
+
 
   @override
   Widget build(BuildContext context) {
