@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -29,59 +31,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     fetchInitialData();
   }
 
-  Future<void> saveInformation() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
+Future<void> saveInformation() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      isLoading = true;
+    });
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_auth.currentUser?.uid)
-          .update({
-        'firstName': _firstNameController.text.trim(),
-        'lastName': _lastNameController.text.trim(),
-        'phoneNumber': _phoneNumberController.text.trim(),
-      });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .update({
+      'firstName': _firstNameController.text.trim(),
+      'lastName': _lastNameController.text.trim(),
+      'phoneNumber': _phoneNumberController.text.trim(),
+    });
 
-      await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
-      setState(() {
-        isLoading = false;
-      });
+    setState(() {
+      isLoading = false;
+    });
+Alert(
+  context: context,
+  style: AlertStyle(
+    titleStyle: GoogleFonts.prompt(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+    descStyle: GoogleFonts.prompt(
+      fontSize: 16,
+    ),
+  ),
+  type: AlertType.success,
+  title: "บันทึกข้อมูล",
+  desc: "แก้ไขข้อมูลเรียบร้อย",
+  buttons: [
+    DialogButton(
+      child: Text(
+        "ปิด",
+        style: GoogleFonts.prompt(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+      onPressed: () => Navigator.pop(context),
+      width: 120,
+      color: Colors.green,
+    )
+  ],
+).show();
 
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                "แจ้งเตือน ",
-                style: GoogleFonts.prompt(fontSize: 20),
-              ),
-              content: Text(
-                "แก้ไขข้อมูลเรียบร้อย",
-                style: GoogleFonts.prompt(fontSize: 16),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "ตกลง",
-                    style: GoogleFonts.prompt(fontSize: 16),
-                  ),
-                )
-              ],
-            );
-          });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('กรุณาตรวจสอบข้อมูล')),
-      );
-    }
+
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('กรุณาตรวจสอบข้อมูล')),
+    );
   }
+}
 
   Future<void> fetchInitialData() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance

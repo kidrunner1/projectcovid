@@ -14,16 +14,16 @@ class _VerSionSceenState extends State<VerSionSceen> {
     return Scaffold(
       backgroundColor: Colors.red[50],
       appBar: AppBar(
-        leading: BackButton(color: Colors.black),
+        leading: BackButton(color: Colors.white),
         title: Text(
           "เกี่ยวกับ",
           style: GoogleFonts.prompt(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.red[300],
         elevation: 1, // subtle shadow
         centerTitle: true,
       ),

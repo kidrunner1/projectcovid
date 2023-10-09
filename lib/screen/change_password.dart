@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracker_covid_v1/screen/main_page.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -20,87 +21,77 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   final _auth = FirebaseAuth.instance;
 
-  Future<void> changePassword() async {
+Future<void> changePassword() async {
     if (_newPasswordController.text == _confirmPasswordController.text) {
-      try {
-        User? user = _auth.currentUser;
+        try {
+            User? user = _auth.currentUser;
 
-        AuthCredential credential = EmailAuthProvider.credential(
-          email: user!.email!,
-          password: _currentPasswordController.text,
-        );
+            AuthCredential credential = EmailAuthProvider.credential(
+                email: user!.email!,
+                password: _currentPasswordController.text,
+            );
 
-        await user.reauthenticateWithCredential(credential);
-        await user.updatePassword(_newPasswordController.text);
+            await user.reauthenticateWithCredential(credential);
+            await user.updatePassword(_newPasswordController.text);
 
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            backgroundColor: Colors.red[300],
-            title: Text(
-              'สำเร็จ',
-              style: GoogleFonts.prompt(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            content: Text(
-              'แก้ไขรหัสผ่านเรียบร้อย.',
-              style: GoogleFonts.prompt(color: Colors.white),
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  'ตกลง',
-                  style: GoogleFonts.prompt(color: Colors.white),
+            // ignore: use_build_context_synchronously
+            Alert(
+                context: context,
+                type: AlertType.success,
+                title: "สำเร็จ",
+                desc: "แก้ไขรหัสผ่านเรียบร้อย.",
+                style: AlertStyle(
+                    titleStyle: GoogleFonts.prompt(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                    ),
+                    descStyle: GoogleFonts.prompt(color: Colors.black),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                },
-              )
-            ],
-          ),
-        );
-      } catch (e) {
-        print(e);
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            backgroundColor: Colors.red[300],
-            title: Text(
-              'แจ้งเตือน',
-              style: GoogleFonts.prompt(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            content: Text(
-              'กรุณาหรอกรหัสผ่านเพื่อทำการเปลี่ยน.',
-              style: GoogleFonts.prompt(color: Colors.white),
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  'ตกลง',
-                  style: GoogleFonts.prompt(color: Colors.white),
+                buttons: [
+                    DialogButton(
+                        // ignore: sort_child_properties_last
+                        child: Text(
+                            "ตกลง",
+                            style: GoogleFonts.prompt(color: Colors.white),
+                        ),
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage())),
+                        color: Colors.green,
+                    )
+                ],
+            ).show();
+
+        } catch (e) {
+            print(e);
+
+            // ignore: use_build_context_synchronously
+            Alert(
+                context: context,
+                type: AlertType.error,
+                title: "แจ้งเตือน",
+                desc: "กรุณาหรอกรหัสผ่านเพื่อทำการเปลี่ยน.",
+                style: AlertStyle(
+                    titleStyle: GoogleFonts.prompt(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                    ),
+                    descStyle: GoogleFonts.prompt(color: Colors.white),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ),
-        );
-      }
+                buttons: [
+                    DialogButton(
+                        // ignore: sort_child_properties_last
+                        child: Text(
+                            "ตกลง",
+                            style: GoogleFonts.prompt(color: Colors.white),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        color: Colors.red[300],
+                    )
+                ],
+            ).show();
+        }
     }
-  }
+}
+
 
   Widget _buildErrorDialog() {
     return Dialog(
