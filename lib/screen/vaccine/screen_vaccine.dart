@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracker_covid_v1/model/users.dart';
 import 'package:tracker_covid_v1/screen/appointment/showdata_appoints.dart';
 import 'package:tracker_covid_v1/screen/vaccine/getdata_vaccine.dart';
+import 'package:tracker_covid_v1/screen/vaccine/show_vaccine.dart';
 
 class ShowDetail_Location extends StatefulWidget {
   const ShowDetail_Location({super.key});
@@ -67,49 +69,59 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
   void showRegistrationDialog(
       {required BuildContext dialogContext,
       required Map<String, dynamic> data}) {
-    showDialog(
+    Alert(
       context: dialogContext,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+      type: AlertType.success,
+      title: "ลงทะเบียนรับวัคซีน",
+      desc: "คุณได้ทำการลงทะเบียนรับวัคซีนเรียบร้อย",
+      style: AlertStyle(
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        titleStyle: GoogleFonts.prompt(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+        descStyle: GoogleFonts.prompt(fontSize: 18),
+      ),
+      buttons: [
+        DialogButton(
+          child: Text(
+            "รายละเอียด",
+            style: GoogleFonts.prompt(color: Colors.white, fontSize: 20),
           ),
-          elevation: 5.0,
-          title: Text(
-            'ลงทะเบียนรับวัคซีน',
-            style: GoogleFonts.prompt(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-          content: const Text(
-            'คุณได้ทำการลงทะเบียนรับวัคซีนเรียบร้อย',
-            style: TextStyle(fontSize: 18),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'แสดงรายละเอียด',
-                style: GoogleFonts.prompt(
-                  color: const Color.fromARGB(255, 48, 110, 50),
+          onPressed: () {
+            Navigator.pop(dialogContext);
+            Navigator.pushReplacement(
+              dialogContext,
+              MaterialPageRoute(
+                builder: (context) => GetData_Vaccine(
+                  getappoints: data,
                 ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GetData_Vaccine(
-                      getappoints: data,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
+            );
+          },
+          color: Colors.green,
+        ),
+        DialogButton(
+          child: Text(
+            "ปิด",
+            style: GoogleFonts.prompt(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(dialogContext);
+            // Add the navigation to "โชววัคซีน" page here
+            Navigator.pushReplacement(
+              dialogContext,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowData_VaccineLocation(), // Replace with the actual widget for the "โชววัคซีน" page
+              ),
+            );
+          },
+          color: Colors.red,
+        ),
+      ],
+    ).show();
   }
 
   Future<DocumentReference?> sendDataToFirestore() async {
@@ -278,7 +290,7 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
               color: Colors.black,
             )),
         SizedBox(height: 10),
-        Text("***** จำกัดสิทธิ์แค่ 150 คน *****",
+        Text("***** จำกัดสิทธิ์แค่ 120 คน *****",
             style: GoogleFonts.prompt(
               fontSize: 20,
               fontWeight: FontWeight.bold,

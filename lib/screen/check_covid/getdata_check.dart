@@ -128,7 +128,7 @@ class _GetDataCheckScreenState extends State<GetDataCheckScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "น้ำหนักปุจจุบัน : ${data['weight'] ?? 'Not available'}",
+                      "น้ำหนักปัจจุบัน : ${data['weight'] ?? 'Not available'}",
                       style:
                           GoogleFonts.prompt(fontSize: 20, color: Colors.black),
                     ),

@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -49,33 +50,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         isLoading = false;
       });
-
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                "แจ้งเตือน ",
-                style: GoogleFonts.prompt(fontSize: 20),
+      Alert(
+        context: context,
+        style: AlertStyle(
+          titleStyle: GoogleFonts.prompt(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          descStyle: GoogleFonts.prompt(
+            fontSize: 16,
+          ),
+        ),
+        type: AlertType.success,
+        title: "บันทึกข้อมูล",
+        desc: "แก้ไขข้อมูลเรียบร้อย",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "ปิด",
+              style: GoogleFonts.prompt(
+                color: Colors.white,
+                fontSize: 20,
               ),
-              content: Text(
-                "แก้ไขข้อมูลเรียบร้อย",
-                style: GoogleFonts.prompt(fontSize: 16),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "ตกลง",
-                    style: GoogleFonts.prompt(fontSize: 16),
-                  ),
-                )
-              ],
-            );
-          });
+            ),
+            onPressed: () {
+              Navigator.pop(context); // close the dialog
+              Navigator.pop(
+                  context); // navigate back to the previous screen (profile page)
+            },
+            width: 120,
+            color: Colors.green,
+          )
+        ],
+      ).show();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('กรุณาตรวจสอบข้อมูล')),

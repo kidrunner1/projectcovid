@@ -90,7 +90,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
               child: Text(
                 'แสดงรายละเอียด',
                 style: GoogleFonts.prompt(
-                  color: const Color.fromARGB(255, 48, 110, 50),
+                  color: Colors.green,
                 ),
               ),
               onPressed: () {
@@ -279,7 +279,7 @@ class _ShowDetail_Location2State extends State<ShowDetail_Location2> {
               color: Colors.black,
             )),
         const SizedBox(height: 10),
-        Text("***** จำกัดสิทธิ์แค่ 150 คน *****",
+        Text("***** จำกัดสิทธิ์แค่ 120 คน *****",
             style: GoogleFonts.prompt(
               fontSize: 20,
               fontWeight: FontWeight.bold,

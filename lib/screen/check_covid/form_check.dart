@@ -43,7 +43,7 @@ class _FormCheckState extends State<FormCheck> {
     await uploadTask.whenComplete(() => {});
     final url = await ref.getDownloadURL();
     return url;
-  } //
+  }
 
   Future<void> _saveToFirebase() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -51,10 +51,14 @@ class _FormCheckState extends State<FormCheck> {
       AwesomeDialog(
         context: context,
         dialogType: DialogType.ERROR,
-        animType: AnimType.TOPSLIDE,
+        animType: AnimType.BOTTOMSLIDE,
         title: 'Error!',
         desc: 'No user found. Please login again.',
+        headerAnimationLoop: false,
         btnOkOnPress: () {},
+        btnOkIcon: Icons.cancel,
+        btnOkColor: Colors.red,
+        btnOkText: "ปิด",
       ).show();
       return;
     }
@@ -74,10 +78,38 @@ class _FormCheckState extends State<FormCheck> {
     AwesomeDialog(
       context: context,
       dialogType: DialogType.SUCCES,
-      animType: AnimType.TOPSLIDE,
-      title: 'Success!',
-      desc:
-          'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\nคำแนะนำ!!!\n\n1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่คนเดียว\n5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยกจากผู้อื่น',
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'ทำการบันทึกข้อมูลเรียบร้อย!',
+      headerAnimationLoop: false,
+      desc: 'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\n\n'
+          'คำแนะนำ!!!\n\n', // Empty description
+      // ignore: prefer_const_constructors
+      body: Column(
+        children: [
+          Text(
+            'ทำการบันทึกข้อมูลเรียบร้อย!\n'
+            'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\n'
+            '\nคำแนะนำ!!!\n',
+            textAlign: TextAlign.center,
+            style:
+                GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '   1. แยกห้องพัก ของใช้ส่วนตัวกับผู้อื่น \n   (หากแยกไม่ได้ ควรอยู่ให้ห่างจากผู้อื่นมากที่สุด)\n'
+              '   2. ห้ามออกจากที่พักและปฏิเสธผู้ใดมาเยี่ยมที่บ้าน\n'
+              '   3. หลีกเลี่ยงการรับประทานอาหารร่วมกัน\n'
+              '   4. สวมหน้ากากอนามัยตลอดเวลา หากไม่ได้อยู่\n   คนเดียว\n'
+              '   5. เว้นระยะห่าง อย่างน้อย 2 เมตร\n'
+              '   6. แยกซักเสื้อผ้า รวมไปถึงควรใช้ห้องน้ำแยก\n   จากผู้อื่น',
+              textAlign: TextAlign.left,
+              style: GoogleFonts.prompt(fontSize: 15),
+            ),
+          ),
+        ],
+      ),
+      btnOkText: "ตกลง",
       btnOkOnPress: () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -100,10 +132,15 @@ class _FormCheckState extends State<FormCheck> {
           automaticallyImplyLeading: false,
           title: Text(
             'บันทึกผลตรวจโควิด-19 ประจำวัน',
-            style: GoogleFonts.prompt(),
+            style: GoogleFonts.prompt(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           backgroundColor: Colors.red[300],
           centerTitle: true,
+          elevation: 8.0,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -111,27 +148,15 @@ class _FormCheckState extends State<FormCheck> {
             key: checkKey,
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // To align text to left
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    "น้ำหนักปัจจุบัน *",
-                    style: GoogleFonts.prompt(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
                   _buildInputField(
-                      weightinput, "ระบุเป็นกิโลกรัม (KG)", Icons.scale),
+                      weightinput, "น้ำหนักปัจจุบัน *", Icons.scale),
                   const SizedBox(height: 20),
-                  Text(
-                    "อาการไข้ (อุณหภูมิ ≥ 37.5 ° C) ระบุอุณหภูมิ ",
-                    style: GoogleFonts.prompt(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
                   _buildInputField(
-                      tempinput, "ระบุอุณหภูมิ (°C)", Icons.thermostat),
+                      tempinput,
+                      "อาการไข้ (อุณหภูมิ ≥ 37.5 ° C) ระบุอุณหภูมิ ",
+                      Icons.thermostat),
                   const SizedBox(height: 20),
                   Text(
                     "ผลตรวจ ATK วันนี้ *",
@@ -139,9 +164,7 @@ class _FormCheckState extends State<FormCheck> {
                         color: Colors.blueGrey,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left, // Align text to left
                   ),
-                  const SizedBox(height: 10),
                   _buildRadioButtonGroup(),
                   const SizedBox(height: 20),
                   Text(
@@ -155,7 +178,7 @@ class _FormCheckState extends State<FormCheck> {
                   const SizedBox(height: 10),
                   if (_image != null)
                     Card(
-                      elevation: 5.0,
+                      elevation: 8.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -164,67 +187,9 @@ class _FormCheckState extends State<FormCheck> {
                           child: Image.file(_image!, fit: BoxFit.cover)),
                     ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _getImage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey[700],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.upload),
-                        const SizedBox(width: 8),
-                        Text(
-                          "อัพโหลดรูปภาพ",
-                          style: GoogleFonts.prompt(),
-                        )
-                      ],
-                    ),
-                  ),
+                  _buildUploadButton(),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (checkKey.currentState!.validate()) {
-                            _saveToFirebase();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueGrey[700],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          "บันทึกข้อมูล",
-                          style: GoogleFonts.prompt(),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailsCheckScreen()));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red[400],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          "ยกเลิก",
-                          style: GoogleFonts.prompt(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _buildActionButtons(),
                 ],
               ),
             ),
@@ -292,7 +257,7 @@ class _FormCheckState extends State<FormCheck> {
         controller: controller,
         validator: RequiredValidator(errorText: "$label is required"),
         keyboardType: TextInputType.number,
-        style: GoogleFonts.prompt(),
+        style: GoogleFonts.prompt(fontSize: 18, color: Colors.blueGrey[900]),
         decoration: InputDecoration(
           labelText: label,
           labelStyle: GoogleFonts.prompt(),
@@ -311,6 +276,51 @@ class _FormCheckState extends State<FormCheck> {
             borderSide: BorderSide(color: Colors.blue[400]!),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildUploadButton() {
+    return ElevatedButton.icon(
+      icon: const Icon(Icons.upload),
+      label: Text("อัพโหลดรูปภาพ", style: GoogleFonts.prompt(fontSize: 18)),
+      onPressed: _getImage,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueGrey[700],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildCustomButton(
+            "บันทึกข้อมูล", Icons.save, Colors.blueGrey[700]!, _saveToFirebase),
+        _buildCustomButton("ยกเลิก", Icons.cancel, Colors.red[400]!, () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => DetailsCheckScreen()));
+        }),
+      ],
+    );
+  }
+
+  Widget _buildCustomButton(
+      String text, IconData icon, Color color, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      icon: Icon(icon, size: 20),
+      label: Text(text, style: GoogleFonts.prompt(fontSize: 16)),
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       ),
     );
   }
