@@ -178,7 +178,7 @@ class _FormCheckState extends State<FormCheck> {
                         const Icon(Icons.upload),
                         const SizedBox(width: 8),
                         Text(
-                          "Upload Image",
+                          "อัพโหลดรูปภาพ",
                           style: GoogleFonts.prompt(),
                         )
                       ],

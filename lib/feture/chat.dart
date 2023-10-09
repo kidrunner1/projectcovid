@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blueAccent, Colors.blueAccent],
+                  colors: [Colors.white, Colors.white],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -74,9 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             style: GoogleFonts.prompt(
                                 fontSize: 16, color: Colors.black),
                             decoration: InputDecoration(
-                              hintText: "Type a message...",
+                              hintText: "ส่งข้อความ...",
                               hintStyle: GoogleFonts.prompt(
-                                  fontSize: 16, color: Colors.black),
+                                  fontSize: 16, color: Colors.grey),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25),
                                 borderSide: BorderSide.none,

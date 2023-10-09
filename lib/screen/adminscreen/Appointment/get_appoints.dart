@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Appointment/details_medicin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_history.dart';
 
 class GetDataAppointsAdmin extends StatefulWidget {
   const GetDataAppointsAdmin({super.key});
@@ -25,15 +26,20 @@ class _GetDataAppointsAdminState extends State<GetDataAppointsAdmin> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(FontAwesomeIcons.sync),
+            icon: Icon(FontAwesomeIcons.history),
             onPressed: () {
-              setState(() {}); // This will refresh the list (optional)
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GetAppointHistoryAdmin()),
+              );
             },
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('appointments').get(),
+      body: StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance.collection('appointments').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

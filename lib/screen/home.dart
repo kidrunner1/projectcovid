@@ -45,15 +45,9 @@ class HomeScreen extends StatelessWidget {
                     'แอปพลิเคชันติดตามและ \n ประเมินผู้ที่มีความเสี่ยงโควิด-19',
                     style: GoogleFonts.prompt(
                         fontSize: 22,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4.0,
-                            color: Colors.black26,
-                            offset: Offset(2.0, 2.0),
-                          ),
-                        ],
+                        shadows: [],
                         fontWeight: FontWeight.bold,
-                        color: Colors.red[400]),
+                        color: Colors.red[300]),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 40),

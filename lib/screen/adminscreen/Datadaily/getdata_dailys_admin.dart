@@ -62,44 +62,52 @@ class _GetDataDailysAdminScreenState extends State<GetDataDailysAdminScreen> {
                   child: SlideAnimation(
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
-                      child: Card(
-                        elevation: 4,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 15),
-                          leading: Icon(Icons.calendar_today,
-                              size: 50, color: Colors.red[300]),
-                          title: Text(
-                            "บันทึกวันที่",
-                            style: GoogleFonts.prompt(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey[600]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                          subtitle: Text(
-                            "${date.day}/${date.month}/${date.year}",
-                            style: GoogleFonts.prompt(
-                                fontSize: 18, fontWeight: FontWeight.w600),
-                          ),
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 20,
-                            color: Colors.red[300],
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientDetailScreen(
-                                    patientDataList: groupedData[date]!),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PatientDetailScreen(
+                                      patientDataList: groupedData[date]!),
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(15.0),
+                            splashColor: Colors.blue.withAlpha(30),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    Colors.red.shade900,
+                                    Colors.red[300]!,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                            );
-                          },
+                              child: ListTile(
+                                leading: Icon(Icons.calendar_today,
+                                    color: Colors.white, size: 30),
+                                title: Text(
+                                  "บันทึกวันที่ \n${date.day}/${date.month}/${date.year}",
+                                  style: GoogleFonts.prompt(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                trailing: Icon(Icons.arrow_forward_ios,
+                                    size: 20, color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

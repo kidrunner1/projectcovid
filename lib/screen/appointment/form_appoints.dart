@@ -31,7 +31,7 @@ class _FormAppointmentsState extends State<FormAppointments>
   String? phoneNumber;
   List<String> filteredHospitals = sakonNakhonHospitals;
   List<String> appointmentTimes = [
-    for (int hour = 8; hour <= 17; hour++)
+    for (int hour = 8; hour <= 16; hour++)
       if (hour != 12) // Exclude 12.00 to 13.00
         '$hour.00 น. - ${hour + 1}.00 น.'
   ];

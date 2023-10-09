@@ -146,9 +146,12 @@ class _ShowDetail_LocationState extends State<ShowDetail_Location> {
         return null;
       } else {
         try {
-          DocumentReference docRef = await FirebaseFirestore.instance
+          DocumentReference docRef = FirebaseFirestore.instance
               .collection('vaccine_detail')
-              .add({
+              .doc(); // Get a new document reference with an auto-generated ID
+
+          await docRef.set({
+            'id': docRef.id, // use the ID of the document reference
             'userID': currentUser?.uid,
             'username': name,
             'ID card': idNumber,

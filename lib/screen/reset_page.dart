@@ -154,7 +154,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.red[50],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -200,6 +200,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                     color: Colors.black87,
                   ),
                   decoration: InputDecoration(
+                    fillColor: Colors
+                        .white, // This line sets the background color of the box
+                    filled: true, // This line makes the fillColor effective
                     prefixIcon: Icon(Icons.email, color: Colors.red[300]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),

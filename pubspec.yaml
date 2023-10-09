@@ -88,7 +88,7 @@ dependencies:
 
 flutter_icons:
   android: true
-  image_path: "assets/images/icons/page2.jpg"
+  image_path: "assets/images/logo.png"
 
 dev_dependencies:
   flutter_test:
@@ -122,3 +122,4 @@ flutter:
     - assets/animations/hospital.json
     - assets/animations/loading.json
     - assets/animations/vaccine.json
+    - assets/animations/login2.json

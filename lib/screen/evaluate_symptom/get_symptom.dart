@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-// Create a new Dart file for the EditSymptomScreen and import it here
-
 class GetData_EvaluateSymptom extends StatefulWidget {
   final List<DocumentSnapshot<Object?>> symptomData;
   final DateTime selectedDate;
@@ -24,6 +22,7 @@ class GetData_EvaluateSymptom extends StatefulWidget {
 class _GetData_EvaluateSymptomState extends State<GetData_EvaluateSymptom> {
   List<Map<String, dynamic>> symptomData = [];
 
+  @override
   void initState() {
     super.initState();
     fetchDataFromFirestore();
@@ -57,161 +56,170 @@ class _GetData_EvaluateSymptomState extends State<GetData_EvaluateSymptom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red[300],
-        title: Text(
-          'รายละเอียดอาการประจำวัน',
-          style: GoogleFonts.prompt(fontSize: 22, color: Colors.white),
+        backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          backgroundColor: Colors.red[300],
+          title: Text(
+            'รายละเอียดอาการประจำวัน',
+            style: GoogleFonts.prompt(fontSize: 22, color: Colors.white),
+          ),
         ),
-      ),
-      body: Center(
-        // ignore: unnecessary_null_comparison
-        child: symptomData != null && symptomData.isNotEmpty
-            ? ListView.builder(
-                itemCount: symptomData.length,
-                itemBuilder: (context, index) {
-                  Map<String, dynamic> symptoms =
-                      symptomData[index]['symptoms'] as Map<String, dynamic>;
-
-                  List<String> selectedSymptoms = [];
-
-                  symptoms.forEach((symptom, value) {
-                    if (value == 'Y') {
-                      selectedSymptoms.add(symptom);
-                    }
-                  });
-                  selectedSymptoms.sort((a, b) => a.compareTo(b));
-
-                  return Card(
-                    elevation: 3,
-                    margin: const EdgeInsets.all(8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'วันที่ประเมินอาการ : ${symptomData[index]['date']}',
-                            style: GoogleFonts.prompt(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+        body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.red[300],
+                      child: const Icon(
+                        Icons.health_and_safety_outlined,
+                        color: Colors.white,
+                        size: 60,
+                      )),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'รายละเอียดของการประเมินอาการ',
+                          style: GoogleFonts.prompt(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[300],
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            'เวลาที่ประเมินอาการ : ${symptomData[index]['time']}',
-                            style: GoogleFonts.prompt(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        ),
+                        Text(
+                          'รายการอาการของผู้ใช้',
+                          style: GoogleFonts.prompt(
+                            fontSize: 16,
+                            color: Colors.red[300],
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            'รายละเอียดอาการ : ',
-                            style: GoogleFonts.prompt(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 25),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: symptomData.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> symptoms =
+                        symptomData[index]['symptoms'] as Map<String, dynamic>;
+                    List<String> selectedSymptoms = symptoms.keys
+                        .where((key) => symptoms[key] == "Y")
+                        .toList();
+
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 16.0),
+                      elevation: 5,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'วันที่ประเมินอาการ : ${symptomData[index]['date']}',
+                              style: GoogleFonts.prompt(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: selectedSymptoms.map((symptom) {
-                              return Text(
-                                symptom,
-                                style: GoogleFonts.prompt(
-                                  fontSize: 16,
+                            SizedBox(height: 8),
+                            Text(
+                              'เวลาที่ประเมินอาการ : ${symptomData[index]['time']}',
+                              style: GoogleFonts.prompt(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            ...selectedSymptoms.map((symptom) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Text(
+                                  symptom,
+                                  style: GoogleFonts.prompt(
+                                    fontSize: 18,
+                                    color: Colors.black54,
+                                  ),
                                 ),
                               );
                             }).toList(),
-                          ),
-                          SizedBox(height: 16),
-                          // Edit and Delete Buttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  //Show a confirmation dialog before deleting the symptom
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(
-                                        'ยืนยันการลบ',
-                                        style: GoogleFonts.prompt(
-                                            color: Colors.black, fontSize: 22),
-                                      ),
-                                      // titleTextStyle: GoogleFonts.prompt(
-                                      //     fontSize: 20,
-                                      //     fontWeight: FontWeight.bold),
-                                      content: Text(
-                                        'คุณแน่ใจหรือไม่ว่าต้องการลบอาการนี้?',
-                                        style: GoogleFonts.prompt(
-                                            color: Colors.black, fontSize: 20),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            'ยกเลิก',
-                                            style: GoogleFonts.prompt(
-                                                color: Colors.black,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            // Delete the symptom data from Firestore
-                                            await FirebaseFirestore.instance
-                                                .collection('evaluate_symptoms')
-                                                .doc(symptomData[index]
-                                                    ['documentId'])
-                                                .delete();
-
-                                            // Remove the symptom from the list
-                                            setState(() {
-                                              symptomData.removeAt(index);
-                                            });
-
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            'ลบ',
-                                            style: GoogleFonts.prompt(
-                                                color: Colors.black,
-                                                fontSize: 20),
-                                          ),
-                                        ),
-                                      ],
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text(
+                                      'ยืนยันการลบ',
+                                      style: GoogleFonts.prompt(
+                                          color: Colors.black, fontSize: 22),
                                     ),
-                                  );
-                                },
-                                icon: Icon(Icons.delete),
-                                label: Text(
-                                  'ลบอาการนี้',
-                                  style: GoogleFonts.prompt(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red[300]),
+                                    content: Text(
+                                      'คุณแน่ใจหรือไม่ว่าต้องการลบอาการนี้?',
+                                      style: GoogleFonts.prompt(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'ยกเลิก',
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.black,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance
+                                              .collection('evaluate_symptoms')
+                                              .doc(symptomData[index]
+                                                  ['documentId'])
+                                              .delete();
+                                          setState(() {
+                                            symptomData.removeAt(index);
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'ลบ',
+                                          style: GoogleFonts.prompt(
+                                              color: Colors.black,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.delete),
+                              label: Text(
+                                'ลบอาการนี้',
+                                style: GoogleFonts.prompt(
+                                    color: Colors.white, fontSize: 16),
                               ),
-                            ],
-                          ),
-                        ],
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red[300]),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              )
-            : Center(
-                child: Text(
-                  'No symptom data available',
-                  style: TextStyle(fontSize: 18),
+                    );
+                  },
                 ),
-              ),
-      ),
-    );
+              )
+            ])));
   }
 }
