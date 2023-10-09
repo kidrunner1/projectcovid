@@ -102,6 +102,7 @@ class _GetdataAppointsState extends State<GetdataAppoints> {
                     ),
                   ),
                 ),
-            ),
+            ]),
           ),
-        ),
+        )));
+  }}
