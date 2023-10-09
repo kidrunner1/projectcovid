@@ -34,6 +34,10 @@ class _HisToryVaccineAdminState extends State<HisToryVaccineAdmin> {
           ),
           centerTitle: true,
           backgroundColor: Colors.red[300],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: historyStream,
@@ -52,56 +56,63 @@ class _HisToryVaccineAdminState extends State<HisToryVaccineAdmin> {
               return Center(child: CircularProgressIndicator());
             }
 
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final historyData =
-                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    horizontalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: Card(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(10),
-                          title: Text(
-                            historyData['username'] ?? 'Unknown User',
-                            style: GoogleFonts.prompt(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+            return AnimationLimiter(
+              child: ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final historyData =
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    Colors.red.shade900,
+                                    Colors.red[300]!,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  'User: ${historyData['username']}',
+                                  style: GoogleFonts.prompt(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Vaccine: ${historyData['vaccineName']} \nDate: ${historyData['vaccineDate']}',
+                                  style: GoogleFonts.prompt(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                trailing: Icon(Icons.verified,
+                                    color: Colors.green, size: 30.0),
+                              ),
                             ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 5),
-                              Text(
-                                historyData['vaccineName'] ?? 'Unknown Vaccine',
-                                style: GoogleFonts.prompt(fontSize: 18),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                historyData['vaccineDate'] ??
-                                    'No date provided',
-                                style: GoogleFonts.prompt(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          trailing: Icon(Icons.verified, color: Colors.green),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           },
         ),

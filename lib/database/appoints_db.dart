@@ -59,16 +59,25 @@ class Appoints_DB {
         animType: AnimType.SCALE,
         headerAnimationLoop: false,
         title: 'ยืนยันการนัดหมาย',
-        desc: '',
+        desc: 'คุณได้ทำการขอติดต่อเข้ารับยาเรียบร้อยแล้ว', // Added this line
         btnCancelOnPress: resetForm,
         btnCancelText: 'ปิด',
+        buttonsTextStyle:
+            GoogleFonts.prompt(fontSize: 15, fontWeight: FontWeight.bold),
         btnCancelIcon: Icons.close,
-        btnOkText: 'แสดงรายละเอียด',
+        btnOkText: 'รายละเอียด',
         btnOkIcon: Icons.check_circle,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             children: [
+              Text(
+                'คุณได้ทำการขอติดต่อเข้ารับยาเรียบร้อยแล้ว', // Added this line
+                style: GoogleFonts.prompt(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
               Text('วันที่: ${savedData['date']}',
                   style: GoogleFonts.prompt(fontSize: 18)),
               SizedBox(height: 10),

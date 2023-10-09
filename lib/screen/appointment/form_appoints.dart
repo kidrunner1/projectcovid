@@ -48,6 +48,7 @@ class _FormAppointmentsState extends State<FormAppointments>
 
   void resetFormMethod() {
     dateController.clear();
+
     setState(() {
       selectedTime = '';
     });

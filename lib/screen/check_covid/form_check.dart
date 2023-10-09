@@ -44,7 +44,7 @@ class _FormCheckState extends State<FormCheck> {
     await uploadTask.whenComplete(() => {});
     final url = await ref.getDownloadURL();
     return url;
-  } //
+  }
 
   Future<void> _saveToFirebase() async {
   User? currentUser = FirebaseAuth.instance.currentUser;
@@ -123,10 +123,15 @@ class _FormCheckState extends State<FormCheck> {
           automaticallyImplyLeading: false,
           title: Text(
             'บันทึกผลตรวจโควิด-19 ประจำวัน',
-            style: GoogleFonts.prompt(),
+            style: GoogleFonts.prompt(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           backgroundColor: Colors.red[300],
           centerTitle: true,
+          elevation: 8.0,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -134,27 +139,15 @@ class _FormCheckState extends State<FormCheck> {
             key: checkKey,
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // To align text to left
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    "น้ำหนักปัจจุบัน *",
-                    style: GoogleFonts.prompt(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
                   _buildInputField(
-                      weightinput, "ระบุเป็นกิโลกรัม (KG)", Icons.scale),
+                      weightinput, "น้ำหนักปัจจุบัน *", Icons.scale),
                   const SizedBox(height: 20),
-                  Text(
-                    "อาการไข้ (อุณหภูมิ ≥ 37.5 ° C) ระบุอุณหภูมิ ",
-                    style: GoogleFonts.prompt(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
                   _buildInputField(
-                      tempinput, "ระบุอุณหภูมิ (°C)", Icons.thermostat),
+                      tempinput,
+                      "อาการไข้ (อุณหภูมิ ≥ 37.5 ° C) ระบุอุณหภูมิ ",
+                      Icons.thermostat),
                   const SizedBox(height: 20),
                   Text(
                     "ผลตรวจ ATK วันนี้ *",
@@ -162,9 +155,7 @@ class _FormCheckState extends State<FormCheck> {
                         color: Colors.blueGrey,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left, // Align text to left
                   ),
-                  const SizedBox(height: 10),
                   _buildRadioButtonGroup(),
                   const SizedBox(height: 20),
                   Text(
@@ -178,7 +169,7 @@ class _FormCheckState extends State<FormCheck> {
                   const SizedBox(height: 10),
                   if (_image != null)
                     Card(
-                      elevation: 5.0,
+                      elevation: 8.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -187,67 +178,9 @@ class _FormCheckState extends State<FormCheck> {
                           child: Image.file(_image!, fit: BoxFit.cover)),
                     ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _getImage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey[700],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.upload),
-                        const SizedBox(width: 8),
-                        Text(
-                          "อัพโหลดรูปภาพ",
-                          style: GoogleFonts.prompt(),
-                        )
-                      ],
-                    ),
-                  ),
+                  _buildUploadButton(),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (checkKey.currentState!.validate()) {
-                            _saveToFirebase();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueGrey[700],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          "บันทึกข้อมูล",
-                          style: GoogleFonts.prompt(),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailsCheckScreen()));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red[400],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          "ยกเลิก",
-                          style: GoogleFonts.prompt(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _buildActionButtons(),
                 ],
               ),
             ),
@@ -315,7 +248,7 @@ class _FormCheckState extends State<FormCheck> {
         controller: controller,
         validator: RequiredValidator(errorText: "$label is required"),
         keyboardType: TextInputType.number,
-        style: GoogleFonts.prompt(),
+        style: GoogleFonts.prompt(fontSize: 18, color: Colors.blueGrey[900]),
         decoration: InputDecoration(
           labelText: label,
           labelStyle: GoogleFonts.prompt(),
@@ -334,6 +267,51 @@ class _FormCheckState extends State<FormCheck> {
             borderSide: BorderSide(color: Colors.blue[400]!),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildUploadButton() {
+    return ElevatedButton.icon(
+      icon: const Icon(Icons.upload),
+      label: Text("อัพโหลดรูปภาพ", style: GoogleFonts.prompt(fontSize: 18)),
+      onPressed: _getImage,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueGrey[700],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildCustomButton(
+            "บันทึกข้อมูล", Icons.save, Colors.blueGrey[700]!, _saveToFirebase),
+        _buildCustomButton("ยกเลิก", Icons.cancel, Colors.red[400]!, () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => DetailsCheckScreen()));
+        }),
+      ],
+    );
+  }
+
+  Widget _buildCustomButton(
+      String text, IconData icon, Color color, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      icon: Icon(icon, size: 20),
+      label: Text(text, style: GoogleFonts.prompt(fontSize: 16)),
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       ),
     );
   }

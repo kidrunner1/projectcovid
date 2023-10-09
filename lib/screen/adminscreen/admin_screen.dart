@@ -52,7 +52,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "หมอพยาบาล",
+          "",
           style: GoogleFonts.prompt(),
         ),
         actions: roleID == 1

@@ -184,11 +184,12 @@ class _DetailsCheckScreenState extends State<DetailsCheckScreen> {
                                 color: Colors.yellow, size: 70),
                             SizedBox(height: 20),
                             Text(
-                                'วันนี้คุณได้บันทึกผลตรวจประจำวันครบ\nแล้วพรุ้งนี้อย่าลืมมาบันทึกผลกันใหม่นะ.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                )),
+                              'วันนี้คุณได้บันทึกผลตรวจประจำวันครบ\nแล้วพรุ่งนี้อย่าลืมมาบันทึกผลกันใหม่นะ.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
                           ],
                         ),
                       ),
