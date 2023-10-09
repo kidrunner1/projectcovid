@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/vaccine/details.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Vaccine/details.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/vaccine/historyr_vaccine.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Vaccine/historyr_vaccine.dart';
 
 class GetDataVaccineAdmin extends StatefulWidget {
   const GetDataVaccineAdmin({Key? key}) : super(key: key);

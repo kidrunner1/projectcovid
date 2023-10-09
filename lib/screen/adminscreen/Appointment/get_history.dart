@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dart';
 
 class GetAppointHistoryAdmin extends StatefulWidget {
   const GetAppointHistoryAdmin({super.key});
@@ -22,6 +23,15 @@ class _GetAppointHistoryAdminState extends State<GetAppointHistoryAdmin> {
         ),
         backgroundColor: Colors.red[300],
         centerTitle: true,
+        leading: IconButton(
+          // Added IconButton here
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => GetDataAppointsAdmin()),
+            );
+          },
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

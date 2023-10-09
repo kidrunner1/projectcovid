@@ -7,7 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Appointment/get_appoints.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Datadaily/getdata_dailys_admin.dart';
 import 'package:tracker_covid_v1/screen/adminscreen/Envaluate/get_envaluate_admin.dart';
-import 'package:tracker_covid_v1/screen/adminscreen/vaccine/getdata_vaccine_admin.dart';
+import 'package:tracker_covid_v1/screen/adminscreen/Vaccine/getdata_vaccine_admin.dart';
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({super.key});
