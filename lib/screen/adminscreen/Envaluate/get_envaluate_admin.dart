@@ -18,6 +18,7 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
           'ประเมินอาการประจำวัน',
@@ -51,74 +52,78 @@ class _GetEnvaluateAdminScreenState extends State<GetEnvaluateAdminScreen> {
           }
 
           return AnimationLimiter(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ListView.builder(
-                itemCount: groupedData.keys.length,
-                itemBuilder: (context, index) {
-                  String dateStr = groupedData.keys.elementAt(index);
-                  var evaluations = groupedData[dateStr]!;
+            child: ListView.builder(
+              itemCount: groupedData.keys.length,
+              itemBuilder: (context, index) {
+                String dateStr = groupedData.keys.elementAt(index);
 
-                  DateTime? dateObj =
-                      tryParseDate(dateStr); // Use the new function here
-                  if (dateObj == null) {
-                    print("Unable to parse date: $dateStr");
-                    return Text("Invalid date format: $dateStr");
-                  }
+                DateTime? dateObj = tryParseDate(dateStr);
+                if (dateObj == null) {
+                  return SizedBox
+                      .shrink(); // If unable to parse, skip rendering this item
+                }
 
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Card(
                           elevation: 5,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 15),
-                            leading: Icon(Icons.calendar_today,
-                                size: 50, color: Colors.red[300]),
-                            title: Text(
-                              "บันทึกวันที่",
-                              style: GoogleFonts.prompt(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey[600]),
-                            ),
-                            subtitle: Text(
-                              "${dateObj.day}/${dateObj.month}/${dateObj.year}",
-                              style: GoogleFonts.prompt(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: Colors.red[300],
-                            ),
+                          child: InkWell(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
+                                      // Make sure the constructor of this screen accepts the right parameters
                                       GetDataEnvaluateAdminScreen(
                                           date: dateStr,
-                                          evaluations: evaluations),
+                                          evaluations: groupedData[dateStr]!),
                                 ),
                               );
                             },
+                            borderRadius: BorderRadius.circular(15.0),
+                            splashColor: Colors.blue.withAlpha(30),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    Colors.red.shade900,
+                                    Colors.red[300]!,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: ListTile(
+                                leading: Icon(Icons.calendar_today,
+                                    color: Colors.white, size: 30),
+                                title: Text(
+                                  "บันทึกวันที่  \n${dateObj.day}/${dateObj.month}/${dateObj.year}",
+                                  style: GoogleFonts.prompt(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                trailing: Icon(Icons.arrow_forward_ios,
+                                    size: 20, color: Colors.white),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           );
         },
