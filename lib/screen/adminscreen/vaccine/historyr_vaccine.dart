@@ -89,14 +89,14 @@ class _HisToryVaccineAdminState extends State<HisToryVaccineAdmin> {
                               ),
                               child: ListTile(
                                 title: Text(
-                                  'User: ${historyData['username']}',
+                                  'ชื่อ - นามสกุล: ${historyData['username']}',
                                   style: GoogleFonts.prompt(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
                                 ),
                                 subtitle: Text(
-                                  'Vaccine: ${historyData['vaccineName']} \nDate: ${historyData['vaccineDate']}',
+                                  'วัคซีน: ${historyData['vaccineName']} \nวันที่: ${historyData['vaccineDate']}',
                                   style: GoogleFonts.prompt(
                                     fontSize: 14,
                                     color: Colors.white,

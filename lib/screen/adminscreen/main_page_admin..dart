@@ -51,7 +51,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
           return Text('Error: ${snapshot.error}');
         } else {
           return Text(
-            'ผู้ใช้งานในวันนี้: ${snapshot.data ?? 0}',
+            'ผู้ใช้ที่บันทึกผลตรวจในวันนี้: ${snapshot.data ?? 0}',
             style:
                 GoogleFonts.prompt(fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -199,7 +199,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       _iconContainer(
           iconData: Icons.assignment_outlined,
-          label: 'รายงานประเมินความเสี่ยง',
+          label: 'รายละเอียด\nประเมินความเสี่ยง',
           onTap: () {
             Navigator.push(
                 context,
@@ -209,7 +209,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
       const SizedBox(width: 25),
       _iconContainer(
         iconData: FontAwesomeIcons.thermometerThreeQuarters,
-        label: 'รายละเอียดผู้ป่วยประจำวัน',
+        label: 'รายละเอียด\nผลตรวจประจำวัน',
         onTap: () {
           Navigator.push(
             context,
@@ -228,7 +228,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
       children: [
         _iconContainer(
             iconData: FontAwesomeIcons.pills,
-            label: 'รายงานนัดรับยา',
+            label: 'รายละเอียด\nผู้เข้ารับยา',
             onTap: () {
               Navigator.push(
                   context,
@@ -238,7 +238,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
         const SizedBox(width: 25),
         _iconContainer(
             iconData: FontAwesomeIcons.syringe,
-            label: 'การรับวัคซีน',
+            label: 'รายละเอียด\nการเข้ารับวัคซีน',
             onTap: () {
               Navigator.push(
                   context,

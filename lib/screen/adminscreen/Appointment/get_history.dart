@@ -93,7 +93,7 @@ class _GetAppointHistoryAdminState extends State<GetAppointHistoryAdmin> {
                                 ),
                               ),
                               subtitle: Text(
-                                'Hospital: ${appointmentData['hospital']}',
+                                'สถานที่: ${appointmentData['hospital']}',
                                 style: GoogleFonts.prompt(
                                   fontSize: 14,
                                   color: Colors.white,

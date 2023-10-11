@@ -28,7 +28,7 @@ class _GetDataAppointsAdminState extends State<GetDataAppointsAdmin> {
           IconButton(
             icon: Icon(FontAwesomeIcons.history),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => GetAppointHistoryAdmin()),
@@ -64,7 +64,7 @@ class _GetDataAppointsAdminState extends State<GetDataAppointsAdmin> {
                   position: index,
                   duration: const Duration(milliseconds: 375),
                   child: SlideAnimation(
-                    verticalOffset: 50.0,
+                    verticalOffset: 40.0,
                     child: FadeInAnimation(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -110,7 +110,7 @@ class _GetDataAppointsAdminState extends State<GetDataAppointsAdmin> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  'Hospital: ${appointmentData['hospital']}',
+                                  'สถานที่: ${appointmentData['hospital']}',
                                   style: GoogleFonts.prompt(
                                     fontSize: 14,
                                     color: Colors.white,

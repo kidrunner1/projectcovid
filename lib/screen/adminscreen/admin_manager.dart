@@ -295,11 +295,11 @@ class _AdminScreenState extends State<AdminManagerScreen> {
   String roleToString(int role) {
     switch (role) {
       case 1:
-        return 'Admin';
+        return 'ผู้ดูแลระบบ';
       case 2:
-        return 'Doctor/Nurse';
+        return 'หมอพยาบาล';
       case 3:
-        return 'User';
+        return 'ผู้ใช้';
       default:
         return 'Unknown';
     }
