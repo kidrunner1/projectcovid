@@ -38,7 +38,7 @@ class _ShowdataState extends State<Showdata_appoints> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(
       primaryColor: Colors.red[300],
-      backgroundColor: Colors.pink[50],
+      // backgroundColor: Colors.pink[50],
     );
 
     return Theme(

@@ -99,21 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         backgroundColor: Colors.red[300],
-        title: Text(
-          "",
-          style: GoogleFonts.prompt(
-            color: Colors.white,
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            shadows: [
-              const Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 2.0,
-                color: Colors.black26,
-              ),
-            ],
-          ),
-        ),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(

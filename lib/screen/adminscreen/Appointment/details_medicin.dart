@@ -78,7 +78,7 @@ class AppointmentDetailsPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () => _showConfirmationDialog(context),
             style: ElevatedButton.styleFrom(
-              primary: Colors.red[400],
+              backgroundColor: Colors.red[400],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

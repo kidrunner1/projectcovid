@@ -48,7 +48,7 @@ class CallPhone extends StatelessWidget {
                   ),
                   trailing: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),

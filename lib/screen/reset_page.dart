@@ -225,7 +225,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 49),
-                    primary: Colors.red[300],
+                    backgroundColor: Colors.red[300],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

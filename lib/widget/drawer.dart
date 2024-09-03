@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tracker_covid_v1/screen/profile_page.dart';
-import 'package:tracker_covid_v1/feture/setting.dart';
 import 'package:tracker_covid_v1/screen/login_screen.dart';
 import 'package:tracker_covid_v1/screen/profile_setting.dart';
 import 'package:tracker_covid_v1/screen/setting_drawer.dart';

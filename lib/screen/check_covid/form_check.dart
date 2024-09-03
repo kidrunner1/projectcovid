@@ -286,7 +286,7 @@ class _FormCheckState extends State<FormCheck> {
       label: Text("อัพโหลดรูปภาพ", style: GoogleFonts.prompt(fontSize: 18)),
       onPressed: _getImage,
       style: ElevatedButton.styleFrom(
-        primary: Colors.blueGrey[700],
+        backgroundColor: Colors.blueGrey[700],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -316,7 +316,7 @@ class _FormCheckState extends State<FormCheck> {
       label: Text(text, style: GoogleFonts.prompt(fontSize: 16)),
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: color,
+        backgroundColor: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

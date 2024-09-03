@@ -43,7 +43,7 @@ class _VaccineDetailsPageState extends State<VaccineDetailsPage> {
               child: Text('ยืนยันการฉีดวัคซีน',
                   style: GoogleFonts.prompt(fontSize: 20)),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.red[300], shape: StadiumBorder()),
+                  backgroundColor: Colors.red[300], shape: StadiumBorder()),
             ),
           ],
         ),

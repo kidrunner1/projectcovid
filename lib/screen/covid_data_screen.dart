@@ -108,7 +108,7 @@ class _CovidDataScreenState extends State<CovidDataScreen> {
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.red[300],
+                backgroundColor: Colors.red[300],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
