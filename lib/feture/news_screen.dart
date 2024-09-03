@@ -20,7 +20,7 @@ class NewsScreens extends StatefulWidget {
 
 class _NewsScreensState extends State<NewsScreens> {
   int _currentPage = 0;
-  List<String> _imageUrls = [
+  final List<String> _imageUrls = [
     'https://www.nstda.or.th/home/wp-content/uploads/2020/03/Banner-Web-NSTDA_Corona_613-x-345-px.jpg',
     'https://seanphudat.chachoengsao.police.go.th/SPDPOLICE/wp-content/uploads/2023/01/%E0%B8%A3%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%87-%E0%B8%AB%E0%B8%A5%E0%B8%AD%E0%B8%81%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%AB%E0%B8%B2%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%95%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%97%E0%B8%A8-%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%97%E0%B8%B1%E0%B9%88%E0%B8%A7%E0%B9%82%E0%B8%A5%E0%B8%81-%E0%B9%80%E0%B8%9B%E0%B8%B4%E0%B8%94%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%97%E0%B8%A8-%E0%B8%9B%E0%B8%A5%E0%B8%94%E0%B8%A5%E0%B9%87%E0%B8%AD%E0%B8%81%E0%B9%82%E0%B8%84%E0%B8%A7%E0%B8%B4%E0%B8%94-19_Website.png',
     'https://vichaivej-nongkhaem.com/wp-content/uploads/2021/08/%E0%B8%A3%E0%B8%B9%E0%B9%89%E0%B8%88%E0%B8%B1%E0%B8%81%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%82%E0%B8%84%E0%B8%A7%E0%B8%B4%E0%B8%94-1024x538.jpg'
