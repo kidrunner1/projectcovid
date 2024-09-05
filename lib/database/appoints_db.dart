@@ -56,7 +56,7 @@ class Appoints_DB {
       AwesomeDialog(
         context: context,
         dialogType: DialogType.success,
-        animType: AnimType.SCALE,
+        animType: AnimType.scale,
         headerAnimationLoop: false,
         title: 'ยืนยันการนัดหมาย',
         desc: 'คุณได้ทำการขอติดต่อเข้ารับยาเรียบร้อยแล้ว', // Added this line
@@ -113,7 +113,7 @@ class Appoints_DB {
       AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
-        animType: AnimType.SCALE,
+        animType: AnimType.scale,
         title: 'Error',
         desc: 'There was an error saving the appointment: $e',
         btnOkText: 'ปิด',

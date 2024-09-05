@@ -50,8 +50,8 @@ class _FormCheckState extends State<FormCheck> {
     if (currentUser == null) {
       AwesomeDialog(
         context: context,
-        dialogType: DialogType.ERROR,
-        animType: AnimType.BOTTOMSLIDE,
+        dialogType: DialogType.error,
+        animType: AnimType.bottomSlide,
         title: 'Error!',
         desc: 'No user found. Please login again.',
         headerAnimationLoop: false,
@@ -77,8 +77,8 @@ class _FormCheckState extends State<FormCheck> {
     // ignore: use_build_context_synchronously
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.SUCCES,
-      animType: AnimType.BOTTOMSLIDE,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
       title: 'ทำการบันทึกข้อมูลเรียบร้อย!',
       headerAnimationLoop: false,
       desc: 'พรุ่งนี้อย่าลืมมาบันทึกผลด้วยกันอีกนะ\n\n'
